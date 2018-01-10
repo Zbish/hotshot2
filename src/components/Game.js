@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react';
 import {Text,View,Image,StyleSheet,TouchableHighlight} from 'react-native'
+import PropTypes from 'prop-types';
 
 export default class Game extends Component {
   
@@ -29,6 +30,11 @@ export default class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+    item: PropTypes.object,
+}
+
 const styles = StyleSheet.create({
     wrapper: {
 
