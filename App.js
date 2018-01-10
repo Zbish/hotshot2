@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Platform, Image, Text, View,Button,FlatList } from 'react-native';
 import _ from 'lodash';
 import firebase from 'react-native-firebase';
+import Game from './src/components/Game'
 
 export default class App extends React.Component {
   constructor() {
@@ -46,17 +47,19 @@ onCollectionUpdate = (querySnapshot) => {
       }
     });
   }
-  getData(){
-    console.log('sagsua')
-  }
 
   render() {
-    console.log('we got data' , this.state.gamesSchedule)
+    console.log('games' , this.state.gamesSchedule)
+    const games  = this.state.gamesSchedule
     return (
       <View style={styles.container}>
-        <Image source={require('./assets/RNFirebase512x512.png')} style={[styles.logo]} />
-        <Button title={'add'} onPress={()=>this.addData()}></Button>
-        <Button title={'get'} onPress={ ()=>this.getData()}></Button>
+        <FlatList
+                          data={games}
+                          extraData={this.state} 
+                          renderItem={({ item }) => <Game item={item}/>}
+                          keyExtractor={(item, index) => index}
+                        />
+        {/* <Button title={'add'} onPress={()=>this.addData()}></Button> */}
       </View>
     );
   }
@@ -66,34 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  logo: {
-    height: 80,
-    marginBottom: 16,
-    width: 80,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  modules: {
-    margin: 20,
-  },
-  modulesHeader: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  module: {
-    fontSize: 14,
-    marginTop: 4,
-    textAlign: 'center',
-  }
+
 });
