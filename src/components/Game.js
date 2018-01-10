@@ -3,13 +3,7 @@ import React, { Component } from 'react';
 import {Text,View,Image,StyleSheet,TouchableHighlight} from 'react-native'
 
 export default class Game extends Component {
-  renderIf(condition, content) {
-    if (condition) {
-      return content;
-    } else {
-      return null;
-    }
-  }
+  
   render() {
     const {item} = this.props;
     return (
@@ -17,27 +11,24 @@ export default class Game extends Component {
         <View>
         <View style={styles.container}>
         <View style={styles.team}>
-                   {/* <Image source={flags[item.team1]} style={styles.logo}></Image> */}
+                   {/* <Image source={flags[item.team1]} style={styles.flag}></Image> */}
                     <Text style={styles.teamName}>{item.team1}</Text>
               </View>
-            
               <View style={styles.scoreContainer}>
                   <Text style={styles.Text}>Match {item.match}</Text>
                   <Text style={styles.score}>{item.score.team1} : {item.score.team2}</Text>
                   <Text style={styles.Text} >Group {item.group}</Text>
               </View>
               <View style={styles.team}>
-                    {/* <Image source={flags[item.team2]} style={styles.logo}></Image> */}
+                    {/* <Image source={flags[item.team2]} style={styles.flag}></Image> */}
                     <Text style={styles.teamName}>{item.team2}</Text>
               </View>
-             
         </View>
         </View>
       </TouchableHighlight>
     );
   }
 }
-
 const styles = StyleSheet.create({
     wrapper: {
 
@@ -56,7 +47,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         color:'#212121'
     },
-    logo:{
+    flag:{
         width:30,
         height:18
     },
