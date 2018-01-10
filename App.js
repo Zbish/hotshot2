@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, Platform, Image, Text, View,Button } from 'react-native';
-
+import { StyleSheet, Platform, Image, Text, View,Button,FlatList } from 'react-native';
+import _ from 'lodash';
 import firebase from 'react-native-firebase';
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      // firebase things?
+     gamesSchedule:[]
       
     };
     this.ref = firebase.firestore().collection('gamesSchedule')
@@ -22,20 +22,28 @@ componentWillUnmount() {
     this.unsubscribe();
 }
 onCollectionUpdate = (querySnapshot) => {
-  querySnapshot.forEach((doc) => {
-    console.log('we got data' , doc.data())
+  querySnapshot.docChanges.forEach((doc) => {
+
+    let games = this.state.gamesSchedule
+    let index = _.findIndex(games,(game)=>{return game.match == doc.doc.data().match});
+    (index == -1) ?  games.push(doc.doc.data()) : 
+                     games[index] = doc.doc.data()
+    this.setState({gamesSchedule:games})
   })
-  // querySnapshot.docChanges.forEach((doc) => {
-  //   console.log('we got data' , doc)
-  // })
-  // console.log('2222' , querySnapshot.data())
 }
-  AddData(){
+
+  addData(){
     this.ref.add({
-      title: 'game number 10',
-      complete: false,
-      time:'12/5/1254',
-      test:'ok'
+      team2: 'D2',
+      team1: 'D1',
+      match: 7,
+      group: 'D',
+      date: 'June 16 2018 16:00',
+      stadium: 'Spartak(Moscow)',
+      score: {
+        team2: 0,
+        team1: 0
+      }
     });
   }
   getData(){
@@ -43,27 +51,12 @@ onCollectionUpdate = (querySnapshot) => {
   }
 
   render() {
+    console.log('we got data' , this.state.gamesSchedule)
     return (
       <View style={styles.container}>
         <Image source={require('./assets/RNFirebase512x512.png')} style={[styles.logo]} />
-        <Text style={styles.welcome}>
-          hello firebase
-        </Text>
         <Button title={'add'} onPress={()=>this.addData()}></Button>
         <Button title={'get'} onPress={ ()=>this.getData()}></Button>
-        {/* <View style={styles.modules}>
-          <Text style={styles.modulesHeader}>The following Firebase modules are enabled:</Text>
-          {firebase.admob.nativeModuleExists && <Text style={styles.module}>Admob</Text>}
-          {firebase.analytics.nativeModuleExists && <Text style={styles.module}>Analytics</Text>}
-          {firebase.auth.nativeModuleExists && <Text style={styles.module}>Authentication</Text>}
-          {firebase.crash.nativeModuleExists && <Text style={styles.module}>Crash Reporting</Text>}
-          {firebase.firestore.nativeModuleExists && <Text style={styles.module}>Cloud Firestore</Text>}
-          {firebase.messaging.nativeModuleExists && <Text style={styles.module}>Messaging</Text>}
-          {firebase.perf.nativeModuleExists && <Text style={styles.module}>Performance Monitoring</Text>}
-          {firebase.database.nativeModuleExists && <Text style={styles.module}>Realtime Database</Text>}
-          {firebase.config.nativeModuleExists && <Text style={styles.module}>Remote Config</Text>}
-          {firebase.storage.nativeModuleExists && <Text style={styles.module}>Storage</Text>}
-        </View> */}
       </View>
     );
   }
