@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Platform, Image, Text, View } from 'react-native';
+import { StyleSheet, Platform, Image, Text, View,Button } from 'react-native';
 
 import firebase from 'react-native-firebase';
 
@@ -8,11 +8,38 @@ export default class App extends React.Component {
     super();
     this.state = {
       // firebase things?
+      
     };
+    this.ref = firebase.firestore().collection('gamesSchedule')
+    this.unsubscribe = null;
   }
 
   componentDidMount() {
-    // firebase things?
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate) 
+}
+
+componentWillUnmount() {
+    this.unsubscribe();
+}
+onCollectionUpdate = (querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    console.log('we got data' , doc.data())
+  })
+  // querySnapshot.docChanges.forEach((doc) => {
+  //   console.log('we got data' , doc)
+  // })
+  // console.log('2222' , querySnapshot.data())
+}
+  AddData(){
+    this.ref.add({
+      title: 'game number 10',
+      complete: false,
+      time:'12/5/1254',
+      test:'ok'
+    });
+  }
+  getData(){
+    console.log('sagsua')
   }
 
   render() {
@@ -20,23 +47,11 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Image source={require('./assets/RNFirebase512x512.png')} style={[styles.logo]} />
         <Text style={styles.welcome}>
-          Welcome to the React Native{'\n'}Firebase starter project!
+          hello firebase
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        {Platform.OS === 'ios' ? (
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
-        ) : (
-          <Text style={styles.instructions}>
-            Double tap R on your keyboard to reload,{'\n'}
-            Cmd+M or shake for dev menu
-          </Text>
-        )}
-        <View style={styles.modules}>
+        <Button title={'add'} onPress={()=>this.addData()}></Button>
+        <Button title={'get'} onPress={ ()=>this.getData()}></Button>
+        {/* <View style={styles.modules}>
           <Text style={styles.modulesHeader}>The following Firebase modules are enabled:</Text>
           {firebase.admob.nativeModuleExists && <Text style={styles.module}>Admob</Text>}
           {firebase.analytics.nativeModuleExists && <Text style={styles.module}>Analytics</Text>}
@@ -48,7 +63,7 @@ export default class App extends React.Component {
           {firebase.database.nativeModuleExists && <Text style={styles.module}>Realtime Database</Text>}
           {firebase.config.nativeModuleExists && <Text style={styles.module}>Remote Config</Text>}
           {firebase.storage.nativeModuleExists && <Text style={styles.module}>Storage</Text>}
-        </View>
+        </View> */}
       </View>
     );
   }

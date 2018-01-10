@@ -1,4 +1,4 @@
-package com.invertase.rnfirebasestarter;
+package com.zbish.hotshot;
 
 import android.app.Application;
 
