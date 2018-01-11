@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Button, FlatList } from 'react-native'
 import Game from '../components/Game';
+import Games from'../components/Games';
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
@@ -44,13 +45,7 @@ class homeScreen extends Component {
         const games = this.props.gameSchedule
         return (
             <View style={styles.container}>
-                <FlatList
-                    data={games}
-                    extraData={games}
-                    renderItem={({ item }) => <Game item={item} />}
-                    keyExtractor={(item, index) => index}
-                />
-                {/* <Button title={'add'} onPress={() => this.addData()}></Button> */}
+                <Games games={games}/>
             </View>
         );
     }
@@ -59,7 +54,6 @@ class homeScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: '#F5FCFF',
     },
 
