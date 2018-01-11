@@ -4,8 +4,21 @@ import _ from 'lodash';
 import firebase from 'react-native-firebase';
 import Game from './src/components/Game';
 import RootNavigator from './src/screens/navigator'
+import { addNavigationHelpers } from "react-navigation";
+import { connect, Provider } from 'react-redux';
+import configureStore from './src/redux/configureStore'
 
-export default class App extends React.Component {
+const store = configureStore()
+
+const AppWithNavigationState = connect(state => {
+  return {
+    nav: state.nav,
+  }
+})(({ dispatch, nav }) => (
+  <RootNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+));
+
+class App extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -15,6 +28,7 @@ export default class App extends React.Component {
     this.ref = firebase.firestore().collection('gamesSchedule')
     this.unsubscribe = null;
   }
+
 
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate)
@@ -53,7 +67,9 @@ export default class App extends React.Component {
     console.log('games', this.state.gamesSchedule)
     const games = this.state.gamesSchedule
     return (
-      <RootNavigator/>
+      <Provider store={store}>
+        <AppWithNavigationState />
+      </Provider>
       // <View style={styles.container}>
       //   {/* <FlatList
       //     data={games}
@@ -75,3 +91,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+export default App;

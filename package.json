@@ -8,6 +8,7 @@
     "jest-expo": "^21.0.2",
     "react-test-renderer": "16.0.0-beta.5",
     "redux-devtools": "^3.4.1",
+    "redux-devtools-extension": "^2.13.2",
     "replace-in-file": "^3.0.0"
   },
   "scripts": {
