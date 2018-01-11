@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Image, Text, View, Button, FlatList } from 'react-native';
 import _ from 'lodash';
 import firebase from 'react-native-firebase';
-import Game from './src/components/Game'
+import Game from './src/components/Game';
+import RootNavigator from './src/screens/navigator'
 
 export default class App extends React.Component {
   constructor() {
@@ -52,15 +53,16 @@ export default class App extends React.Component {
     console.log('games', this.state.gamesSchedule)
     const games = this.state.gamesSchedule
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={games}
-          extraData={this.state}
-          renderItem={({ item }) => <Game item={item} />}
-          keyExtractor={(item, index) => index}
-        />
-        {/* <Button title={'add'} onPress={()=>this.addData()}></Button> */}
-      </View>
+      <RootNavigator/>
+      // <View style={styles.container}>
+      //   {/* <FlatList
+      //     data={games}
+      //     extraData={this.state}
+      //     renderItem={({ item }) => <Game item={item} />}
+      //     keyExtractor={(item, index) => index}
+      //   /> */}
+      //   {/* <Button title={'add'} onPress={()=>this.addData()}></Button> */}
+      // </View>
     );
   }
 }
