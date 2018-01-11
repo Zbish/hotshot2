@@ -1,9 +1,10 @@
-// reducers/data.js
-import {SEARCH} from '../actions/constant';
+
+import {UPDATE_Schedule} from '../actions/constant';
 
 export default (state, action) => {
+  console.log('reducer' , action)
   switch (action.type) {
-    case SEARCH:
+    case UPDATE_Schedule:
     return{
       ...state,
     };
@@ -11,7 +12,7 @@ export default (state, action) => {
  
     default:
     return state || {
-        gameSchedule:[],
+        gameSchedule:['what'],
       }
   }
 }

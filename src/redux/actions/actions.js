@@ -1,8 +1,8 @@
-import {SEARCH} from './constant';
+import {UPDATE_Schedule} from './constant';
 
-export function changeGameScore(val) {
+export function updateSchedule(val) {
 return {
-type:SEARCH,
+type:UPDATE_Schedule,
 val
 };
 }

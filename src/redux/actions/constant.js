@@ -1,5 +1,5 @@
 // constant.js
-const SEARCH = 'SEARCH';
+const UPDATE_Schedule = 'UPDATESchedule';
 export {
-  SEARCH,
+  UPDATE_Schedule,
 };
