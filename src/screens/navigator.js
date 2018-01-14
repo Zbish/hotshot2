@@ -2,7 +2,6 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import homeScreen from './homeScreen'
 import loginScreen from './loginScreen'
-
 export default RootStackNavigator = StackNavigator(
   { 
     HomeScreen: {

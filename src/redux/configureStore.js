@@ -4,7 +4,6 @@ import rootReducer from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import RootStackNavigator from '../screens/navigator';
 import {StackNavigator } from "react-navigation";
-import firebase from 'react-native-firebase';
 
 
 export default function configureStore() {
