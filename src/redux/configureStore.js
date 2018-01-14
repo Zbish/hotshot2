@@ -1,5 +1,6 @@
 // configureStore.js
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers,applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
 import rootReducer from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import RootStackNavigator from '../screens/navigator';
@@ -18,6 +19,6 @@ export default function configureStore() {
     ...rootReducer
   });
 
-  let store = createStore(appReducer)
+  let store = createStore(appReducer,applyMiddleware(thunk))
   return store
 }

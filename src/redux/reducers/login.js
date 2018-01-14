@@ -5,7 +5,7 @@ export default (state, action) => {
  
     default:
     return state || {
-        loggedIn:false,
+        user:false,
       }
   }
 }

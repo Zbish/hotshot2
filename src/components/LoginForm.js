@@ -14,11 +14,20 @@ export default class LoginForm extends React.Component {
                        password:'' 
                     };
       }
+      register(){
+          const email = this.state.email
+          const password = this.state.password
+        this.props.register(email,password)
+      }
+      logIn(){
+        console.log('login')
+      }
+      forgotPassword(){
+          console.log('forgot')
+      }
     render() {
-        console.log('state', this.state)
         return (
             <View style={styles.loginformcontainer}>
-
                 <TextInput onChangeText={(email) => this.setState({ email })}
                     value={this.state.email}
                     underLineColorAndroid='transparent'
@@ -33,15 +42,15 @@ export default class LoginForm extends React.Component {
                     style={styles.textInput}>
                 </TextInput>
                 <View style={styles.btncontainer}>
-                    <TouchableOpacity style={styles.loginbtn}>
+                    <TouchableOpacity style={styles.loginbtn} onPress={()=>this.logIn()}>
                         <Text>Log In</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.registerbtn}>
+                    <TouchableOpacity style={styles.registerbtn} onPress={()=>this.register()}>
                         <Text>Register</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.forgotbtn}>
+                    <TouchableOpacity style={styles.forgotbtn} onPress={()=>this.forgotPassword()}>
                         <Text>Forgot Password</Text>
                     </TouchableOpacity>
                 </View>
