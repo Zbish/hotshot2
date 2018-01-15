@@ -1,9 +1,8 @@
 import { UPDATE_Schedule, signIn } from './constant';
 import firebase from 'react-native-firebase';
 
-this.schedule = firebase.firestore().collection('gamesSchedule')
-// this.ref2 = firebase.firestore().collection('league').where("players."+player, "==", true)
-
+// firebase refrance to firestore
+this.ref = firebase.firestore()
 
 export function updateSchedule(games) {
     return {
@@ -22,10 +21,13 @@ export const createUser = (email, password) => (dispatch) => {
     })
 }
 export const signInUser = (email, password) => (dispatch) => {
-    let games = []
+    
     firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-        console.log('user', user)
-        this.schedule.get().then((snap) => {
+
+        // get schedule collection start
+        schedule = ref.collection('gamesSchedule')
+        schedule.get().then((snap) => {
+            let games = []
             snap.forEach((doc) => {
                 let game = doc.data()
                 games.push(game)
@@ -35,12 +37,22 @@ export const signInUser = (email, password) => (dispatch) => {
                 games
             })
         })
+        // get schedule collection end
+        
+        // get my league start
+        const uid = user.uid
+        myLeague = ref.collection('league').where("players."+uid, "==", true)
+        myLeague.get().then((snap) => {
+            console.log('myleague' , snap)
+        })
+        // get my league end
         dispatch({
             type: signIn,
             val: true
         })
     })
 }
+
 
 export const newIMage = () => (dispatch) => {
     addImage().then((image) => {

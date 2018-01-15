@@ -6,7 +6,7 @@ import { connect, Provider } from 'react-redux';
 import configureStore from './src/redux/configureStore';
 import { updateSchedule } from './src/redux/actions/actions'
 // import firebase from 'react-native-firebase';
-
+process.nextTick = setImmediate
 const store = configureStore()
 
 const AppWithNavigationState = connect(state => {
