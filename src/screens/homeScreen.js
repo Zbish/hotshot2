@@ -4,13 +4,14 @@ import Game from '../components/Game';
 import Games from '../components/Games';
 import { connect } from 'react-redux'
 import _ from 'lodash';
-import { updateSchedule } from '../redux/actions/actions'
+import { updateSchedule,signMeIn } from '../redux/actions/actions'
 import { renderIf } from '../utils'
 import LoginForm from '../components/LoginForm'
 
 class homeScreen extends Component {
     register(email,password){
         console.log('registerhome',email,password)
+        this.props.signIn()
     }
     render() {
         console.log('state', this.props)
@@ -42,7 +43,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateSchedule: (games) => dispatch(updateSchedule(games))
+        updateSchedule: (games) => dispatch(updateSchedule(games)),
+        signIn: () => dispatch(signMeIn())
     }
 }
 
