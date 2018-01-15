@@ -21,7 +21,9 @@ class homeScreen extends Component {
         return (
             <View style={styles.container}>
                 {renderIf(this.props.logged,
-                <Games games={games} />, 
+                <View>
+                <Games games={games} />    
+                </View>, 
                 <LoginForm register={(email,password)=>this.register(email,password)} 
                             sign={(email,password)=>this.sign(email,password)} 
                     /> )}
@@ -41,7 +43,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         gameSchedule: state.gamesSchedule.gameSchedule,
-        logged: state.login.user
+        logged: state.login.user,
+        leagues: state.leagues.myLeagues
     }
 }
 
