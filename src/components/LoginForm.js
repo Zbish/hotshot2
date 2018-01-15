@@ -20,7 +20,9 @@ export default class LoginForm extends React.Component {
         this.props.register(email,password)
       }
       logIn(){
-        console.log('login')
+        const email = this.state.email
+        const password = this.state.password
+        this.props.sign(email,password)
       }
       forgotPassword(){
           console.log('forgot')

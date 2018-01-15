@@ -4,7 +4,7 @@ export default (state, action) => {
   switch (action.type) {
     case signIn:
     return{
-      user:true
+      user:action.val
     };
     break;
     default:
