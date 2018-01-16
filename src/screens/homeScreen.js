@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { StyleSheet, View, Button, FlatList } from 'react-native'
-import Game from '../components/Game';
-import Games from '../components/Games';
+import Game from '../components/Game'
+import Games from '../components/Games'
 import { connect } from 'react-redux'
 import _ from 'lodash';
 import { updateSchedule,createUser,signInUser } from '../redux/actions/actions'
@@ -17,6 +17,7 @@ class homeScreen extends Component {
     }
     render() {
         console.log('state', this.props)
+        console.log('this', this)
         const games = this.props.gameSchedule
         return (
             <View style={styles.container}>
