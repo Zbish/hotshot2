@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Button, FlatList } from 'react-native'
+import { StyleSheet, View, Button, FlatList,ActivityIndicator } from 'react-native'
 import Game from '../components/Game'
 import Games from '../components/Games'
 import { connect } from 'react-redux'
@@ -20,11 +20,11 @@ class homeScreen extends Component {
     }
     render() {
         console.log('state', this.props)
-        console.log('this', this)
         const games = this.props.gameSchedule
         return (
             <View style={styles.container}>
-                {renderIf(this.props.logged,
+                {this.props.loading&&<ActivityIndicator size="large" color="#FF5722" style={styles.indicator} />}
+                {!this.props.loading&&renderIf(this.props.logged,
                 <View>
                 <Games games={games} />    
                 </View>, 
@@ -49,7 +49,8 @@ function mapStateToProps(state) {
     return {
         gameSchedule: state.gamesSchedule.gameSchedule,
         logged: state.login.user,
-        leagues: state.leagues.myLeagues
+        leagues: state.leagues.myLeagues,
+        loading:state.login.loading
     }
 }
 
