@@ -5,6 +5,7 @@ import {
     TextInput,
     Image, View, TouchableOpacity
 } from 'react-native';
+import {facebookLogin} from '../utils'
 
 
 export default class LoginForm extends React.Component {
@@ -26,6 +27,9 @@ export default class LoginForm extends React.Component {
       }
       forgotPassword(){
           console.log('forgot')
+      }
+      facebook(){
+        facebookLogin()
       }
     render() {
         return (
@@ -51,9 +55,11 @@ export default class LoginForm extends React.Component {
                     <TouchableOpacity style={styles.registerbtn} onPress={()=>this.register()}>
                         <Text>Register</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.forgotbtn} onPress={()=>this.forgotPassword()}>
                         <Text>Forgot Password</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.facebook} onPress={()=>this.facebook()}>
+                        <Text>Facebook</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -104,8 +110,17 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         alignItems: 'center',
         borderRadius: 100,
-        width: 150,
+        width: 100,
         padding: 14,
         marginTop: 10,
     },
+    facebook:{
+        backgroundColor: 'blue',
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        borderRadius: 100,
+        width: 100,
+        padding: 14,
+        marginTop: 10,
+    }
 });

@@ -1,6 +1,11 @@
 package com.zbish.hotshot;
 
 import android.app.Application;
+// facebook sdk
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.facebook.FacebookSdk;
+import com.facebook.CallbackManager;
+import com.facebook.appevents.AppEventsLogger;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +30,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+// facebook sdk
+  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+ 
+   protected static CallbackManager getCallbackManager() {
+    return mCallbackManager;
+    }
+//  =======
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -47,7 +59,9 @@ public class MainApplication extends Application implements ReactApplication {
         new RNFirebaseFirestorePackage(),
         new RNFirebaseMessagingPackage(),
         new RNFirebasePerformancePackage(),
-        new RNFirebaseStoragePackage()
+        new RNFirebaseStoragePackage(),
+        // facebook sdk
+        new FBSDKPackage(mCallbackManager)
       );
     }
     

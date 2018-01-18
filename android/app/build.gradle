@@ -150,7 +150,9 @@ dependencies {
     compile(project(':react-native-firebase')) {
         transitive = false
     }
-
+    // facebook sdk
+    compile project(':react-native-fbsdk')
+    compile 'com.facebook.android:facebook-android-sdk:[4.22.1)' 
     // RNFirebase required dependencies
     compile "com.google.firebase:firebase-core:11.6.0"
     compile "com.google.android.gms:play-services-base:11.6.0"

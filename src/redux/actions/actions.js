@@ -1,5 +1,6 @@
-import { UPDATE_Schedule, signIn,initialLeagues } from './constant';
+import { UPDATE_Schedule, signIn, initialLeagues } from './constant';
 import firebase from 'react-native-firebase';
+import { getSchedule, getLeagues, signInWithEmailAndPassword } from '../../firebaseActions'
 
 // firebase refrance to firestore
 this.ref = firebase.firestore()
@@ -20,39 +21,23 @@ export const createUser = (email, password) => (dispatch) => {
     })
 }
 export const signInUser = (email, password) => (dispatch) => {
-    
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-
+    signInWithEmailAndPassword(email, password).then((user) => {
         // get schedule collection start
-        schedule = ref.collection('gamesSchedule')
-        schedule.get().then((snap) => {
-            let games = []
-            snap.forEach((doc) => {
-                let game = doc.data()
-                games.push(game)
-            })
+        getSchedule().then((games) => {
             dispatch({
                 type: UPDATE_Schedule,
                 games
             })
+
         })
-        // get schedule collection end
-        
         // get my leagues start
-        const uid = user.uid
-        myLeague = ref.collection('league').where("players."+uid, "==", true)
-        myLeague.get().then((snap) => {
-            let leagues = []
-            snap.forEach((doc) => {
-               let league = doc.data()
-               leagues.push(league)
-                  })
-                  dispatch({
-                    type:initialLeagues,
-                    leagues
-                })
+        getLeagues(user.uid).then((leagues) => {
+            dispatch({
+                type: initialLeagues,
+                leagues
+            })
         })
-        // get my leagues end
+        // sign in ok
         dispatch({
             type: signIn,
             val: true
