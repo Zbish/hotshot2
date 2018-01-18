@@ -5,8 +5,6 @@ import {
     TextInput,
     Image, View, TouchableOpacity
 } from 'react-native';
-import {facebookLogin} from '../utils'
-
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -29,7 +27,7 @@ export default class LoginForm extends React.Component {
           console.log('forgot')
       }
       facebook(){
-        facebookLogin()
+        this.props.facebook()
       }
     render() {
         return (

@@ -4,7 +4,7 @@ import Game from '../components/Game'
 import Games from '../components/Games'
 import { connect } from 'react-redux'
 import _ from 'lodash';
-import { updateSchedule,createUser,signInUser } from '../redux/actions/actions'
+import { updateSchedule,createUser,signInUser,facebookLogin } from '../redux/actions/actions'
 import { renderIf } from '../utils'
 import LoginForm from '../components/LoginForm'
 
@@ -14,6 +14,9 @@ class homeScreen extends Component {
     }
     sign(email,password){
         this.props.signIn(email,password)
+    }
+    facebook(){
+        this.props.facebookSignIn()
     }
     render() {
         console.log('state', this.props)
@@ -26,7 +29,8 @@ class homeScreen extends Component {
                 <Games games={games} />    
                 </View>, 
                 <LoginForm register={(email,password)=>this.register(email,password)} 
-                            sign={(email,password)=>this.sign(email,password)} 
+                            sign={(email,password)=>this.sign(email,password)}
+                            facebook={()=>this.facebook()}
                     /> )}
             </View>
         );
@@ -53,7 +57,8 @@ function mapDispatchToProps(dispatch) {
     return {
         updateSchedule: (games) => dispatch(updateSchedule(games)),
         create:(email,password) => dispatch(createUser(email,password)),
-        signIn:(email,password) => dispatch(signInUser(email,password))
+        signIn:(email,password) => dispatch(signInUser(email,password)),
+        facebookSignIn:()=>dispatch(facebookLogin())
     }
 }
 

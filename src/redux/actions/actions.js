@@ -3,7 +3,8 @@ import {
     getSchedule,
     getLeagues,
     signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    facebook
 } from '../../firebaseActions'
 
 export function updateSchedule(games) {
@@ -21,26 +22,35 @@ export const createUser = (email, password) => (dispatch) => {
         })
     })
 }
+const initialApp = (uid, dispatch) => {
+    // get schedule collection
+    getSchedule().then((games) => {
+        dispatch({
+            type: UPDATE_Schedule,
+            games
+        })
+    })
+    // get my leagues
+    getLeagues(uid).then((leagues) => {
+        dispatch({
+            type: initialLeagues,
+            leagues
+        })
+    })
+    // sign in ok
+    dispatch({
+        type: signIn,
+        val: true
+    })
+}
 export const signInUser = (email, password) => (dispatch) => {
     signInWithEmailAndPassword(email, password).then((user) => {
-        // get schedule collection start
-        getSchedule().then((games) => {
-            dispatch({
-                type: UPDATE_Schedule,
-                games
-            })
-        })
-        // get my leagues start
-        getLeagues(user.uid).then((leagues) => {
-            dispatch({
-                type: initialLeagues,
-                leagues
-            })
-        })
-        // sign in ok
-        dispatch({
-            type: signIn,
-            val: true
-        })
+        initialApp(user.uid, dispatch)
+    })
+}
+
+export const facebookLogin = () => (dispatch) => {
+    facebook().then((user) => {
+        initialApp(user.uid, dispatch)
     })
 }
