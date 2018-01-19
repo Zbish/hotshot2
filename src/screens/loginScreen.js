@@ -18,7 +18,6 @@ class loginScreen extends Component {
             this.props.navigation.navigate("HomeScreen");
             this.setState({loading:false})
         })
-
     }
     sign(email, password) {
         this.setState({loading:true})
@@ -31,8 +30,7 @@ class loginScreen extends Component {
         this.setState({loading:true})
         this.props.facebookSignIn().then(() => {
             this.props.navigation.navigate("HomeScreen");
-            setTimeout(()=>{this.setState({loading:false})}, 2000);
-            
+            setTimeout(()=>{this.setState({loading:false})}, 1000); 
         })
     }
     render() {

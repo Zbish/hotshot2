@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import { StyleSheet,View,Text } from 'react-native'
-import Games from '../components/Games'
 import { connect } from 'react-redux'
 import { updateSchedule } from '../redux/actions/actions'
 import { renderIf } from '../utils'
+import Games from '../components/Games'
+import MyLeague from '../components/MyLeague'
 
 class homeScreen extends Component {
  
     render() {
         const games = this.props.gameSchedule
+        const leagues = this.props.leagues
+        console.log('leagues' , leagues)
         return (
             <View style={styles.container}>
-                <Games games={games} />    
+                <Games games={games} />
+                <MyLeague leagues={leagues} ></MyLeague>    
             </View>
         );
     }
@@ -19,7 +23,6 @@ class homeScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent:'center',
         flex: 1,
         backgroundColor: '#F5FCFF',
     },
