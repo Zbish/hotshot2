@@ -77,7 +77,6 @@ export const facebook = () => {
             })
             .then((currentUser) => {
                 if (currentUser) {
-                    console.info(JSON.stringify(currentUser.toJSON()))
                     resolve(currentUser.toJSON())
                 }
             })

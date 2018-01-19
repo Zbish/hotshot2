@@ -24,6 +24,6 @@ export default RootStackNavigator = StackNavigator(
     },
   },
   {
-    initialRouteName: 'HomeScreen'
+    initialRouteName: 'LoginScreen'
   },
 )

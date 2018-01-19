@@ -4,7 +4,6 @@ import RootNavigator from './src/screens/navigator'
 import { addNavigationHelpers } from "react-navigation";
 import { connect, Provider } from 'react-redux';
 import configureStore from './src/redux/configureStore';
-import { updateSchedule } from './src/redux/actions/actions'
 // import firebase from 'react-native-firebase';
 process.nextTick = setImmediate
 const store = configureStore()
@@ -18,22 +17,6 @@ const AppWithNavigationState = connect(state => {
 ));
 
 class App extends React.Component {
-  // constructor() {
-  //   super();
-  //   // this.ref = firebase.firestore().collection('gamesSchedule')
-  //   // this.unsubscribe = null;
-  // }
-  // componentDidMount() {
-  //   this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate)
-  // }
-  // onCollectionUpdate = (querySnapshot) => {
-  //   let games = []
-  //   querySnapshot.forEach((doc) => {
-  //     let game = doc.data()
-  //     games.push(game)
-  //   })
-  //   store.dispatch(updateSchedule(games))
-  // }
   render() {
     return (
       <Provider store={store}>

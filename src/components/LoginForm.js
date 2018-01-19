@@ -9,26 +9,27 @@ import {
 export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { email: '',
-                       password:'' 
-                    };
-      }
-      register(){
-          const email = this.state.email
-          const password = this.state.password
-        this.props.register(email,password)
-      }
-      logIn(){
+        this.state = {
+            email: '',
+            password: ''
+        };
+    }
+    register() {
         const email = this.state.email
         const password = this.state.password
-        this.props.sign(email,password)
-      }
-      forgotPassword(){
-          console.log('forgot')
-      }
-      facebook(){
+        this.props.register(email, password)
+    }
+    logIn() {
+        const email = this.state.email
+        const password = this.state.password
+        this.props.sign(email, password)
+    }
+    forgotPassword() {
+        console.log('forgot')
+    }
+    facebook() {
         this.props.facebook()
-      }
+    }
     render() {
         return (
             <View style={styles.loginformcontainer}>
@@ -38,7 +39,7 @@ export default class LoginForm extends React.Component {
                     placeholderTextColor="black"
                     placeholder='Email' style={styles.textInput}>
                 </TextInput>
-                <TextInput onChangeText={(password) => this.setState({ password})}
+                <TextInput onChangeText={(password) => this.setState({ password })}
                     value={this.state.password}
                     underLineColorAndroid='transparent'
                     placeholderTextColor="black"
@@ -46,17 +47,17 @@ export default class LoginForm extends React.Component {
                     style={styles.textInput}>
                 </TextInput>
                 <View style={styles.btncontainer}>
-                    <TouchableOpacity style={styles.loginbtn} onPress={()=>this.logIn()}>
+                    <TouchableOpacity style={styles.loginbtn} onPress={() => this.logIn()}>
                         <Text>Log In</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.registerbtn} onPress={()=>this.register()}>
+                    <TouchableOpacity style={styles.registerbtn} onPress={() => this.register()}>
                         <Text>Register</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.forgotbtn} onPress={()=>this.forgotPassword()}>
+                    <TouchableOpacity style={styles.forgotbtn} onPress={() => this.forgotPassword()}>
                         <Text>Forgot Password</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.facebook} onPress={()=>this.facebook()}>
+                    <TouchableOpacity style={styles.facebook} onPress={() => this.facebook()}>
                         <Text>Facebook</Text>
                     </TouchableOpacity>
                 </View>
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
         padding: 14,
         marginTop: 10,
     },
-    facebook:{
+    facebook: {
         backgroundColor: 'blue',
         alignSelf: 'stretch',
         alignItems: 'center',

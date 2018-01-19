@@ -1,37 +1,17 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Button, FlatList,ActivityIndicator } from 'react-native'
-import Game from '../components/Game'
+import { StyleSheet,View,Text } from 'react-native'
 import Games from '../components/Games'
 import { connect } from 'react-redux'
-import _ from 'lodash';
-import { updateSchedule,createUser,signInUser,facebookLogin } from '../redux/actions/actions'
+import { updateSchedule } from '../redux/actions/actions'
 import { renderIf } from '../utils'
-import LoginForm from '../components/LoginForm'
 
 class homeScreen extends Component {
-    register(email,password){
-        this.props.create(email,password)
-    }
-    sign(email,password){
-        this.props.signIn(email,password)
-    }
-    facebook(){
-        this.props.facebookSignIn()
-    }
+ 
     render() {
-        console.log('state', this.props)
         const games = this.props.gameSchedule
         return (
             <View style={styles.container}>
-                {this.props.loading&&<ActivityIndicator size="large" color="#FF5722" style={styles.indicator} />}
-                {!this.props.loading&&renderIf(this.props.logged,
-                <View>
                 <Games games={games} />    
-                </View>, 
-                <LoginForm register={(email,password)=>this.register(email,password)} 
-                            sign={(email,password)=>this.sign(email,password)}
-                            facebook={()=>this.facebook()}
-                    /> )}
             </View>
         );
     }
@@ -39,6 +19,7 @@ class homeScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        justifyContent:'center',
         flex: 1,
         backgroundColor: '#F5FCFF',
     },
@@ -50,16 +31,11 @@ function mapStateToProps(state) {
         gameSchedule: state.gamesSchedule.gameSchedule,
         logged: state.login.user,
         leagues: state.leagues.myLeagues,
-        loading:state.login.loading
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateSchedule: (games) => dispatch(updateSchedule(games)),
-        create:(email,password) => dispatch(createUser(email,password)),
-        signIn:(email,password) => dispatch(signInUser(email,password)),
-        facebookSignIn:()=>dispatch(facebookLogin())
     }
 }
 
