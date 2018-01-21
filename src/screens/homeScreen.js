@@ -5,6 +5,7 @@ import { setCurrentLeague } from '../redux/actions/actions'
 import { renderIf } from '../utils'
 import Games from '../components/Games'
 import MyLeague from '../components/MyLeague'
+import { Container } from 'native-base';
 
 class homeScreen extends Component {
     navigate(name) {
@@ -16,22 +17,13 @@ class homeScreen extends Component {
         const games = this.props.gameSchedule
         const leagues = this.props.leagues
         return (
-            <View style={styles.container}>
+            <Container>
                 <Games games={games} />
                 <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
-            </View>
+            </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5FCFF',
-    },
-
-});
-
 function mapStateToProps(state) {
     return {
         gameSchedule: state.gamesSchedule.gameSchedule,
