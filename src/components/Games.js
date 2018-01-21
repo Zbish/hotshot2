@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { withoutTime } from '../utils'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { Container, Header, Content, Text, Body, List, ListItem } from 'native-base';
+import {Content, Text, List, ListItem } from 'native-base';
 
 export default class Games extends Component {
   render() {
@@ -38,7 +38,6 @@ export default class Games extends Component {
     );
   }
 }
-
 Games.propTypes = {
   item: PropTypes.array,
 }
