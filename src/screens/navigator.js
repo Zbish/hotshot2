@@ -4,7 +4,7 @@ import homeScreen from './homeScreen'
 import loginScreen from './loginScreen'
 import league from './league'
 export default RootStackNavigator = StackNavigator(
-  { 
+  {
     HomeScreen: {
       screen: homeScreen,
       navigationOptions: {

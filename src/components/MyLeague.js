@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { View, StyleSheet,Text,FlatList} from 'react-native'
-import MyLeagueItem from'./MyLeagueItem'
+import { View, StyleSheet, Text, FlatList } from 'react-native'
+import MyLeagueItem from './MyLeagueItem'
 
 export default class MyLeague extends Component {
-
+    navigate() {
+        this.props.navigate()
+    }
     render() {
         const leagues = this.props.leagues
         return (
             <View style={styles.container}>
-                 <FlatList
-                data={leagues}
-                extraData={leagues}
-                renderItem={({ item }) => <MyLeagueItem league={item} />}
-                keyExtractor={(item, index) => index}/>
+                <FlatList
+                    data={leagues}
+                    extraData={leagues}
+                    renderItem={({ item }) => <MyLeagueItem league={item} navigate={() => this.navigate()} />}
+                    keyExtractor={(item, index) => index} />
             </View>
         );
     }

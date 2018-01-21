@@ -12,7 +12,7 @@ export default class Games extends Component {
                           .groupBy(game => {
                             return withoutTime(game.date);
                           }).value()
-     
+                      
     return (
       <View style={styles.container}>
         {
@@ -20,7 +20,7 @@ export default class Games extends Component {
             return (
               <View key={date}>
                 <View style={styles.dateContainer}>
-                  <Text style={styles.text}>{moment(date).format('dddd ,LL')}</Text>
+                  <Text style={styles.text}>{moment(new Date(date)).format('dddd ,LL')}</Text>
                 </View>
                 <FlatList
                 data={games}

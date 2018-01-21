@@ -8,9 +8,12 @@ import {
     Image
 } from 'react-native'
 export default class MyLeagueItem extends Component {
+    onPress(){
+            this.props.navigate()
+    }
     render() {
         const { players, games, name } = this.props.league
-        return <TouchableHighlight style={styles.wrapper} underlayColor='grey' onPress={() => this.props.onPress(this.props.league)}>
+        return <TouchableHighlight style={styles.wrapper} underlayColor='grey' onPress={() => this.onPress()}>
             <View style={styles.container}>
                 <Text style={styles.title}>{name}</Text>
                 <Text style={styles.text}>players: {Object.keys(players).length}</Text>
