@@ -18,8 +18,8 @@ class homeScreen extends Component {
         const leagues = this.props.leagues
         return (
             <Container>
-                <Games games={games} />
                 <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
+                <Games games={games} />
             </Container>
         );
     }

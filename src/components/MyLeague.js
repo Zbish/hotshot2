@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import MyLeagueItem from './MyLeagueItem'
+import { Container } from 'native-base';
 
 export default class MyLeague extends Component {
     navigate(name) {
@@ -9,22 +10,15 @@ export default class MyLeague extends Component {
     render() {
         const leagues = this.props.leagues
         return (
-            <View style={styles.container}>
+            <Container>
                 <FlatList
                     data={leagues}
                     extraData={leagues}
-                    renderItem={({ item }) => <MyLeagueItem league={item} navigate={(name) => this.navigate(name)} />}
+                    renderItem={({ item }) =>
+                        <MyLeagueItem league={item}
+                                      navigate={(name) => this.navigate(name)} />}
                     keyExtractor={(item, index) => index} />
-            </View>
+            </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-});

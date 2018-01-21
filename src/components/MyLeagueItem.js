@@ -1,50 +1,63 @@
-import React, { Component } from 'react'
-import {
-    View,
-    Text,
-    TextInput,
-    StyleSheet,
-    TouchableHighlight,
-    Image
-} from 'react-native'
+import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
+import moment from 'moment';
+import { ListItem, Thumbnail, Text, Body, Button, Icon } from 'native-base';
+
 export default class MyLeagueItem extends Component {
-    onPress(name){
-            this.props.navigate(name)
+
+    onPress(name) {
+        this.props.navigate(name)
+    }
+    delete() {
+        console.log('delete')
     }
     render() {
         const { players, games, name } = this.props.league
-        return <TouchableHighlight style={styles.wrapper} underlayColor='grey' onPress={() => this.onPress(name)}>
-            <View style={styles.container}>
-                <Text style={styles.title}>{name}</Text>
-                <Text style={styles.text}>players: {Object.keys(players).length}</Text>
-                <Text style={styles.text}>games: {games.length}</Text>
-            </View>
-        </TouchableHighlight>
+        return (
+            <ListItem style={styles.container} onPress={() => this.onPress(name)}>
+                <Thumbnail style={styles.image} source={require('../images/app/football.png')} />
+                <Body>
+                    <Text style={styles.name}>
+                        {name}
+                    </Text>
+                    <Text style={styles.players} note>
+                        players: {Object.keys(players).length}
+                    </Text>
+                    <Text style={styles.games} note>
+                        games: {games.length}
+                    </Text>
+                </Body>
+                <Button transparent danger style={styles.button}
+                    onPress={() => this.delete()}>
+                    <Icon name='trash' />
+                </Button>
+            </ListItem>
+        );
     }
 }
-const styles = {
-    wrapper: {
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'rgb(242, 242, 242)',
-        margin: 5,
-        padding: 5,
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-    },
-    container: {
-        flexDirection: 'row',
-    },
 
-    text: {
-        color: '#696969',
-        margin: 5,
-        fontSize: 15,
+const styles = StyleSheet.create({
+    container: {
+        marginLeft: 0,
+        marginBottom: 2
     },
-    title: {
-        color: 'green',
-        margin: 5,
-        fontSize: 20,
+    image: {
+        width: 75,
+        height: 75,
+        marginLeft: 10
+    },
+    button: {
+        position: 'absolute',
+        bottom: 1,
+        right: 1,
+    },
+    name: {
+        alignSelf: 'flex-start'
+    },
+    players: {
+        textAlign: 'left'
+    },
+    games: {
+        textAlign: 'left'
     }
-}
+});
