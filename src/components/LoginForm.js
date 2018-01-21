@@ -5,6 +5,8 @@ import {
     TextInput,
     Image, View, TouchableOpacity
 } from 'react-native';
+import { Spinner, Header, Content, Form, Item, Input, Label, Button } from 'native-base';
+import { Col, Grid, Row } from "react-native-easy-grid"
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -32,36 +34,49 @@ export default class LoginForm extends React.Component {
     }
     render() {
         return (
-            <View style={styles.loginformcontainer}>
-                <TextInput onChangeText={(email) => this.setState({ email })}
-                    value={this.state.email}
-                    underLineColorAndroid='transparent'
-                    placeholderTextColor="black"
-                    placeholder='Email' style={styles.textInput}>
-                </TextInput>
-                <TextInput onChangeText={(password) => this.setState({ password })}
-                    value={this.state.password}
-                    underLineColorAndroid='transparent'
-                    placeholderTextColor="black"
-                    placeholder='Password'
-                    style={styles.textInput}>
-                </TextInput>
-                <View style={styles.btncontainer}>
-                    <TouchableOpacity style={styles.loginbtn} onPress={() => this.logIn()}>
-                        <Text>Log In</Text>
-                    </TouchableOpacity>
+                <Grid>
+                    <Row>
+                        <Form>
+                            <Item stackedLabel>
+                                <Label>Email</Label>
+                                <Input
+                                    value={this.state.email}
+                                    onChangeText={(email) => this.setState({ email })}
+                                />
+                            </Item>
+                            <Item stackedLabel last>
+                                <Label>Password</Label>
+                                <Input
+                                    onChangeText={(password) => this.setState({ password })}
+                                    value={this.state.password}
+                                />
+                            </Item>
+                            <Grid>
+                                <Col>
+                                    <Button block rounded onPress={() => this.logIn()}>
+                                        <Text>Log In</Text>
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button block rounded onPress={() => this.register()}>
+                                        <Text>Register</Text>
+                                    </Button>
+                                </Col>
+                                <Col>
 
-                    <TouchableOpacity style={styles.registerbtn} onPress={() => this.register()}>
-                        <Text>Register</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.forgotbtn} onPress={() => this.forgotPassword()}>
-                        <Text>Forgot Password</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.facebook} onPress={() => this.facebook()}>
-                        <Text>Facebook</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                                    <Button block rounded warning onPress={() => this.forgotPassword()}>
+                                        <Text>Forgot Password</Text>
+                                    </Button>
+                                </Col>
+                            </Grid>
+                        </Form>
+                    </Row>
+                    <Row style={{ margin:10}}>
+                        <Button style={{ padding:15 }} block rounded onPress={() => this.facebook()}>
+                            <Text>Facebook</Text>
+                        </Button>
+                    </Row>
+                </Grid>
         );
     }
 

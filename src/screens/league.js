@@ -13,7 +13,6 @@ class league extends Component {
         console.log('league', this.props)
         return (
             <View style={styles.container}>
-                <Text>league </Text>
                 <Games games={games} ></Games>
             </View>
         );

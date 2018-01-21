@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import Games from '../components/Games'
 import { connect } from 'react-redux'
 import { createUser, signInUser, facebookLogin } from '../redux/actions/actions'
 import LoginForm from '../components/LoginForm'
+import {Container,Spinner,Content} from 'native-base';
 
 class loginScreen extends Component {
     constructor(props) {
@@ -35,28 +35,19 @@ class loginScreen extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-                <View>
-                    {this.state.loading && <ActivityIndicator size="large" color="#FF5722" style={styles.indicator} />}
+            <Container>
+                <Content>
+                {this.state.loading && <Spinner color='#303F9F' />}
                     {!this.state.loading && <LoginForm
                         register={(email, password) => this.register(email, password)}
                         sign={(email, password) => this.sign(email, password)}
                         facebook={() => this.facebook()}
                     />}
-                </View>
-            </View>
+                </Content>
+            </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        flex: 1,
-        backgroundColor: '#F5FCFF',
-    },
-
-});
 
 function mapStateToProps(state) {
     return {
