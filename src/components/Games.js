@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native'
+import {FlatList } from 'react-native'
 import Game from './Game'
 import _ from 'lodash'
 import { withoutTime } from '../utils'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+import { Container, Header, Content, Text, Body, List, ListItem } from 'native-base';
 
 export default class Games extends Component {
   render() {
@@ -20,18 +20,16 @@ export default class Games extends Component {
         {
           _.map(gamesByDate, (games, date) => {
             return (
-              <Card>
-                <CardItem header>
-                  <Text style={styles.text}>{moment(new Date(date)).format('dddd ,LL')}</Text>
-                </CardItem>
-                <CardItem>
-                    <FlatList
-                      data={games}
-                      extraData={games}
-                      renderItem={({ item }) => <Game item={item} />}
-                      keyExtractor={(item, index) => index} />
-                </CardItem>
-              </Card>
+              <List>
+                <ListItem itemDivider >
+                  <Text>{moment(new Date(date)).format('dddd ,LL')}</Text>
+                </ListItem>
+                <FlatList
+                  data={games}
+                  extraData={games}
+                  renderItem={({ item }) => <Game item={item} />}
+                  keyExtractor={(item, index) => index} />
+              </List>
             )
           }
           )
@@ -44,11 +42,3 @@ export default class Games extends Component {
 Games.propTypes = {
   item: PropTypes.array,
 }
-
-const styles = StyleSheet.create({
-  text: {
-    alignSelf: 'center',
-    color: '#212121',
-    fontWeight: 'bold'
-  },
-});

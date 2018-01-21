@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native'
 import MyLeagueItem from './MyLeagueItem'
-import { Container } from 'native-base';
+import { List } from 'native-base';
 
 export default class MyLeague extends Component {
     navigate(name) {
@@ -10,15 +10,16 @@ export default class MyLeague extends Component {
     render() {
         const leagues = this.props.leagues
         return (
-            <Container>
+            <List>
                 <FlatList
                     data={leagues}
                     extraData={leagues}
                     renderItem={({ item }) =>
                         <MyLeagueItem league={item}
-                                      navigate={(name) => this.navigate(name)} />}
+                            navigate={(name) => this.navigate(name)} />}
                     keyExtractor={(item, index) => index} />
-            </Container>
+            </List>
+
         );
     }
 }
