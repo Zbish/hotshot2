@@ -4,6 +4,7 @@ import Game from './Game'
 import _ from 'lodash';
 import { withoutTime } from '../utils'
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 export default class Games extends Component {
   render() {
@@ -35,6 +36,10 @@ export default class Games extends Component {
       </View>
     );
   }
+}
+
+Games.propTypes = {
+  item: PropTypes.array,
 }
 
 const styles = StyleSheet.create({

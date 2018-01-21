@@ -1,4 +1,10 @@
-import { UPDATE_Schedule, signIn, initialLeagues, loading } from './constant';
+import {
+    UPDATE_Schedule,
+    signIn,
+    initialLeagues,
+    loading,
+    SET_CURRENT_LEAGUE
+} from './constant';
 import {
     getSchedule,
     getLeagues,
@@ -6,6 +12,7 @@ import {
     createUserWithEmailAndPassword,
     facebook
 } from '../../firebaseActions'
+import _ from 'lodash';
 
 const initialApp = (uid, dispatch) => {
     return new Promise((resolve, reject) => {
@@ -69,3 +76,11 @@ export const facebookLogin = () => (dispatch) => {
         })
     })
 }
+
+export const setCurrentLeague = (name,leagues) => {
+    const current= _.find(leagues, { name: name })
+    return {
+      type: SET_CURRENT_LEAGUE,
+         league:current
+    };
+  }
