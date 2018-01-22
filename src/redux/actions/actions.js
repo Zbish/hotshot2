@@ -16,6 +16,10 @@ import _ from 'lodash';
 
 const initialApp = (uid, dispatch) => {
     return new Promise((resolve, reject) => {
+        dispatch({
+            type: signIn,
+            val: true
+        })
         // get schedule collection
         const schedule = getSchedule().then((games) => {
             return games
@@ -38,10 +42,6 @@ const initialApp = (uid, dispatch) => {
                 games
             })
             // sign in ok
-            dispatch({
-                type: signIn,
-                val: true
-            })
             resolve()
         });
     })

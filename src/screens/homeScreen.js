@@ -5,21 +5,23 @@ import { setCurrentLeague } from '../redux/actions/actions'
 import { renderIf } from '../utils'
 import Games from '../components/Games'
 import MyLeague from '../components/MyLeague'
-import { Container } from 'native-base';
+import { Container, Content } from 'native-base';
 
 class homeScreen extends Component {
     navigate(name) {
-        this.props.setCurrentLeague(name,this.props.leagues)
+        this.props.setCurrentLeague(name, this.props.leagues)
         this.props.navigation.navigate('league')
-        
+
     }
     render() {
         const games = this.props.gameSchedule
         const leagues = this.props.leagues
         return (
             <Container>
-                <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
-                <Games games={games} />
+                <Content>
+                    <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
+                    <Games games={games} />
+                </Content>
             </Container>
         );
     }
@@ -34,7 +36,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setCurrentLeague:(name,leagues) => dispatch(setCurrentLeague(name,leagues))
+        setCurrentLeague: (name, leagues) => dispatch(setCurrentLeague(name, leagues))
     }
 }
 

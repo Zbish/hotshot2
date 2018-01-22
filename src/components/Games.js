@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import Game from './Game'
 import _ from 'lodash'
 import { withoutTime } from '../utils'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import {Content, Text, List, ListItem } from 'native-base';
+import { Content, Text, List, ListItem } from 'native-base';
 
 export default class Games extends Component {
   render() {
@@ -20,15 +20,15 @@ export default class Games extends Component {
         {
           _.map(gamesByDate, (games, date) => {
             return (
-              <List>
-                <ListItem itemDivider >
+              <List key={date} >
+                <ListItem itemDivider>
                   <Text>{moment(new Date(date)).format('dddd ,LL')}</Text>
                 </ListItem>
                 <FlatList
                   data={games}
                   extraData={games}
                   renderItem={({ item }) => <Game item={item} />}
-                  keyExtractor={(item, index) => index} />
+                  keyExtractor={item => item.id} />
               </List>
             )
           }
