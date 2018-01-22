@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    Image, View, TouchableOpacity
-} from 'react-native';
-import { Spinner, Header, Content, Form, Item, Input, Label, Button } from 'native-base';
-import { Col, Grid, Row } from "react-native-easy-grid"
+import { Card, CardItem, Form, Item, Input, Label, Button, Text } from 'native-base';
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -34,107 +27,44 @@ export default class LoginForm extends React.Component {
     }
     render() {
         return (
-                <Grid>
-                    <Row>
-                        <Form>
-                            <Item stackedLabel>
-                                <Label>Email</Label>
-                                <Input
-                                    value={this.state.email}
-                                    onChangeText={(email) => this.setState({ email })}
-                                />
-                            </Item>
-                            <Item stackedLabel last>
-                                <Label>Password</Label>
-                                <Input
-                                    onChangeText={(password) => this.setState({ password })}
-                                    value={this.state.password}
-                                />
-                            </Item>
-                            <Grid>
-                                <Col>
-                                    <Button block rounded onPress={() => this.logIn()}>
-                                        <Text>Log In</Text>
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button block rounded onPress={() => this.register()}>
-                                        <Text>Register</Text>
-                                    </Button>
-                                </Col>
-                                <Col>
-
-                                    <Button block rounded warning onPress={() => this.forgotPassword()}>
-                                        <Text>Forgot Password</Text>
-                                    </Button>
-                                </Col>
-                            </Grid>
-                        </Form>
-                    </Row>
-                    <Row style={{ margin:10}}>
-                        <Button style={{ padding:15 }} block rounded onPress={() => this.facebook()}>
-                            <Text>Facebook</Text>
+            <Card>
+                <CardItem>
+                    <Form>
+                        <Item stackedLabel>
+                            <Label>Email</Label>
+                            <Input
+                                value={this.state.email}
+                                onChangeText={(email) => this.setState({ email })}
+                            />
+                        </Item>
+                        <Item stackedLabel last >
+                            <Label>Password</Label>
+                            <Input
+                                onChangeText={(password) => this.setState({ password })}
+                                value={this.state.password}
+                            />
+                        </Item>
+                        <Button style={{ margin: 10,marginBottom:0 }} block rounded onPress={() => this.logIn()}>
+                            <Text>Log In</Text>
                         </Button>
-                    </Row>
-                </Grid>
+                    </Form>
+                </CardItem>
+                <CardItem style={{ flexDirection: 'column'}}>
+                    <Text note> or sign in with facebook </Text>
+                    <Button style={{ margin: 15 }} block rounded onPress={() => this.facebook()}>
+                        <Text>Facebook</Text>
+                    </Button>
+                </CardItem>
+                <CardItem >
+                    <Button transparent warning onPress={() => this.forgotPassword()}>
+                        <Text>Forgot Password?</Text>
+                    </Button>
+                    <Button transparent warning onPress={() => this.register()}>
+                        <Text>Register</Text>
+                    </Button>
+                </CardItem>
+            </Card>
         );
     }
 
 };
-const styles = StyleSheet.create({
-    loginformcontainer: {
-        alignItems: 'center',
-    },
-    btncontainer: {
-        flexDirection: 'row',
-        marginBottom: 50,
-
-    },
-    textInput: {
-        color: '#757575',
-        alignSelf: 'stretch',
-        padding: 6,
-        marginBottom: 10,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        borderColor: 'black',
-        borderRadius: 20,
-        borderWidth: 0.6,
-    },
-    loginbtn: {
-        backgroundColor: '#ecf0f1',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        borderRadius: 100,
-        width: 100,
-        padding: 14,
-        marginTop: 10,
-    },
-    registerbtn: {
-        backgroundColor: '#bdc3c7',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        borderRadius: 100,
-        width: 100,
-
-        padding: 14,
-        marginTop: 10,
-    },
-    forgotbtn: {
-        backgroundColor: '#e74c3c',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        borderRadius: 100,
-        width: 100,
-        padding: 14,
-        marginTop: 10,
-    },
-    facebook: {
-        backgroundColor: 'blue',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        borderRadius: 100,
-        width: 100,
-        padding: 14,
-        marginTop: 10,
-    }
-});

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { createUser, signInUser, facebookLogin } from '../redux/actions/actions'
 import LoginForm from '../components/LoginForm'
 import { Container, Spinner, Content } from 'native-base';
+import {Image,StyleSheet} from 'react-native'
+import hotshot from '../images/app/hotshot.png'
 
 class loginScreen extends Component {
     constructor(props) {
@@ -35,8 +37,9 @@ class loginScreen extends Component {
     }
     render() {
         return (
-            <Container>
-                <Content>
+            <Container  >
+                <Content contentContainerStyle={styles.center}>
+                    <Image source={hotshot} style={{width:170,height:170}}></Image>
                     {(!this.state.loading && !this.props.logged )?
                     <LoginForm
                         register={(email, password) => this.register(email, password)}
@@ -49,6 +52,12 @@ class loginScreen extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    center: {
+      alignItems: 'center',
+    },
+  });
 
 function mapStateToProps(state) {
     return {
