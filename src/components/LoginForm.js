@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, CardItem, Form, Content, Item, Input, Label, Button, Text } from 'native-base';
+import {Form, Content, Item, Input, Label, Button, Text } from 'native-base';
 import FacebookLoginButton from '../components/FacebookLoginButton'
-import { validateEmail, checkPassword } from '../utils'
-
+import {View} from 'react-native'
 export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
@@ -11,65 +10,49 @@ export default class LoginForm extends React.Component {
             password: ''
         };
     }
-    register() {
-        const email = this.state.email
-        const password = this.state.password
-        if (validateEmail(email), checkPassword(password)) {
-            this.props.register(email, password)
-        }
-
-    }
     SignIn() {
         const email = this.state.email
         const password = this.state.password
         this.props.sign(email, password)
     }
+    onPress() {
+        this.props.renderRegister()
+    }
     forgotPassword() {
         console.log('forgot')
     }
-    facebook(user) {
-        this.props.facebook(user)
-
-    }
     render() {
         return (
-            <Content>
-                <Card>
-                    <CardItem>
-                        <Form>
-                            <Item stackedLabel>
-                                <Label>Email</Label>
-                                <Input
-                                    value={this.state.email}
-                                    onChangeText={(email) => this.setState({ email })}
-                                />
-                            </Item>
-                            <Item stackedLabel last >
-                                <Label>Password</Label>
-                                <Input
-                                    onChangeText={(password) => this.setState({ password })}
-                                    value={this.state.password}
-                                />
-                            </Item>
-                            <Button style={{ margin: 10, marginBottom: 0 }} block rounded onPress={() => this.SignIn()}>
-                                <Text>Sign In</Text>
-                            </Button>
-                        </Form>
-                    </CardItem>
-                    <CardItem style={{ flexDirection: 'column' }}>
-                        <Text note> or sign in with facebook </Text>
-                        <FacebookLoginButton facebook={(user) => this.facebook(user)} />
-                    </CardItem>
-                    <CardItem >
-                        <Button transparent warning onPress={() => this.forgotPassword()}>
-                            <Text>Forgot Password?</Text>
-                        </Button>
-                        <Button transparent warning onPress={() => this.register()}>
-                            <Text>Register</Text>
-                        </Button>
-                    </CardItem>
-                </Card>
+            <Content >
+                <Form>
+                    <Item stackedLabel>
+                        <Label>Email</Label>
+                        <Input
+                            value={this.state.email}
+                            onChangeText={(email) => this.setState({ email })}
+                        />
+                    </Item>
+                    <Item stackedLabel last >
+                        <Label>Password</Label>
+                        <Input
+                            onChangeText={(password) => this.setState({ password })}
+                            value={this.state.password}
+                        />
+                    </Item>
+                </Form>
+                <Button style={{ margin: 10, marginBottom: 0 }} block rounded onPress={() => this.SignIn()}>
+                    <Text>Sign In</Text>
+                </Button>
+                <View style={{flexDirection:'row',margin:10,justifyContent:'center'}}>
+                    <Button transparent warning onPress={() => this.onPress()}>
+                        <Text>register</Text>
+                    </Button>
+                    <Button transparent warning onPress={()=>this.forgotPassword()} >
+                        <Text>Forgot Password?</Text>
+                    </Button>
+                </View>
             </Content>
+
 
         );
     }
