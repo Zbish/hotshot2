@@ -10,7 +10,7 @@ import {
     getLeagues,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    facebook
+    createFirebaseCredential
 } from '../../firebaseActions'
 import _ from 'lodash';
 
@@ -72,11 +72,15 @@ export const signInUser = (email, password) => (dispatch) => {
     })
 }
 
-export const facebookLogin = (uid) => (dispatch) => {
+export const facebookLogin = (token) => (dispatch) => {
     return new Promise((resolve, reject) => {
-            initialApp(uid, dispatch).then(
-                resolve()
-            )
+        createFirebaseCredential(token).then(user => {
+            if(user){
+                initialApp(user.uid, dispatch).then(
+                    resolve(user) 
+                )
+            }else{resolve()}
+        })
     })
 }
 

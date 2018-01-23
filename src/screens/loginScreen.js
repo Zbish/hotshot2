@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import Games from '../components/Games'
 import { connect } from 'react-redux'
 import { createUser, signInUser, facebookLogin } from '../redux/actions/actions'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
-import { Container, Spinner, Content, Card, CardItem, Text, Button } from 'native-base';
+import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
 import { Image, StyleSheet } from 'react-native'
 import hotshot from '../images/app/hotshot.png'
 import FacebookLoginButton from '../components/FacebookLoginButton'
@@ -36,9 +35,9 @@ class loginScreen extends Component {
 
         })
     }
-    facebook(user) {
+    facebook(token) {
         this.setState({ loading: true })
-        this.props.facebookSignIn(user.uid).then(() => {
+        this.props.facebookLogin(token).then(() => {
             this.props.navigation.navigate("HomeScreen");
             this.setState({ loading: false });
         })
@@ -52,6 +51,7 @@ class loginScreen extends Component {
     renderForgot() {
         this.setState({ form: 2 })
     }
+
     render() {
         return (
             <Container style={{ backgroundColor: 'white' }} >
@@ -74,7 +74,7 @@ class loginScreen extends Component {
                             </CardItem>
                             <CardItem style={{ flexDirection: 'column' }}>
                                 <Text style={{ margin: 5, fontSize: 15, color: 'grey' }} >OR</Text>
-                                <FacebookLoginButton facebook={(user) => this.facebook(user)} />
+                                <FacebookLoginButton  facebook={(token) => this.facebook(token)} />
                             </CardItem>
                         </Card> :
                         <Spinner color='#303F9F' />}
@@ -101,7 +101,7 @@ function mapDispatchToProps(dispatch) {
     return {
         create: (email, password) => dispatch(createUser(email, password)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
-        facebookSignIn: (uid) => dispatch(facebookLogin(uid))
+        facebookLogin: (uid) => dispatch(facebookLogin(uid))
     }
 }
 

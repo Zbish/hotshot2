@@ -50,19 +50,3 @@ export default class RegisterForm extends React.Component {
     }
 
 };
-
-//   {/* {(!this.state.loading && !this.props.logged) ?
-//                          :
-//                     {/* <Spinner color='#303F9F' /> */}
-        // {/* <CardItem style={{ flexDirection: 'column' }}>
-        //                     <Text note>Or Sign In With Facebook </Text>
-        //                     <FacebookLoginButton facebook={(user) => this.facebook(user)} />
-        //                 </CardItem>
-        //                 <CardItem >
-        //                     <Button transparent warning >
-        //                         <Text>Forgot Password?</Text>
-        //                     </Button>
-        //                     <Button transparent warning onPress={()=>this.renderRegister()}>
-        //                         <Text>Register</Text>
-        //                     </Button>
-        //                 </CardItem> */}

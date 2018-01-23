@@ -3,6 +3,16 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 // firebase refrance to firestore
 this.ref = firebase.firestore()
 
+export const isLogged = () =>{
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          console.log('loggedddddd')
+        } else {
+          console.log('notttttttttt')
+        }
+      });
+}
+
 export const createUserWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
         try {
@@ -29,6 +39,20 @@ export const signInWithEmailAndPassword = (email, password) => {
                 alert(error.message)
                 resolve()
             });
+        } catch (error) {
+            console.log('error firebase', error)
+        }
+    })
+}
+
+export const createFirebaseCredential = (token) => {
+    return new Promise((resolve, reject) => {
+        try {
+            // create a new firebase credential with the token
+            const credential = firebase.auth.FacebookAuthProvider.credential(token.accessToken)
+            // login with credential
+            const user = firebase.auth().signInWithCredential(credential)
+            resolve(user)
         } catch (error) {
             console.log('error firebase', error)
         }
@@ -63,33 +87,3 @@ export const getLeagues = (uid) => {
     })
 }
 
-// Calling the following function will open the FB login dialogue:
-export const facebook = () => {
-    return new Promise((resolve, reject) => {
-        return LoginManager
-            .logInWithReadPermissions(['public_profile', 'email'])
-            .then((result) => {
-                if (!result.isCancelled) {
-                    console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`)
-                    // get the access token
-                    return AccessToken.getCurrentAccessToken()
-                }
-            })
-            .then(data => {
-                if (data) {
-                    // create a new firebase credential with the token
-                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
-                    // login with credential
-                    return firebase.auth().signInWithCredential(credential)
-                }
-            })
-            .then((currentUser) => {
-                if (currentUser) {
-                    resolve(currentUser.toJSON())
-                }
-            })
-            .catch((error) => {
-                console.log(`Login fail with error: ${error}`)
-            })
-    })
-}
