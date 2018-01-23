@@ -50,9 +50,11 @@ const initialApp = (uid, dispatch) => {
 export const createUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(email, password).then((user) => {
-            initialApp(user.uid, dispatch).then(
-                resolve()
-            )
+            if(user){
+                initialApp(user.uid, dispatch).then(
+                    resolve(user) 
+                )
+            }else{resolve()}
         })
     })
 }
@@ -60,9 +62,12 @@ export const createUser = (email, password) => (dispatch) => {
 export const signInUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
-            initialApp(user.uid, dispatch).then(
-                resolve()
-            )
+            if(user){
+                initialApp(user.uid, dispatch).then(
+                    resolve(user) 
+                )
+            }else{resolve()}
+           
         })
     })
 }

@@ -5,7 +5,7 @@ import firebase from 'react-native-firebase'
 this.ref = firebase.firestore()
 
 export default class FacebookLoginButton extends Component {
-  
+
     render() {
         return (
             <View>
@@ -29,8 +29,8 @@ export default class FacebookLoginButton extends Component {
                                 })
                                     .then((currentUser) => {
                                         if (currentUser) {
-                                                this.props.facebook(currentUser)
-                                                                                }
+                                            this.props.facebook(currentUser)
+                                        }
                                     })
                                     .catch((error) => {
                                         console.log(`Login fail with error: ${error}`)

@@ -8,7 +8,11 @@ export const createUserWithEmailAndPassword = (email, password) => {
         try {
             firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
                 resolve(user)
-            })
+            }).catch((error) => {
+                const errorMessage = error.message;
+                alert(error.message)
+                resolve()
+            });
         } catch (error) {
             console.log('errorcreteuser')
         }
@@ -20,9 +24,13 @@ export const signInWithEmailAndPassword = (email, password) => {
         try {
             firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
                 resolve(user)
-            })
+            }).catch((error) => {
+                const errorMessage = error.message;
+                alert(error.message)
+                resolve()
+            });
         } catch (error) {
-            console.log('error firebase')
+            console.log('error firebase', error)
         }
     })
 }

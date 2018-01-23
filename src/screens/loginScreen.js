@@ -16,16 +16,21 @@ class loginScreen extends Component {
     }
     register(email, password) {
         this.setState({ loading: true })
-        this.props.create(email, password).then(() => {
-            this.props.navigation.navigate("HomeScreen");
-            this.setState({ loading: false })
+        this.props.create(email, password).then((user) => {
+            if(user){
+                this.props.navigation.navigate("HomeScreen");
+                this.setState({ loading: false })
+            }else{ this.setState({ loading: false })}
         })
     }
     sign(email, password) {
         this.setState({ loading: true })
-        this.props.signIn(email, password).then(() => {
-            this.props.navigation.navigate("HomeScreen");
-            this.setState({ loading: false })
+        this.props.signIn(email, password).then((user) => {
+            if(user){
+                this.props.navigation.navigate("HomeScreen");
+                this.setState({ loading: false })
+            }else{ this.setState({ loading: false })}
+            
         })
     }
     facebook(user) {

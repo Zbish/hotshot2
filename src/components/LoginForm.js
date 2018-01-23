@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardItem, Form, Content, Item, Input, Label, Button, Text } from 'native-base';
 import FacebookLoginButton from '../components/FacebookLoginButton'
-import { validateEmail } from '../utils'
+import { validateEmail, checkPassword } from '../utils'
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -14,13 +14,15 @@ export default class LoginForm extends React.Component {
     register() {
         const email = this.state.email
         const password = this.state.password
-        this.props.register(email, password)
+        if (validateEmail(email), checkPassword(password)) {
+            this.props.register(email, password)
+        }
+
     }
     SignIn() {
         const email = this.state.email
         const password = this.state.password
-        // this.props.sign(email, password)
-        console.log('mail', validateEmail(email))
+        this.props.sign(email, password)
     }
     forgotPassword() {
         console.log('forgot')
