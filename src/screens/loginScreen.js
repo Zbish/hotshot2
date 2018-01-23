@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createUser, signInUser, facebookLogin } from '../redux/actions/actions'
+import { createUser, signInUser, facebookLogin, user } from '../redux/actions/actions'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
@@ -15,6 +15,19 @@ class loginScreen extends Component {
             loading: false,
             form: 1
         };
+    }
+
+    isLogged(){
+        this.setState({ loading: true })
+        this.props.user().then((user) => {
+            if (user) {
+                this.props.navigation.navigate("HomeScreen");
+                this.setState({ loading: false })
+            } else { this.setState({ loading: false }) }
+        })
+    }
+    componentWillMount() {
+        this. isLogged()
     }
     register(email, password) {
         this.setState({ loading: true })
@@ -74,7 +87,7 @@ class loginScreen extends Component {
                             </CardItem>
                             <CardItem style={{ flexDirection: 'column' }}>
                                 <Text style={{ margin: 5, fontSize: 15, color: 'grey' }} >OR</Text>
-                                <FacebookLoginButton  facebook={(token) => this.facebook(token)} />
+                                <FacebookLoginButton facebook={(token) => this.facebook(token)} />
                             </CardItem>
                         </Card> :
                         <Spinner color='#303F9F' />}
@@ -101,7 +114,8 @@ function mapDispatchToProps(dispatch) {
     return {
         create: (email, password) => dispatch(createUser(email, password)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
-        facebookLogin: (uid) => dispatch(facebookLogin(uid))
+        facebookLogin: (uid) => dispatch(facebookLogin(uid)),
+        user: () => dispatch(user())
     }
 }
 

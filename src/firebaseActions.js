@@ -4,15 +4,24 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 this.ref = firebase.firestore()
 
 export const isLogged = () =>{
-    firebase.auth().onAuthStateChanged(function(user) {
+    return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) =>{
         if (user) {
-          console.log('loggedddddd')
+          resolve(user)
         } else {
-          console.log('notttttttttt')
+            resolve()
         }
       });
+    })
 }
 
+export const signOut =  () => {
+    firebase.auth().signOut().then(function() {
+        console.log('sign out')
+      }).catch(function(error) {
+        console.log('notttttttttt')
+      });
+}
 export const createUserWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
         try {

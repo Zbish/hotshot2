@@ -10,7 +10,9 @@ import {
     getLeagues,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    createFirebaseCredential
+    createFirebaseCredential,
+    isLogged,
+    signOut
 } from '../../firebaseActions'
 import _ from 'lodash';
 
@@ -50,11 +52,11 @@ const initialApp = (uid, dispatch) => {
 export const createUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(email, password).then((user) => {
-            if(user){
+            if (user) {
                 initialApp(user.uid, dispatch).then(
-                    resolve(user) 
+                    resolve(user)
                 )
-            }else{resolve()}
+            } else { resolve() }
         })
     })
 }
@@ -62,12 +64,12 @@ export const createUser = (email, password) => (dispatch) => {
 export const signInUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
-            if(user){
+            if (user) {
                 initialApp(user.uid, dispatch).then(
-                    resolve(user) 
+                    resolve(user)
                 )
-            }else{resolve()}
-           
+            } else { resolve() }
+
         })
     })
 }
@@ -75,19 +77,33 @@ export const signInUser = (email, password) => (dispatch) => {
 export const facebookLogin = (token) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
-            if(user){
+            if (user) {
                 initialApp(user.uid, dispatch).then(
-                    resolve(user) 
+                    resolve(user)
                 )
-            }else{resolve()}
+            } else { resolve() }
         })
     })
 }
+export const user = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        isLogged().then((user) => {
+            if (user) {
+                initialApp(user.uid, dispatch).then(
+                    resolve(user)
+                )
+            } else { resolve() }
+        })
+    })
+}
+export const signOutFromFirebase = () => (dispatch) => {
+    signOut()
+}
 
-export const setCurrentLeague = (name,leagues) => {
-    const current= _.find(leagues, { name: name })
+export const setCurrentLeague = (name, leagues) => {
+    const current = _.find(leagues, { name: name })
     return {
-      type: SET_CURRENT_LEAGUE,
-         league:current
+        type: SET_CURRENT_LEAGUE,
+        league: current
     };
-  }
+}
