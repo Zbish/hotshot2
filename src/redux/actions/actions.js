@@ -67,13 +67,11 @@ export const signInUser = (email, password) => (dispatch) => {
     })
 }
 
-export const facebookLogin = () => (dispatch) => {
+export const facebookLogin = (uid) => (dispatch) => {
     return new Promise((resolve, reject) => {
-        facebook().then((user) => {
-            initialApp(user.uid, dispatch).then(
+            initialApp(uid, dispatch).then(
                 resolve()
             )
-        })
     })
 }
 

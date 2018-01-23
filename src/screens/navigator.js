@@ -17,10 +17,7 @@ export default RootStackNavigator = StackNavigator(
     LoginScreen: {
       screen: loginScreen,
       navigationOptions: {
-        title: 'Login Screen',
-        headerStyle: { backgroundColor: '#F44336' },
-        headerTitleStyle: { color: '#FFFFFF' },
-        headerTintColor: '#FFFFFF'
+        header: null,
       }
     },
     league: {

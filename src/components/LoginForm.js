@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardItem, Form, Item, Input, Label, Button, Text } from 'native-base';
+import FacebookLoginButton from'../components/FacebookLoginButton'
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class LoginForm extends React.Component {
         const password = this.state.password
         this.props.register(email, password)
     }
-    logIn() {
+    SignIn() {
         const email = this.state.email
         const password = this.state.password
         this.props.sign(email, password)
@@ -22,8 +23,9 @@ export default class LoginForm extends React.Component {
     forgotPassword() {
         console.log('forgot')
     }
-    facebook() {
-        this.props.facebook()
+    facebook(user) {
+        this.props.facebook(user)
+    
     }
     render() {
         return (
@@ -44,16 +46,14 @@ export default class LoginForm extends React.Component {
                                 value={this.state.password}
                             />
                         </Item>
-                        <Button style={{ margin: 10,marginBottom:0 }} block rounded onPress={() => this.logIn()}>
-                            <Text>Log In</Text>
+                        <Button style={{ margin: 10,marginBottom:0 }} block rounded onPress={() => this.SignIn()}>
+                            <Text>Sign In</Text>
                         </Button>
                     </Form>
                 </CardItem>
                 <CardItem style={{ flexDirection: 'column'}}>
                     <Text note> or sign in with facebook </Text>
-                    <Button style={{ margin: 15 }} block rounded onPress={() => this.facebook()}>
-                        <Text>Facebook</Text>
-                    </Button>
+                    <FacebookLoginButton facebook={(user)=>this.facebook(user)} />
                 </CardItem>
                 <CardItem >
                     <Button transparent warning onPress={() => this.forgotPassword()}>

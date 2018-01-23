@@ -28,23 +28,24 @@ class loginScreen extends Component {
             this.setState({ loading: false })
         })
     }
-    facebook() {
+    facebook(user) {
         this.setState({ loading: true })
-        this.props.facebookSignIn().then(() => {
+        this.props.facebookSignIn(user.uid).then(() => {
             this.props.navigation.navigate("HomeScreen");
             this.setState({ loading: false });
         })
     }
+  
     render() {
         return (
-            <Container  >
+            <Container style={{backgroundColor:'white'}} >
                 <Content contentContainerStyle={styles.center}>
-                    <Image source={hotshot} style={{width:170,height:170}}></Image>
+                    <Image source={hotshot} style={{width:200,height:200}}></Image>
                     {(!this.state.loading && !this.props.logged )?
                     <LoginForm
                         register={(email, password) => this.register(email, password)}
                         sign={(email, password) => this.sign(email, password)}
-                        facebook={() => this.facebook()}
+                        facebook={(user) => this.facebook(user)}
                     />:
                     <Spinner color='#303F9F' />}
                 </Content>
@@ -56,6 +57,7 @@ class loginScreen extends Component {
 const styles = StyleSheet.create({
     center: {
       alignItems: 'center',
+      flex:1
     },
   });
 
@@ -70,7 +72,7 @@ function mapDispatchToProps(dispatch) {
     return {
         create: (email, password) => dispatch(createUser(email, password)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
-        facebookSignIn: () => dispatch(facebookLogin())
+        facebookSignIn: (uid) => dispatch(facebookLogin(uid))
     }
 }
 
