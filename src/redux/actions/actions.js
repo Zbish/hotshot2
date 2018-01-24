@@ -15,13 +15,9 @@ import {
     signOut
 } from '../../firebaseActions'
 import _ from 'lodash';
+import { NavigationActions } from 'react-navigation'
 
 const initialApp = (uid, dispatch) => {
-    return new Promise((resolve, reject) => {
-        dispatch({
-            type: signIn,
-            val: true
-        })
         // get schedule collection
         const schedule = getSchedule().then((games) => {
             return games
@@ -30,7 +26,7 @@ const initialApp = (uid, dispatch) => {
         const leagues = getLeagues(uid).then((leagues) => {
             return leagues
         })
-        Promise.all([schedule, leagues]).then((data) => {
+       return Promise.all([schedule, leagues]).then((data) => {
             const games = data[0]
             const leagues = data[1]
 
@@ -44,16 +40,38 @@ const initialApp = (uid, dispatch) => {
                 games
             })
             // sign in ok
-            resolve()
+            return
         });
+    
+}
+export const user = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        isLogged().then((user) => {
+            if (user) {
+                initialApp(user.uid,dispatch).then(()=>{
+                    dispatch({
+                        type: signIn,
+                        val: true
+                    })
+                    resolve(user)
+                })
+            } else { resolve() }
+        })
     })
 }
+
 
 export const createUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(email, password).then((user) => {
             if (user) {
+                initialApp(user.uid,dispatch).then(()=>{
+                    dispatch({
+                        type: signIn,
+                        val: true
+                    })
                     resolve(user)
+                })
             } else { resolve() }
         })
     })
@@ -63,9 +81,14 @@ export const signInUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
             if (user) {
-                 resolve(user)
+                initialApp(user.uid,dispatch).then(()=>{
+                    dispatch({
+                        type: signIn,
+                        val: true
+                    })
+                    resolve(user)
+                })
             } else { resolve() }
-
         })
     })
 }
@@ -74,41 +97,33 @@ export const facebookLogin = (token) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
             if (user) {
+                initialApp(user.uid,dispatch).then(()=>{
+                    dispatch({
+                        type: signIn,
+                        val: true
+                    })
                     resolve(user)
+                })
             } else { resolve() }
         })
     })
 }
-export const user = () => (dispatch) => {
-    return new Promise((resolve, reject) => {
-        isLogged().then((data) => {
-            if (data) {
-                const games = data[0]
-                const leagues = data[1]
-                dispatch({
-                    type: signIn,
-                    val: true
-                })
-                dispatch({
-                    type: initialLeagues,
-                    leagues
-                })
-    
-                dispatch({
-                    type: UPDATE_Schedule,
-                    games
-                })
-                resolve("ok")
-            } else { resolve() }
-        })
-    })
-}
+
+const resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'LoginScreen' })
+    ]
+})
+
 export const signOutFromFirebase = () => (dispatch) => {
     dispatch({
         type: signIn,
         val: false
     })
-    signOut()
+    signOut().then(()=>{
+        this.props.navigation.dispatch(resetAction)
+    })
 }
 
 export const setCurrentLeague = (name, leagues) => {

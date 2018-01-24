@@ -16,12 +16,11 @@ class loginScreen extends Component {
             form: 1
         };
     }
-   
-    isLogged() {
+
+    handler(func) {
         this.setState({ loading: true })
-        this.props.user().then((user) => {
+        func.then((user) => {
             if (user) {
-                console.log('yes-yes', user)
                 this.setState({ loading: false })
                 this.props.navigation.navigate("HomeScreen");
             } else { this.setState({ loading: false }) }
@@ -30,30 +29,22 @@ class loginScreen extends Component {
     componentWillMount() {
         this.isLogged()
     }
+
+
+    isLogged() {
+        this.handler(this.props.user())
+    }
     register(email, password) {
-        this.setState({ loading: true })
-        this.props.create(email, password).then((user) => {
-            if (user) {
-                this.isLogged()
-            } else { this.setState({ loading: false }) }
-        })
+        this.handler(this.props.create(email, password))
     }
     sign(email, password) {
-        this.setState({ loading: true })
-        this.props.signIn(email, password).then(
-            (user) => {
-                if (user) {
-                    this.isLogged()
-                } else { this.setState({ loading: false }) }
-            }
-        )
+        this.handler(this.props.signIn(email, password))
     }
     facebook(token) {
-        this.setState({ loading: true })
-        this.props.facebookLogin(token).then(() => {
-            this.isLogged()
-        })
+        this.handler(this.props.facebookLogin(token))
     }
+
+
     renderRegister() {
         this.setState({ form: 2 })
     }
@@ -61,20 +52,22 @@ class loginScreen extends Component {
         this.setState({ form: 1 })
     }
     renderForgot() {
-        this.setState({ form: 2 })
+        this.setState({ form: 3 })
     }
 
     render() {
-        console.log('state', this.state)
+        const form = this.state.form
+        const loading = this.state.loading
+        const logged = this.props.logged
         return (
             <Container style={{ backgroundColor: 'white' }} >
-                <Image source={hotshot} style={{ width: 200, height: 200, alignSelf: 'center' }}></Image>
+                <Image source={hotshot} style={styles.image}></Image>
                 <Content contentContainerStyle={styles.center}>
-                    {(!this.state.loading && !this.props.logged) ?
+                    {(!loading && !logged) ?
                         <Card>
                             <CardItem>
                                 {
-                                    (this.state.form === 1) ?
+                                    (form === 1) ?
                                         <LoginForm
                                             sign={(email, password) => this.sign(email, password)}
                                             renderRegister={() => this.renderRegister()}
@@ -101,6 +94,11 @@ const styles = StyleSheet.create({
     center: {
         flex: 1
     },
+    image: {
+        width: 200,
+        height: 200,
+        alignSelf: 'center'
+    }
 });
 
 function mapStateToProps(state) {
