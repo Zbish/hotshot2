@@ -16,43 +16,42 @@ class loginScreen extends Component {
             form: 1
         };
     }
-
-    isLogged(){
+   
+    isLogged() {
         this.setState({ loading: true })
         this.props.user().then((user) => {
             if (user) {
-                this.props.navigation.navigate("HomeScreen");
+                console.log('yes-yes', user)
                 this.setState({ loading: false })
+                this.props.navigation.navigate("HomeScreen");
             } else { this.setState({ loading: false }) }
         })
     }
     componentWillMount() {
-        this. isLogged()
+        this.isLogged()
     }
     register(email, password) {
         this.setState({ loading: true })
         this.props.create(email, password).then((user) => {
             if (user) {
-                this.props.navigation.navigate("HomeScreen");
-                this.setState({ loading: false })
+                this.isLogged()
             } else { this.setState({ loading: false }) }
         })
     }
     sign(email, password) {
         this.setState({ loading: true })
-        this.props.signIn(email, password).then((user) => {
-            if (user) {
-                this.props.navigation.navigate("HomeScreen");
-                this.setState({ loading: false })
-            } else { this.setState({ loading: false }) }
-
-        })
+        this.props.signIn(email, password).then(
+            (user) => {
+                if (user) {
+                    this.isLogged()
+                } else { this.setState({ loading: false }) }
+            }
+        )
     }
     facebook(token) {
         this.setState({ loading: true })
         this.props.facebookLogin(token).then(() => {
-            this.props.navigation.navigate("HomeScreen");
-            this.setState({ loading: false });
+            this.isLogged()
         })
     }
     renderRegister() {
@@ -66,6 +65,7 @@ class loginScreen extends Component {
     }
 
     render() {
+        console.log('state', this.state)
         return (
             <Container style={{ backgroundColor: 'white' }} >
                 <Image source={hotshot} style={{ width: 200, height: 200, alignSelf: 'center' }}></Image>

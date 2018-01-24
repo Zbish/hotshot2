@@ -53,9 +53,7 @@ export const createUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(email, password).then((user) => {
             if (user) {
-                initialApp(user.uid, dispatch).then(
                     resolve(user)
-                )
             } else { resolve() }
         })
     })
@@ -65,9 +63,7 @@ export const signInUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
             if (user) {
-                initialApp(user.uid, dispatch).then(
-                    resolve(user)
-                )
+                 resolve(user)
             } else { resolve() }
 
         })
@@ -78,25 +74,40 @@ export const facebookLogin = (token) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
             if (user) {
-                initialApp(user.uid, dispatch).then(
                     resolve(user)
-                )
             } else { resolve() }
         })
     })
 }
 export const user = () => (dispatch) => {
     return new Promise((resolve, reject) => {
-        isLogged().then((user) => {
-            if (user) {
-                initialApp(user.uid, dispatch).then(
-                    resolve(user)
-                )
+        isLogged().then((data) => {
+            if (data) {
+                const games = data[0]
+                const leagues = data[1]
+                dispatch({
+                    type: signIn,
+                    val: true
+                })
+                dispatch({
+                    type: initialLeagues,
+                    leagues
+                })
+    
+                dispatch({
+                    type: UPDATE_Schedule,
+                    games
+                })
+                resolve("ok")
             } else { resolve() }
         })
     })
 }
 export const signOutFromFirebase = () => (dispatch) => {
+    dispatch({
+        type: signIn,
+        val: false
+    })
     signOut()
 }
 

@@ -3,25 +3,37 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 // firebase refrance to firestore
 this.ref = firebase.firestore()
 
-export const isLogged = () =>{
+export const isLogged = () => {
     return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) =>{
-        if (user) {
-          resolve(user)
-        } else {
-            resolve()
-        }
-      });
+        firebase.auth().onUserChanged((user) => {
+            if (user) {
+                // get schedule collection
+                const schedule = getSchedule().then((games) => {
+                    return games
+                })
+                // get my leagues collection
+                const leagues = getLeagues(user.uid).then((leagues) => {
+                    return leagues
+                })
+                Promise.all([schedule, leagues]).then((data) => {
+                    resolve(data)
+                }) 
+            } else {
+                console.log('not', user)
+                resolve()
+            }
+        });
     })
 }
 
-export const signOut =  () => {
-    firebase.auth().signOut().then(function() {
+export const signOut = () => {
+    firebase.auth().signOut().then(() => {
         console.log('sign out')
-      }).catch(function(error) {
+    }).catch(function (error) {
         console.log('notttttttttt')
-      });
+    });
 }
+
 export const createUserWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
         try {
@@ -95,4 +107,6 @@ export const getLeagues = (uid) => {
         })
     })
 }
+
+
 

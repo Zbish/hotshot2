@@ -3,7 +3,9 @@ import { View } from 'react-native'
 import { LoginButton, AccessToken } from 'react-native-fbsdk'
 
 export default class FacebookLoginButton extends Component {
-
+    logOut(){
+        this.props.onPress()
+    }
     render() {
         return (
             <View>
@@ -25,7 +27,7 @@ export default class FacebookLoginButton extends Component {
                             }
                         }
                     }
-                    onLogoutFinished={() => alert("User logged out")} />
+                    onLogoutFinished={() =>this.logOut() } />
             </View>
         );
     }
