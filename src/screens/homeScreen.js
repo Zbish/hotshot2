@@ -7,6 +7,14 @@ import Games from '../components/Games'
 import MyLeague from '../components/MyLeague'
 import { Container, Content, Button } from 'native-base'
 import FacebookLoginButton from '../components/FacebookLoginButton'
+import { NavigationActions } from 'react-navigation'
+
+const resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'LoginScreen' })
+    ]
+})
 
 class homeScreen extends Component {
 
@@ -17,7 +25,9 @@ class homeScreen extends Component {
     }
     // log out from facebook / app
     onPress() {
-        this.props.signOutFromFirebase()
+        this.props.signOutFromFirebase().then(() => {
+            this.props.navigation.dispatch(resetAction)
+        })
     }
 
     render() {

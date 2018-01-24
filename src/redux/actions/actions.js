@@ -15,7 +15,6 @@ import {
     signOut
 } from '../../firebaseActions'
 import _ from 'lodash';
-import { NavigationActions } from 'react-navigation'
 
 const initialApp = (uid, dispatch) => {
         // get schedule collection
@@ -109,20 +108,17 @@ export const facebookLogin = (token) => (dispatch) => {
     })
 }
 
-const resetAction = NavigationActions.reset({
-    index: 0,
-    actions: [
-        NavigationActions.navigate({ routeName: 'LoginScreen' })
-    ]
-})
+
 
 export const signOutFromFirebase = () => (dispatch) => {
-    dispatch({
-        type: signIn,
-        val: false
-    })
-    signOut().then(()=>{
-        this.props.navigation.dispatch(resetAction)
+    return new Promise((resolve, reject) => {
+        dispatch({
+            type: signIn,
+            val: false
+        })
+        signOut().then(()=>{
+         resolve('ok')
+        })
     })
 }
 
