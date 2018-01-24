@@ -52,6 +52,7 @@ export default class LoginForm extends React.Component {
                         <Text>Forgot Password?</Text>
                     </Button>
                 </View>
+                <Text note style={{ alignSelf: 'center' }} >OR</Text>
                 <FacebookLoginButton facebook={(token) => this.facebook(token)} />
             </Content>
         );

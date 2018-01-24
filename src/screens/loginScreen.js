@@ -75,6 +75,7 @@ class loginScreen extends Component {
                                         register={(email, password,name) => this.register(email, password,name)}
                                         renderSign={() => this.renderSign()}
                                     />
+                                    
                             }
                         </Card> :
                         <Spinner color='#303F9F' />}

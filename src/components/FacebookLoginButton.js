@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,Text } from 'react-native'
+import { View } from 'react-native'
 import { LoginButton, AccessToken } from 'react-native-fbsdk'
 
 export default class FacebookLoginButton extends Component {
@@ -12,7 +12,7 @@ export default class FacebookLoginButton extends Component {
     render() {
         return (
             <View style={{alignItems:'center'}}>
-                <Text style={{ margin: 5, fontSize: 15, color: 'grey' }} >OR</Text>
+             
                 <LoginButton
                     publishPermissions={["publish_actions"]}
                     onLoginFinished={
