@@ -6,7 +6,7 @@ import RegisterForm from '../components/RegisterForm'
 import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
 import { Image, StyleSheet } from 'react-native'
 import hotshot from '../images/app/hotshot.png'
-import FacebookLoginButton from '../components/FacebookLoginButton'
+
 
 class loginScreen extends Component {
     constructor(props) {
@@ -34,8 +34,8 @@ class loginScreen extends Component {
     isLogged() {
         this.handler(this.props.user())
     }
-    register(email, password) {
-        this.handler(this.props.create(email, password))
+    register(email, password,name) {
+        this.handler(this.props.createUser(email, password,name))
     }
     sign(email, password) {
         this.handler(this.props.signIn(email, password))
@@ -60,28 +60,22 @@ class loginScreen extends Component {
         const loading = this.state.loading
         const logged = this.props.logged
         return (
-            <Container style={{ backgroundColor: 'white' }} >
+            <Container style={{ backgroundColor: 'white', flex: 1 }} >
                 <Image source={hotshot} style={styles.image}></Image>
                 <Content contentContainerStyle={styles.center}>
                     {(!loading && !logged) ?
-                        <Card>
-                            <CardItem>
-                                {
-                                    (form === 1) ?
-                                        <LoginForm
-                                            sign={(email, password) => this.sign(email, password)}
-                                            renderRegister={() => this.renderRegister()}
-                                        /> :
-                                        <RegisterForm
-                                            register={(email, password) => this.register(email, password)}
-                                            renderSign={() => this.renderSign()}
-                                        />
-                                }
-                            </CardItem>
-                            <CardItem style={{ flexDirection: 'column' }}>
-                                <Text style={{ margin: 5, fontSize: 15, color: 'grey' }} >OR</Text>
-                                <FacebookLoginButton facebook={(token) => this.facebook(token)} />
-                            </CardItem>
+                        <Card >
+                            {
+                                (form === 1) ?
+                                    <LoginForm
+                                        sign={(email, password) => this.sign(email, password)}
+                                        renderRegister={() => this.renderRegister()}
+                                    /> :
+                                    <RegisterForm
+                                        register={(email, password,name) => this.register(email, password,name)}
+                                        renderSign={() => this.renderSign()}
+                                    />
+                            }
                         </Card> :
                         <Spinner color='#303F9F' />}
                 </Content>
@@ -110,7 +104,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        create: (email, password) => dispatch(createUser(email, password)),
+        createUser: (email, password,name) => dispatch(createUser(email, password,name)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
         facebookLogin: (uid) => dispatch(facebookLogin(uid)),
         user: () => dispatch(user())

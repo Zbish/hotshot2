@@ -1,7 +1,8 @@
 import React from 'react';
-import {Form, Content, Item, Input, Label, Button, Text } from 'native-base';
+import { Form, Content, Item, Input, Label, Button, Text } from 'native-base';
 import FacebookLoginButton from '../components/FacebookLoginButton'
-import {View} from 'react-native'
+import { View } from 'react-native'
+
 export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +25,7 @@ export default class LoginForm extends React.Component {
     render() {
         return (
             <Content >
-                <Form>
+                <Form >
                     <Item stackedLabel>
                         <Label>Email</Label>
                         <Input
@@ -43,17 +44,16 @@ export default class LoginForm extends React.Component {
                 <Button style={{ margin: 10, marginBottom: 0 }} block rounded onPress={() => this.SignIn()}>
                     <Text>Sign In</Text>
                 </Button>
-                <View style={{flexDirection:'row',margin:10,justifyContent:'center'}}>
+                <View style={{ flexDirection: 'row', margin: 10, justifyContent: 'center' }}>
                     <Button transparent warning onPress={() => this.onPress()}>
                         <Text>register</Text>
                     </Button>
-                    <Button transparent warning onPress={()=>this.forgotPassword()} >
+                    <Button transparent warning onPress={() => this.forgotPassword()} >
                         <Text>Forgot Password?</Text>
                     </Button>
                 </View>
+                <FacebookLoginButton facebook={(token) => this.facebook(token)} />
             </Content>
-
-
         );
     }
 

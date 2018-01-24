@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { View } from 'react-native'
+import { View,Text } from 'react-native'
 import { LoginButton, AccessToken } from 'react-native-fbsdk'
 
 export default class FacebookLoginButton extends Component {
     logOut(){
         this.props.onPress()
     }
+    logIn(token){
+        this.props.facebook(token)
+    }
     render() {
         return (
-            <View>
+            <View style={{alignItems:'center'}}>
+                <Text style={{ margin: 5, fontSize: 15, color: 'grey' }} >OR</Text>
                 <LoginButton
                     publishPermissions={["publish_actions"]}
                     onLoginFinished={
@@ -19,7 +23,7 @@ export default class FacebookLoginButton extends Component {
                                 alert("Login was cancelled");
                             } else {
                                 AccessToken.getCurrentAccessToken().then(token =>{
-                                    this.props.facebook(token)
+                                        this.logIn(token)
                                 })
                                     .catch((error) => {
                                         console.log(`Login fail with error: ${error}`)

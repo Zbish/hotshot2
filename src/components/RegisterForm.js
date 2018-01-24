@@ -7,14 +7,16 @@ export default class RegisterForm extends React.Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            name:''
         };
     }
     register() {
         const email = this.state.email
         const password = this.state.password
+        const name = this.state.name
         if (validateEmail(email), checkPassword(password)) {
-            this.props.register(email, password)
+            this.props.register(email, password,name)
         }
     }
     signIn() {
@@ -24,6 +26,13 @@ export default class RegisterForm extends React.Component {
         return (
             <Content>
                 <Form>
+                <Item stackedLabel>
+                        <Label>Name</Label>
+                        <Input
+                            value={this.state.name}
+                            onChangeText={(name) => this.setState({ name })}
+                        />
+                    </Item>
                     <Item stackedLabel>
                         <Label>Email</Label>
                         <Input

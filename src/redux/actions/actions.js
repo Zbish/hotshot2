@@ -60,9 +60,9 @@ export const user = () => (dispatch) => {
 }
 
 
-export const createUser = (email, password) => (dispatch) => {
+export const createUser = (email, password,name) => (dispatch) => {
     return new Promise((resolve, reject) => {
-        createUserWithEmailAndPassword(email, password).then((user) => {
+        createUserWithEmailAndPassword(email, password,name).then((user) => {
             if (user) {
                 initialApp(user.uid,dispatch).then(()=>{
                     dispatch({

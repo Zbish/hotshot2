@@ -21,6 +21,7 @@ const getUserData = (user) => {
 export const isLogged = () => {
     return new Promise((resolve, reject) => {
         firebase.auth().onUserChanged((user) => {
+            console.log('user', user)
             if (user) {
                 resolve(user)
             } else {
@@ -40,10 +41,18 @@ export const signOut = () => {
     })
 }
 
-export const createUserWithEmailAndPassword = (email, password) => {
+export const createUserWithEmailAndPassword = (email, password, name) => {
     return new Promise((resolve, reject) => {
         try {
             firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+                user.updateProfile({
+                    displayName: name,
+                    photoURL: "https://example.com/jane-q-user/profile.jpg"
+                }).then(function () {
+                    console.log('update sababba')
+                }).catch(function (error) {
+                    console.log('update bad')
+                });
                 resolve(user)
             }).catch((error) => {
                 const errorMessage = error.message;
