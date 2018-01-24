@@ -12,7 +12,6 @@ export default class FacebookLoginButton extends Component {
     render() {
         return (
             <View style={{alignItems:'center'}}>
-             
                 <LoginButton
                     publishPermissions={["publish_actions"]}
                     onLoginFinished={

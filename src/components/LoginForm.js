@@ -22,6 +22,9 @@ export default class LoginForm extends React.Component {
     forgotPassword() {
         console.log('forgot')
     }
+    facebook(token){
+        this.props.facebook(token)
+    }
     render() {
         return (
             <Content >

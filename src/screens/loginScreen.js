@@ -70,6 +70,7 @@ class loginScreen extends Component {
                                     <LoginForm
                                         sign={(email, password) => this.sign(email, password)}
                                         renderRegister={() => this.renderRegister()}
+                                        facebook={(token)=>this.facebook(token)}
                                     /> :
                                     <RegisterForm
                                         register={(email, password,name) => this.register(email, password,name)}
