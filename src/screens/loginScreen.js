@@ -22,7 +22,11 @@ class loginScreen extends Component {
         func.then((user) => {
             if (user) {
                 this.setState({ loading: false })
-                this.props.navigation.navigate("HomeScreen");
+                console.log('useruser', user.providerData[0].providerId)
+                if (user.providerData[0].providerId === "facebook.com") {
+                    this.props.navigation.navigate("HomeScreen", { provider: undefined })
+                }
+                else { this.props.navigation.navigate("HomeScreen", { provider: 1 }) }
             } else { this.setState({ loading: false }) }
         })
     }
@@ -34,8 +38,8 @@ class loginScreen extends Component {
     isLogged() {
         this.handler(this.props.user())
     }
-    register(email, password,name) {
-        this.handler(this.props.createUser(email, password,name))
+    register(email, password, name) {
+        this.handler(this.props.createUser(email, password, name))
     }
     sign(email, password) {
         this.handler(this.props.signIn(email, password))
@@ -70,13 +74,13 @@ class loginScreen extends Component {
                                     <LoginForm
                                         sign={(email, password) => this.sign(email, password)}
                                         renderRegister={() => this.renderRegister()}
-                                        facebook={(token)=>this.facebook(token)}
+                                        facebook={(token) => this.facebook(token)}
                                     /> :
                                     <RegisterForm
-                                        register={(email, password,name) => this.register(email, password,name)}
+                                        register={(email, password, name) => this.register(email, password, name)}
                                         renderSign={() => this.renderSign()}
                                     />
-                                    
+
                             }
                         </Card> :
                         <Spinner color='#303F9F' />}
@@ -106,7 +110,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createUser: (email, password,name) => dispatch(createUser(email, password,name)),
+        createUser: (email, password, name) => dispatch(createUser(email, password, name)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
         facebookLogin: (uid) => dispatch(facebookLogin(uid)),
         user: () => dispatch(user())

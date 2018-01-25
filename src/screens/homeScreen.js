@@ -31,17 +31,20 @@ class homeScreen extends Component {
     }
 
     render() {
+        const provider = this.props.navigation.state.params.provider
         const games = this.props.gameSchedule
         const leagues = this.props.leagues
+        console.log('provider' , provider)
         return (
             <Container>
                 <Content>
-                    <FacebookLoginButton onPress={() => this.onPress()}></FacebookLoginButton>
-                    <Button block onPress={() => this.onPress()}>
-                        <Text> sign out</Text>
-                    </Button>
                     <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
+                    <Text>Games Of The Week </Text>
                     <Games games={games} />
+                    {!provider && <FacebookLoginButton onPress={() => this.onPress()}></FacebookLoginButton>}
+                    {provider && <Button block danger onPress={() => this.onPress()}>
+                        <Text> sign out</Text>
+                    </Button>}
                 </Content>
             </Container>
         );

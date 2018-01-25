@@ -17,37 +17,37 @@ import {
 import _ from 'lodash';
 
 const initialApp = (uid, dispatch) => {
-        // get schedule collection
-        const schedule = getSchedule().then((games) => {
-            return games
-        })
-        // get my leagues collection
-        const leagues = getLeagues(uid).then((leagues) => {
-            return leagues
-        })
-       return Promise.all([schedule, leagues]).then((data) => {
-            const games = data[0]
-            const leagues = data[1]
+    // get schedule collection
+    const schedule = getSchedule().then((games) => {
+        return games
+    })
+    // get my leagues collection
+    const leagues = getLeagues(uid).then((leagues) => {
+        return leagues
+    })
+    return Promise.all([schedule, leagues]).then((data) => {
+        const games = data[0]
+        const leagues = data[1]
 
-            dispatch({
-                type: initialLeagues,
-                leagues
-            })
+        dispatch({
+            type: initialLeagues,
+            leagues
+        })
 
-            dispatch({
-                type: UPDATE_Schedule,
-                games
-            })
-            // sign in ok
-            return
-        });
-    
+        dispatch({
+            type: UPDATE_Schedule,
+            games
+        })
+        // sign in ok
+        return
+    });
+
 }
 export const user = () => (dispatch) => {
     return new Promise((resolve, reject) => {
         isLogged().then((user) => {
             if (user) {
-                initialApp(user.uid,dispatch).then(()=>{
+                initialApp(user.uid, dispatch).then(() => {
                     dispatch({
                         type: signIn,
                         val: true
@@ -60,11 +60,11 @@ export const user = () => (dispatch) => {
 }
 
 
-export const createUser = (email, password,name) => (dispatch) => {
+export const createUser = (email, password, name) => (dispatch) => {
     return new Promise((resolve, reject) => {
-        createUserWithEmailAndPassword(email, password,name).then((user) => {
+        createUserWithEmailAndPassword(email, password, name).then((user) => {
             if (user) {
-                initialApp(user.uid,dispatch).then(()=>{
+                initialApp(user.uid, dispatch).then(() => {
                     dispatch({
                         type: signIn,
                         val: true
@@ -80,7 +80,7 @@ export const signInUser = (email, password) => (dispatch) => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
             if (user) {
-                initialApp(user.uid,dispatch).then(()=>{
+                initialApp(user.uid, dispatch).then(() => {
                     dispatch({
                         type: signIn,
                         val: true
@@ -96,7 +96,7 @@ export const facebookLogin = (token) => (dispatch) => {
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
             if (user) {
-                initialApp(user.uid,dispatch).then(()=>{
+                initialApp(user.uid, dispatch).then(() => {
                     dispatch({
                         type: signIn,
                         val: true
@@ -116,8 +116,8 @@ export const signOutFromFirebase = () => (dispatch) => {
             type: signIn,
             val: false
         })
-        signOut().then(()=>{
-         resolve('ok')
+        signOut().then(() => {
+            resolve('ok')
         })
     })
 }
