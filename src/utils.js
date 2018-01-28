@@ -47,3 +47,15 @@ export const checkPassword = (pass) => {
   return valid;
 
 }
+
+export const imageBorder = function (value) {
+  let color = value == 1 ? 'gold' :
+    value == 2 ? 'silver' : '#665D1E'
+  let size = value == 1 ? 110 :
+    value == 2 ? 100 : 95
+  return {
+    borderColor: color,
+    width: size,
+    height: size,
+  }
+}

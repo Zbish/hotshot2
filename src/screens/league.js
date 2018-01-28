@@ -3,7 +3,8 @@ import { View } from 'react-native'
 import { connect } from 'react-redux'
 import Games from '../components/Games'
 import { getLeagueGames } from '../utils'
-import { Container, Content } from 'native-base'
+import { Container, Content,Header } from 'native-base'
+import LeaderBoard from '../components/ranking/LeaderBoard'
 
 class league extends Component {
 
@@ -15,6 +16,7 @@ class league extends Component {
         return (
             <Container>
                 <Content>
+                    <LeaderBoard />
                     <Games games={games} ></Games>
                 </Content>
             </Container>
