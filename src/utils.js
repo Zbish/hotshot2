@@ -17,8 +17,7 @@ export const renderIf = function (condition, content, login) {
 
 export const getLeagueGames = (games, schedule) => {
   let leagueGames = []
-  _.forEach(games, (value,key) => {
-    console.log('value' , value,key)
+  _.forEach(games, (value, key) => {
     let game = _.findIndex(schedule, function (l) { return l.id == key; })
     leagueGames.push(schedule[game])
   });
@@ -77,28 +76,28 @@ export const compareScore = function (score, guess) {
   return points
 }
 
-export const getRanking = (bets,games,users) => {
-  let players = []
+export const getRanking = (bets, games, players) => {
   const leagueGames = _.cloneDeep(games)
   const leaguebets = _.cloneDeep(bets)
-  const us = _.cloneDeep(users)
-
+  const users = _.cloneDeep(players)
+  const rankList = []
   _.forEach(leagueGames, (game) => {
-    const id = game.id
-    const gameBets = _.pick(leaguebets, [id + ""]);
-    _.forIn(gameBets, (playerBets) => {
-      _.forIn(playerBets, (bets, uid) => {
-        const name = us[uid].name  
-        const points = compareScore(game.score, bets)
+    if (game.status !== "await") {
+      const id = game.id
+      const gameBets = _.pick(leaguebets, [id + ""]);
+      _.forIn(gameBets[id].bets, (playerBets, uid) => {
+        const points = compareScore(game.score, playerBets)
+        const name = users[uid].name
         const player = { uid, points, name }
-        const index = _.findIndex(players, (p) => { return p.uid === player.uid; })
-        index == -1 ? players.push(player) :
-          players[index].points += player.points;
-      });
-    });
+        const index = _.findIndex(rankList, (p) => { return p.uid === uid; })
+        index == -1 ? rankList.push(player) :
+          rankList[index].points += player.points;
+      })
+    }
   })
-  return players
+  return rankList
 }
+
 
 export const sortArray = function (array) {
   array.sort((a, b) => a.points < b.points)

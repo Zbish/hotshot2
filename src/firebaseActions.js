@@ -124,13 +124,15 @@ export const getLeagues = (uid) => {
 
 export const chengeUserBet = () => {
     try {
-        const userUid = '2uR1pWsC87aiAMBs5JlNQKaByBE3'
-        const gameUid = 'JQnUUVce2QXVGBtkXgLF'
+        const userUid = 'ms6eNHUwK2Vq1gVCaPebEll4dT82'
+        const gameUid = 'Uku2IaP0yxb8YdDh9dov'
         const leagueUid = "8uBTS2dlemmLE085K1aR"
         const newScore = 11
         const path = 'games.'+ gameUid +'.bets.'+ userUid +'.team2'
+        const path2 = 'games.'+ gameUid +'.bets.'+ userUid +'.team1'
         const newBet = {
-            [path]:newScore
+            [path]:0,
+            [path2]:0
         }
         ref.collection('league').doc(leagueUid).update(newBet)
             .then(function (note) {
