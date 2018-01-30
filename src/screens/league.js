@@ -18,7 +18,7 @@ class league extends Component {
         return (
             <Container>
                 <Content>
-                    <LeaderBoard />
+                    <LeaderBoard playersScore={playersScore} />
                     <Games games={leagueGames} ></Games>
                 </Content>
             </Container>

@@ -50,9 +50,9 @@ export const checkPassword = (pass) => {
 
 export const imageBorder = function (value) {
   let color = value == 1 ? 'gold' :
-    value == 2 ? 'silver' : '#665D1E'
-  let size = value == 1 ? 110 :
-    value == 2 ? 100 : 95
+    value == 2 ? 'silver' : '#CD7F32'
+  let size = value == 1 ? 120 :
+    value == 2 ? 110 : 105
   return {
     borderColor: color,
     width: size,
@@ -95,11 +95,6 @@ export const getRanking = (bets, games, players) => {
       })
     }
   })
+  console.log(rankList)
   return rankList
-}
-
-
-export const sortArray = function (array) {
-  array.sort((a, b) => a.points < b.points)
-  return (array)
 }

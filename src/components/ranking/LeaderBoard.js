@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, FlatList } from 'react-native'
 import Leaders from '../../components/ranking/Leaders'
 import Losers from '../ranking/Losers'
-// import {sortArray,getLeaders,getLosers} from '../../utils'
 import { Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-const players = ['omri', 'nizan', 'gil']
-import {chengeUserBet} from '../../firebaseActions'
+import { chengeUserBet } from '../../firebaseActions'
+
 
 
 export default class LeaderBoard extends Component {
   render() {
+    const playersScore = this.props.playersScore
+    const players = playersScore.sort((a, b) => a.points < b.points)
+    const losers = players.slice(3)
+    const leaders = players.slice(0, 3)
     return (
       <Content>
         <Card>
@@ -18,35 +21,43 @@ export default class LeaderBoard extends Component {
           </CardItem>
           <CardItem>
             <Left>
-              <Leaders />
+              <Leaders item={leaders[1]}
+                place={2} />
             </Left>
             <Body>
-              <Leaders />
+              <Leaders item={leaders[0]}
+                place={1}
+              />
             </Body>
             <Right>
-              <Leaders />
+              <Leaders item={leaders[2]}
+                place={3}
+              />
             </Right>
           </CardItem>
           <CardItem cardBody>
             <FlatList
-              data={players}
-              extraData={players}
-              renderItem={({ item }) =>
-                <Losers></Losers>}
+              data={losers}
+              extraData={losers}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item, index }) =>
+                <Losers item={item}
+                  place={index + 4}
+                ></Losers>}
               keyExtractor={(item, index) => index} />
           </CardItem>
-          <CardItem>
+          <CardItem style={{backgroundColor:'grey'}}>
             <Left>
-              <Text note>Games Left 12</Text>
+              <Text style={{fontWeight:'bold'}}>Games Left 12</Text>
             </Left>
             <Body>
-              <Text note>players 10</Text>
+              {/* <Button transparent>
+                  <Icon active name="chatbubbles" />
+                  <Text>4 Comments</Text>
+                </Button> */}
             </Body>
             <Right>
-              <Button  onPress={()=>chengeUserBet()}transparent>
-                <Icon active name="chatbubbles" />
-                <Text>4 Comments</Text>
-              </Button>
+              <Text style={{fontWeight:'bold'}}>players {players.length}</Text>
             </Right>
           </CardItem>
         </Card>

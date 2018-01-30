@@ -5,12 +5,14 @@ import { Thumbnail, Text,ListItem } from 'native-base'
 
 export default class Losers extends Component {
     render() {
+        const item = this.props.item
+        const place = this.props.place
         return (
             <ListItem>
-                <Text >4</Text>
+                <Text >{place}</Text>
                 <Thumbnail style={styles.image} source={require('../../images/users/caspi.jpg')}></Thumbnail>
-                <Text>doron</Text>
-                <Text>{'    '}{15}</Text>
+                <Text>{item.name}</Text>
+                <Text>{'    '}{item.points}</Text>
             </ListItem>
         );
     }
