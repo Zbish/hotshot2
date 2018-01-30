@@ -10,14 +10,14 @@ class league extends Component {
 
     render() {
         const schedule = this.props.gameSchedule
-        const gamesNumbers = this.props.league.games
-        const games = getLeagueGames(gamesNumbers, schedule)
+        const games = this.props.league.games
+        const leagueGames = getLeagueGames(games, schedule)
         console.log('league', this.props)
         return (
             <Container>
                 <Content>
                     <LeaderBoard />
-                    <Games games={games} ></Games>
+                    <Games games={leagueGames} ></Games>
                 </Content>
             </Container>
         );

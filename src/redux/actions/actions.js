@@ -122,6 +122,10 @@ export const signOutFromFirebase = () => (dispatch) => {
     })
 }
 
+export const changeBet = () => () =>{
+
+}
+
 export const setCurrentLeague = (name, leagues) => {
     const current = _.find(leagues, { name: name })
     return {

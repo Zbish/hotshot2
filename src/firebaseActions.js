@@ -21,7 +21,6 @@ const getUserData = (user) => {
 export const isLogged = () => {
     return new Promise((resolve, reject) => {
         firebase.auth().onUserChanged((user) => {
-            console.log('user', user)
             if (user) {
                 resolve(user)
             } else {
@@ -111,7 +110,7 @@ export const getSchedule = () => {
 
 export const getLeagues = (uid) => {
     return new Promise((resolve, reject) => {
-        const refMyLeague = ref.collection('league').where("players." + uid, "==", true)
+        const refMyLeague = ref.collection('league').where("players." + uid + ".uid", "==", true)
         refMyLeague.get().then((snap) => {
             let leagues = []
             snap.forEach((doc) => {
@@ -123,5 +122,23 @@ export const getLeagues = (uid) => {
     })
 }
 
+export const chengeUserBet = () => {
+    try {
+        const userUid = '2uR1pWsC87aiAMBs5JlNQKaByBE3'
+        const gameUid = 'JQnUUVce2QXVGBtkXgLF'
+        const leagueUid = "8uBTS2dlemmLE085K1aR"
+        const newScore = 11
+        const path = 'games.'+ gameUid +'.bets.'+ userUid +'.team2'
+        const newBet = {
+            [path]:newScore
+        }
+        ref.collection('league').doc(leagueUid).update(newBet)
+            .then(function (note) {
+                console.log("Document successfully updated!" , note);
+            });
+    } catch (error) {
+console.log('error' , error)
+    }
 
+}
 

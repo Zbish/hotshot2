@@ -5,6 +5,8 @@ import Losers from '../ranking/Losers'
 // import {sortArray,getLeaders,getLosers} from '../../utils'
 import { Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 const players = ['omri', 'nizan', 'gil']
+import {chengeUserBet} from '../../firebaseActions'
+
 
 export default class LeaderBoard extends Component {
   render() {
@@ -41,7 +43,7 @@ export default class LeaderBoard extends Component {
               <Text note>players 10</Text>
             </Body>
             <Right>
-              <Button transparent>
+              <Button  onPress={()=>chengeUserBet()}transparent>
                 <Icon active name="chatbubbles" />
                 <Text>4 Comments</Text>
               </Button>

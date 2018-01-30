@@ -22,7 +22,6 @@ class loginScreen extends Component {
         func.then((user) => {
             if (user) {
                 this.setState({ loading: false })
-                console.log('useruser', user.providerData[0].providerId)
                 if (user.providerData[0].providerId === "facebook.com") {
                     this.props.navigation.navigate("HomeScreen", { provider: undefined })
                 }
