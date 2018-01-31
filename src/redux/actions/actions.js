@@ -3,7 +3,8 @@ import {
     signIn,
     initialLeagues,
     loading,
-    SET_CURRENT_LEAGUE
+    SET_CURRENT_LEAGUE,
+    SET_LEAGUE_GAMES
 } from './constant';
 import {
     getSchedule,
@@ -18,26 +19,16 @@ import _ from 'lodash';
 
 const initialApp = (uid, dispatch) => {
     // get schedule collection
-    const schedule = getSchedule().then((games) => {
+    const leagues = getLeagues(uid,dispatch,initialLeagues).then((leagues) => {
+        
+        return leagues
+    })
+    const schedule = getSchedule(dispatch,UPDATE_Schedule).then((games) => {
         return games
     })
     // get my leagues collection
-    const leagues = getLeagues(uid).then((leagues) => {
-        return leagues
-    })
+ 
     return Promise.all([schedule, leagues]).then((data) => {
-        const games = data[0]
-        const leagues = data[1]
-
-        dispatch({
-            type: initialLeagues,
-            leagues
-        })
-
-        dispatch({
-            type: UPDATE_Schedule,
-            games
-        })
         // sign in ok
         return
     });
@@ -122,7 +113,7 @@ export const signOutFromFirebase = () => (dispatch) => {
     })
 }
 
-export const changeBet = () => () =>{
+export const changeBet = () => () => {
 
 }
 
@@ -131,5 +122,12 @@ export const setCurrentLeague = (name, leagues) => {
     return {
         type: SET_CURRENT_LEAGUE,
         league: current
+    };
+}
+export const getLeagueGames = () => {
+   
+    return {
+        type: SET_LEAGUE_GAMES,
+        league: games
     };
 }

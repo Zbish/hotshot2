@@ -1,5 +1,7 @@
 import firebase from 'react-native-firebase'
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import {SET_LEAGUE_GAMES} from '../src/redux/actions/constant'
+
 // firebase refrance to firestore
 this.ref = firebase.firestore()
 
@@ -94,28 +96,40 @@ export const createFirebaseCredential = (token) => {
     })
 }
 
-export const getSchedule = () => {
+export const getSchedule = (dispatch,action) => {
     return new Promise((resolve, reject) => {
-        let games = []
         const refSchedule = ref.collection('gamesSchedule')
-        refSchedule.get().then((snap) => {
-            snap.forEach((doc) => {
-                let game = doc.data()
-                games.push(game)
+        refSchedule.onSnapshot((snap) => {
+                let games = []
+                snap.forEach((doc) => {
+                    let game = doc.data()
+                    games.push(game)
+                })
+                dispatch({
+                    type: action,
+                    games
+                })
+                dispatch({
+                    type: SET_LEAGUE_GAMES,
+                    games
+                })
+                resolve(games)
             })
-            resolve(games)
-        })
     })
 }
 
-export const getLeagues = (uid) => {
+export const getLeagues = (uid,dispatch,action) => {
     return new Promise((resolve, reject) => {
         const refMyLeague = ref.collection('league').where("players." + uid + ".uid", "==", true)
-        refMyLeague.get().then((snap) => {
+        refMyLeague.onSnapshot((snap) => {
             let leagues = []
             snap.forEach((doc) => {
                 let league = doc.data()
                 leagues.push(league)
+            })
+            dispatch({
+                type: action,
+                leagues
             })
             resolve(leagues)
         })
@@ -128,18 +142,18 @@ export const chengeUserBet = () => {
         const gameUid = 'Uku2IaP0yxb8YdDh9dov'
         const leagueUid = "8uBTS2dlemmLE085K1aR"
         const newScore = 11
-        const path = 'games.'+ gameUid +'.bets.'+ userUid +'.team2'
-        const path2 = 'games.'+ gameUid +'.bets.'+ userUid +'.team1'
+        const path = 'games.' + gameUid + '.bets.' + userUid + '.team2'
+        const path2 = 'games.' + gameUid + '.bets.' + userUid + '.team1'
         const newBet = {
-            [path]:0,
-            [path2]:0
+            [path]: 0,
+            [path2]: 0
         }
         ref.collection('league').doc(leagueUid).update(newBet)
             .then(function (note) {
-                console.log("Document successfully updated!" , note);
+                console.log("Document successfully updated!", note);
             });
     } catch (error) {
-console.log('error' , error)
+        console.log('error', error)
     }
 
 }

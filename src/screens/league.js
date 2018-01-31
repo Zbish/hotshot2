@@ -9,17 +9,14 @@ import LeaderBoard from '../components/ranking/LeaderBoard'
 class league extends Component {
 
     render() {
-        const schedule = this.props.gameSchedule
-        const games = this.props.league.games
-        const players = this.props.league.players
-        const leagueGames = getLeagueGames(games, schedule)
-        const playersScore = getRanking(games,leagueGames,players)
-        // console.log('league', this.props)
+        const league = this.props.league
+        const playersScore = league.rankList
+        const games = league.allGames
         return (
             <Container>
                 <Content>
                     <LeaderBoard playersScore={playersScore} />
-                    <Games games={leagueGames} ></Games>
+                    <Games games={games} ></Games>
                 </Content>
             </Container>
         );

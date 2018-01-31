@@ -15,15 +15,6 @@ export const renderIf = function (condition, content, login) {
   }
 }
 
-export const getLeagueGames = (games, schedule) => {
-  let leagueGames = []
-  _.forEach(games, (value, key) => {
-    let game = _.findIndex(schedule, function (l) { return l.id == key; })
-    leagueGames.push(schedule[game])
-  });
-  return leagueGames
-}
-
 export const validateEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const vaild = re.test(email.toLowerCase());
@@ -95,6 +86,46 @@ export const getRanking = (bets, games, players) => {
       })
     }
   })
-  console.log(rankList)
+
   return rankList
+}
+
+export const getLeagueGames = (leagues, schedule) => {
+  const cloneLeagues = _.cloneDeep(leagues)
+  const cloneSchedule = _.cloneDeep(schedule)
+  _.forEach(cloneLeagues, (league) => {
+    let leagueGames = []
+    _.forEach(league.games, (value, key) => {
+      const game = _.findIndex(cloneSchedule, function (l) { return l.id == key; })
+      leagueGames.push(cloneSchedule[game])
+    })
+    league.allGames = leagueGames
+  })
+  const leaguesFull = getRankList(cloneLeagues)
+  
+  return leaguesFull
+}
+
+const getRankList = (leagues) => {
+ 
+  _.forEach(leagues, (league) => {
+    const rankList = []
+    _.forEach(league.allGames, (game) => {
+      if (game.status !== "await") {
+        const id = game.id
+        const gameBets = _.pick(league.games, [id + ""]);
+        _.forIn(gameBets[id].bets, (playerBets, uid) => {
+          const points = compareScore(game.score, playerBets)
+          const name = league.players[uid].name
+          const player = { uid, points, name }
+          const index = _.findIndex(rankList, (p) => { return p.uid === uid; })
+          index == -1 ? rankList.push(player) :
+            rankList[index].points += player.points;
+        })
+      
+      }
+    })
+    league.rankList = rankList
+  })
+return leagues
 }
