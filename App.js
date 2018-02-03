@@ -7,7 +7,10 @@ import configureStore from './src/redux/configureStore';
 // import firebase from 'react-native-firebase';
 process.nextTick = setImmediate
 const store = configureStore()
-
+// function handleChange() {
+// console.log('ffffff',store.getState())
+// }
+// store.subscribe(handleChange)
 const AppWithNavigationState = connect(state => {
   return {
     nav: state.nav,

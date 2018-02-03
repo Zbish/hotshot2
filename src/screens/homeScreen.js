@@ -34,7 +34,7 @@ class homeScreen extends Component {
         const provider = this.props.navigation.state.params.provider
         const games = this.props.gameSchedule
         const leagues = this.props.leagues
-        console.log('state' , this.props)
+        console.log('home-state' , this.props)
         return (
             <Container>
                 <Content>
@@ -55,6 +55,7 @@ function mapStateToProps(state) {
         gameSchedule: state.gamesSchedule.gameSchedule,
         logged: state.login.user,
         leagues: state.leagues.myLeagues,
+        scores: state.scores
     }
 }
 

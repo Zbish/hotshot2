@@ -13,14 +13,22 @@ import {
     createUserWithEmailAndPassword,
     createFirebaseCredential,
     isLogged,
-    signOut
+    signOut,
+    getbets
 } from '../../firebaseActions'
 import _ from 'lodash';
 
 const initialApp = (uid, dispatch) => {
     // get schedule collection
-    const leagues = getLeagues(uid,dispatch,initialLeagues).then((leagues) => {
-        
+    const leagues = getLeagues(uid,dispatch).then((leagues) => {
+        _.forEach(leagues, (value, key) => {
+            getbets(value.id,dispatch).then((bets)=>{
+            })
+        })
+        dispatch({
+            type: initialLeagues,
+            leagues
+        })
         return leagues
     })
     const schedule = getSchedule(dispatch,UPDATE_Schedule).then((games) => {
@@ -34,7 +42,8 @@ const initialApp = (uid, dispatch) => {
     });
 
 }
-export const user = () => (dispatch) => {
+export const user = () => (dispatch, getState) => {
+    console.log('facebook ', getState())
     return new Promise((resolve, reject) => {
         isLogged().then((user) => {
             if (user) {
@@ -84,6 +93,7 @@ export const signInUser = (email, password) => (dispatch) => {
 }
 
 export const facebookLogin = (token) => (dispatch) => {
+   
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
             if (user) {

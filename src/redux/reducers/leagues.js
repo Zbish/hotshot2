@@ -9,10 +9,8 @@ export default (state, action) => {
     if(state.currentLeague){
       const name = state.currentLeague.name
       current = _.find(leagues, { name: name })
-      console.log(current)
     }else{
       current = {name:'not'}
-      console.log(current)
     }
     return{
       ...state,
