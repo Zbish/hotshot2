@@ -17,12 +17,27 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash';
+import firebase from 'react-native-firebase'
+
+this.firestore = firebase.firestore()
+
+const callBackScedule = (games,dispatch) =>{
+    dispatch({
+        type: UPDATE_Schedule,
+        games
+    })
+    dispatch({
+        type: SET_LEAGUE_GAMES,
+        games
+    })
+}
 
 const initialApp = (uid, dispatch) => {
     // get schedule collection
     const leagues = getLeagues(uid,dispatch).then((leagues) => {
         _.forEach(leagues, (value, key) => {
-            getbets(value.id,dispatch).then((bets)=>{
+            getbets(value.id,dispatch,this.firestore).then((bets)=>{
+                console.log('beti' , bets)
             })
         })
         dispatch({
@@ -31,12 +46,11 @@ const initialApp = (uid, dispatch) => {
         })
         return leagues
     })
-    const schedule = getSchedule(dispatch,UPDATE_Schedule).then((games) => {
-        return games
-    })
+    getSchedule(dispatch,UPDATE_Schedule,(item)=>callBackScedule(item,dispatch))
+   
     // get my leagues collection
  
-    return Promise.all([schedule, leagues]).then((data) => {
+    return Promise.all([leagues]).then((data) => {
         // sign in ok
         return
     });

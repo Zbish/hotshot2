@@ -1,6 +1,6 @@
 import firebase from 'react-native-firebase'
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { SET_LEAGUE_GAMES,UPDATE_bets } from '../src/redux/actions/constant'
+import { SET_LEAGUE_GAMES, UPDATE_bets } from '../src/redux/actions/constant'
 
 // firebase refrance to firestore
 this.ref = firebase.firestore()
@@ -96,31 +96,19 @@ export const createFirebaseCredential = (token) => {
     })
 }
 
-export const getSchedule = (dispatch, action) => {
-    return new Promise((resolve, reject) => {
-        const refSchedule = ref.collection('gamesSchedule')
-        refSchedule.onSnapshot((snap) => {
-            let games = []
-            snap.docChanges.forEach((doc) => {
-                let game = doc.doc.data()
-                games.push(game)
-                
-            })
-            console.log('schedule', games)
-            dispatch({
-                type: action,
-                games
-            })
-            dispatch({
-                type: SET_LEAGUE_GAMES,
-                games
-            })
-            resolve(games)
+export const getSchedule = (dispatch, action, callBack) => {
+    const refSchedule = ref.collection('gamesSchedule')
+    refSchedule.onSnapshot((snap) => {
+        let games = []
+        snap.forEach((doc) => {
+            let game = doc.data()
+            games.push(game)
         })
+        callBack(games)
     })
 }
 
-export const getLeagues = (uid, dispatch) => {
+export const getLeagues = (uid, dispatch, callback) => {
     return new Promise((resolve, reject) => {
         const refMyLeague = ref.collection('league').where("players." + uid + ".uid", "==", true)
         refMyLeague.onSnapshot((snap) => {
@@ -135,9 +123,9 @@ export const getLeagues = (uid, dispatch) => {
     })
 }
 
-export const getbets = (leagueUid,dispatch) => {
+export const getbets = (leagueUid, dispatch, refto) => {
     return new Promise((resolve, reject) => {
-        const refMyLeague = ref.collection('league').doc(leagueUid).collection('bets')
+        const refMyLeague = refto.collection('league').doc(leagueUid).collection('bets')
         refMyLeague.onSnapshot((snap) => {
             let bets = {}
             snap.docChanges.forEach((doc) => {
@@ -145,11 +133,12 @@ export const getbets = (leagueUid,dispatch) => {
                 const game = doc.doc.data()
                 bets[[game.gameid]] = game
             })
-            console.log('bets',bets)
+            console.log('bets', bets)
             dispatch({
                 type: UPDATE_bets,
-                bets:{[leagueUid]:bets}
+                bets: { [leagueUid]: bets }
             })
+
             resolve(bets)
         })
     })
