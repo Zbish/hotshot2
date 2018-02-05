@@ -34,7 +34,7 @@ class homeScreen extends Component {
         const provider = this.props.navigation.state.params.provider
         const games = this.props.gameSchedule
         const leagues = this.props.leagues
-        console.log('home-state' , this.props)
+        // console.log('home-state' , this.props)
         return (
             <Container>
                 <Content>

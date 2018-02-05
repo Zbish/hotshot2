@@ -11,7 +11,8 @@ export default RootStackNavigator = StackNavigator(
         title: 'homeScreen',
         headerStyle: { backgroundColor: '#F44336' },
         headerTitleStyle: { color: '#FFFFFF' },
-        headerTintColor: '#FFFFFF'
+        headerTintColor: '#FFFFFF',
+        headerLeft: null
       }
     },
     LoginScreen: {

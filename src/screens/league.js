@@ -15,7 +15,7 @@ class league extends Component {
         return (
             <Container>
                 <Content>
-                    <LeaderBoard playersScore={playersScore} />
+                    {/* <LeaderBoard playersScore={playersScore} /> */}
                     <Games games={games} ></Games>
                 </Content>
             </Container>

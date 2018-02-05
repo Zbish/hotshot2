@@ -5,21 +5,6 @@ import { SET_LEAGUE_GAMES, UPDATE_bets } from '../src/redux/actions/constant'
 // firebase refrance to firestore
 this.ref = firebase.firestore()
 
-// get data
-const getUserData = (user) => {
-    // get schedule collection
-    const schedule = getSchedule().then((games) => {
-        return games
-    })
-    // get my leagues collection
-    const leagues = getLeagues(user.uid).then((leagues) => {
-        return leagues
-    })
-    return Promise.all([schedule, leagues]).then((data) => {
-        return data
-    })
-}
-
 export const isLogged = () => {
     return new Promise((resolve, reject) => {
         firebase.auth().onUserChanged((user) => {
@@ -96,19 +81,22 @@ export const createFirebaseCredential = (token) => {
     })
 }
 
-export const getSchedule = (dispatch, action, callBack) => {
-    const refSchedule = ref.collection('gamesSchedule')
-    refSchedule.onSnapshot((snap) => {
-        let games = []
-        snap.forEach((doc) => {
-            let game = doc.data()
-            games.push(game)
+export const getSchedule = (callBack) => {
+    return new Promise((resolve, reject) => {
+        const refSchedule = ref.collection('gamesSchedule')
+        refSchedule.onSnapshot((snap) => {
+            let games = []
+            snap.forEach((doc) => {
+                let game = doc.data()
+                games.push(game)
+            })
+            callBack(games)
+            resolve(games)
         })
-        callBack(games)
     })
 }
 
-export const getLeagues = (uid, dispatch, callback) => {
+export const getLeagues = (uid, callback) => {
     return new Promise((resolve, reject) => {
         const refMyLeague = ref.collection('league').where("players." + uid + ".uid", "==", true)
         refMyLeague.onSnapshot((snap) => {
@@ -116,29 +104,23 @@ export const getLeagues = (uid, dispatch, callback) => {
             snap.docChanges.forEach((doc) => {
                 let league = doc.doc.data()
                 leagues.push(league)
-                console.log('league', doc.doc.data())
             })
+            callback(leagues)
             resolve(leagues)
         })
     })
 }
 
-export const getbets = (leagueUid, dispatch, refto) => {
+export const getbets = (leagueUid, callback) => {
     return new Promise((resolve, reject) => {
-        const refMyLeague = refto.collection('league').doc(leagueUid).collection('bets')
+        const refMyLeague = ref.collection('league').doc(leagueUid).collection('bets')
         refMyLeague.onSnapshot((snap) => {
             let bets = {}
             snap.docChanges.forEach((doc) => {
-                // bets.push(doc.doc.data())
                 const game = doc.doc.data()
                 bets[[game.gameid]] = game
             })
-            console.log('bets', bets)
-            dispatch({
-                type: UPDATE_bets,
-                bets: { [leagueUid]: bets }
-            })
-
+            callback(bets)
             resolve(bets)
         })
     })

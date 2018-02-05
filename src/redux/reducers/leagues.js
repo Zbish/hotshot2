@@ -1,22 +1,12 @@
-import { initialLeagues,SET_CURRENT_LEAGUE,SET_LEAGUE_GAMES } from '../actions/constant'
-import {getLeagueGames} from '../../utils'
+import { initialLeagues, SET_CURRENT_LEAGUE, SET_LEAGUE_GAMES } from '../actions/constant'
 
 export default (state, action) => {
   switch (action.type) {
     case SET_LEAGUE_GAMES:
-    const current = {}
-    const leagues = getLeagueGames(state.myLeagues,action.games)
-    if(state.currentLeague){
-      const name = state.currentLeague.name
-      current = _.find(leagues, { name: name })
-    }else{
-      current = {name:'not'}
-    }
-    return{
-      ...state,
-      myLeagues:leagues,
-      currentLeague:current
-    }
+      return {
+        ...action.leaguesWithGames
+      }
+      break;
     case initialLeagues:
       return {
         ...state,
@@ -26,7 +16,7 @@ export default (state, action) => {
     case SET_CURRENT_LEAGUE:
       return {
         ...state,
-        currentLeague:action.league
+        currentLeague: action.league
       }
       break;
     default:

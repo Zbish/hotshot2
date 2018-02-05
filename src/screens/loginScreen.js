@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createUser, signInUser, facebookLogin, user } from '../redux/actions/actions'
+import { createUser, signInUser, facebookLogin, user, initialApp } from '../redux/actions/actions'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
@@ -21,11 +21,16 @@ class loginScreen extends Component {
         this.setState({ loading: true })
         func.then((user) => {
             if (user) {
-                this.setState({ loading: false })
-                if (user.providerData[0].providerId === "facebook.com") {
-                    this.props.navigation.navigate("HomeScreen", { provider: undefined })
-                }
-                else { this.props.navigation.navigate("HomeScreen", { provider: 1 }) }
+                this.props.initialApp(user.uid).then(() => {
+                    if (user.providerData[0].providerId === "facebook.com") {
+                        this.props.navigation.navigate("HomeScreen", { provider: undefined })
+                        this.setState({ loading: false })
+                    }
+                    else {
+                        this.props.navigation.navigate("HomeScreen", { provider: 1 })
+                        this.setState({ loading: false })
+                    }
+                })
             } else { this.setState({ loading: false }) }
         })
     }
@@ -112,7 +117,8 @@ function mapDispatchToProps(dispatch) {
         createUser: (email, password, name) => dispatch(createUser(email, password, name)),
         signIn: (email, password) => dispatch(signInUser(email, password)),
         facebookLogin: (uid) => dispatch(facebookLogin(uid)),
-        user: () => dispatch(user())
+        user: () => dispatch(user()),
+        initialApp: (uid) => dispatch(initialApp(uid))
     }
 }
 

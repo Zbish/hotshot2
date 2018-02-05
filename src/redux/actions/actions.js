@@ -4,7 +4,8 @@ import {
     initialLeagues,
     loading,
     SET_CURRENT_LEAGUE,
-    SET_LEAGUE_GAMES
+    SET_LEAGUE_GAMES,
+    UPDATE_bets
 } from './constant';
 import {
     getSchedule,
@@ -16,108 +17,98 @@ import {
     signOut,
     getbets
 } from '../../firebaseActions'
-import _ from 'lodash';
-import firebase from 'react-native-firebase'
+import _ from 'lodash'
+import {getLeagueGames} from '../../utils'
 
-this.firestore = firebase.firestore()
-
-const callBackScedule = (games,dispatch) =>{
+const initialLeagueGames = (stateLeagues,schedule) =>{
+    let leagues = _.cloneDeep(stateLeagues)
+    leagues.myLeagues = getLeagueGames(leagues.myLeagues,schedule)
+    if(leagues.currentLeague){
+          const id = leagues.currentLeague.id
+          leagues.currentLeague = _.find(leagues.myLeagues, { id: id })
+    }
+    return leagues
+}
+const callBackScedule = (games, dispatch,getState) => {
     dispatch({
         type: UPDATE_Schedule,
         games
     })
-    dispatch({
-        type: SET_LEAGUE_GAMES,
-        games
-    })
-}
-
-const initialApp = (uid, dispatch) => {
-    // get schedule collection
-    const leagues = getLeagues(uid,dispatch).then((leagues) => {
-        _.forEach(leagues, (value, key) => {
-            getbets(value.id,dispatch,this.firestore).then((bets)=>{
-                console.log('beti' , bets)
+    const leagues = getState().leagues
+      const leaguesWithGames =  initialLeagueGames(leagues,games)
+      if(leaguesWithGames.myLeagues && leaguesWithGames.myLeagues.length)
+        {
+            dispatch({
+                type: SET_LEAGUE_GAMES,
+                leaguesWithGames
             })
-        })
-        dispatch({
-            type: initialLeagues,
-            leagues
-        })
-        return leagues
-    })
-    getSchedule(dispatch,UPDATE_Schedule,(item)=>callBackScedule(item,dispatch))
-   
-    // get my leagues collection
- 
-    return Promise.all([leagues]).then((data) => {
-        // sign in ok
-        return
-    });
-
+        }
 }
-export const user = () => (dispatch, getState) => {
-    console.log('facebook ', getState())
+const callBackBets = (bets, dispatch, leagueUid) => {
+    console.log('bets', bets)
+    dispatch({
+        type: UPDATE_bets,
+        bets: { [leagueUid]: bets }
+    })
+}
+
+const callBackLeague = (leagues, dispatch,getState) => {
+    _.forEach(leagues, (value, key) => {
+        getbets(value.id, (item) => callBackBets(item, dispatch, value.id))
+    })
+    console.log('league', leagues)
+    dispatch({
+        type: initialLeagues,
+        leagues
+    })
+}
+export const initialApp = (uid) => (dispatch, getState) => {
+    const schedule = getSchedule((item) => callBackScedule(item, dispatch,getState))
+    const leagues = getLeagues(uid, (item) => callBackLeague(item, dispatch,getState))
+    return Promise.all([schedule, leagues]).then((data) => {
+        dispatch({
+            type: signIn,
+            val: true
+        })
+        return
+    })
+}
+export const user = () => () => {
     return new Promise((resolve, reject) => {
         isLogged().then((user) => {
             if (user) {
-                initialApp(user.uid, dispatch).then(() => {
-                    dispatch({
-                        type: signIn,
-                        val: true
-                    })
-                    resolve(user)
-                })
+                resolve(user)
             } else { resolve() }
         })
     })
 }
 
 
-export const createUser = (email, password, name) => (dispatch) => {
+export const createUser = (email, password, name) => () => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(email, password, name).then((user) => {
             if (user) {
-                initialApp(user.uid, dispatch).then(() => {
-                    dispatch({
-                        type: signIn,
-                        val: true
-                    })
-                    resolve(user)
-                })
+                resolve(user)
             } else { resolve() }
         })
     })
 }
 
-export const signInUser = (email, password) => (dispatch) => {
+export const signInUser = (email, password) => () => {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(email, password).then((user) => {
             if (user) {
-                initialApp(user.uid, dispatch).then(() => {
-                    dispatch({
-                        type: signIn,
-                        val: true
-                    })
-                    resolve(user)
-                })
+                resolve(user)
             } else { resolve() }
         })
     })
 }
 
-export const facebookLogin = (token) => (dispatch) => {
-   
+export const facebookLogin = (token) => () => {
     return new Promise((resolve, reject) => {
         createFirebaseCredential(token).then(user => {
             if (user) {
-                initialApp(user.uid, dispatch).then(() => {
-                    dispatch({
-                        type: signIn,
-                        val: true
-                    })
-                    resolve(user)
-                })
+                resolve(user)
             } else { resolve() }
         })
     })
@@ -137,10 +128,6 @@ export const signOutFromFirebase = () => (dispatch) => {
     })
 }
 
-export const changeBet = () => () => {
-
-}
-
 export const setCurrentLeague = (name, leagues) => {
     const current = _.find(leagues, { name: name })
     return {
@@ -148,10 +135,10 @@ export const setCurrentLeague = (name, leagues) => {
         league: current
     };
 }
-export const getLeagueGames = () => {
-   
-    return {
-        type: SET_LEAGUE_GAMES,
-        league: games
-    };
-}
+// export const getLeagueGames = () => {
+
+//     return {
+//         type: SET_LEAGUE_GAMES,
+//         league: games
+//     };
+// }
