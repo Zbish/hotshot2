@@ -1,11 +1,12 @@
 import {
     UPDATE_Schedule,
     signIn,
-    initialLeagues,
+    ADD_LEAGUE,
     loading,
     SET_CURRENT_LEAGUE,
     SET_LEAGUE_GAMES,
-    UPDATE_bets
+    UPDATE_bets,
+    CHANGE_League
 } from './constant';
 import {
     getSchedule,
@@ -18,31 +19,30 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import {getLeagueGames} from '../../utils'
+import { getLeagueGames } from '../../utils'
 
-const initialLeagueGames = (stateLeagues,schedule) =>{
+const initialLeagueGames = (stateLeagues, schedule) => {
     let leagues = _.cloneDeep(stateLeagues)
-    leagues.myLeagues = getLeagueGames(leagues.myLeagues,schedule)
-    if(leagues.currentLeague){
-          const id = leagues.currentLeague.id
-          leagues.currentLeague = _.find(leagues.myLeagues, { id: id })
+    leagues.myLeagues = getLeagueGames(leagues.myLeagues, schedule)
+    if (leagues.currentLeague) {
+        const id = leagues.currentLeague.id
+        leagues.currentLeague = _.find(leagues.myLeagues, { id: id })
     }
     return leagues
 }
-const callBackScedule = (games, dispatch,getState) => {
+const callBackScedule = (newSchedule, dispatch, getState) => {
     dispatch({
         type: UPDATE_Schedule,
-        games
+        newSchedule
     })
     const leagues = getState().leagues
-      const leaguesWithGames =  initialLeagueGames(leagues,games)
-      if(leaguesWithGames.myLeagues && leaguesWithGames.myLeagues.length)
-        {
-            dispatch({
-                type: SET_LEAGUE_GAMES,
-                leaguesWithGames
-            })
-        }
+    if (leagues.myLeagues && leagues.myLeagues.length) {
+        const leaguesWithGames = initialLeagueGames(leagues, newSchedule)
+        dispatch({
+            type: SET_LEAGUE_GAMES,
+            leaguesWithGames
+        })
+    }
 }
 const callBackBets = (bets, dispatch, leagueUid) => {
     console.log('bets', bets)
@@ -52,19 +52,31 @@ const callBackBets = (bets, dispatch, leagueUid) => {
     })
 }
 
-const callBackLeague = (leagues, dispatch,getState) => {
-    _.forEach(leagues, (value, key) => {
-        getbets(value.id, (item) => callBackBets(item, dispatch, value.id))
-    })
-    console.log('league', leagues)
-    dispatch({
-        type: initialLeagues,
-        leagues
-    })
+const callBackLeague = (league, dispatch, getState) => {
+    console.log('league', league)
+    console.log('getState', getState().leagues.myLeagues)
+    let myLeagues = _.cloneDeep(getState().leagues.myLeagues)
+    const bool = _.findIndex(myLeagues, { id: league.id })
+    console.log('bool', bool)
+    if (bool == -1) {
+        getbets(league.id, (item) => callBackBets(item, dispatch, league.id))
+        dispatch({
+            type: ADD_LEAGUE,
+            league
+        })
+    }else{
+        myLeagues[bool] = league
+        dispatch({
+            type: CHANGE_League,
+            myLeagues
+        })
+    }
+
+
 }
 export const initialApp = (uid) => (dispatch, getState) => {
-    const schedule = getSchedule((item) => callBackScedule(item, dispatch,getState))
-    const leagues = getLeagues(uid, (item) => callBackLeague(item, dispatch,getState))
+    const schedule = getSchedule((item) => callBackScedule(item, dispatch, getState))
+    const leagues = getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
     return Promise.all([schedule, leagues]).then((data) => {
         dispatch({
             type: signIn,

@@ -101,11 +101,11 @@ export const getLeagues = (uid, callback) => {
         const refMyLeague = ref.collection('league').where("players." + uid + ".uid", "==", true)
         refMyLeague.onSnapshot((snap) => {
             let leagues = []
-            snap.docChanges.forEach((doc) => {
-                let league = doc.doc.data()
+            snap.docChanges.forEach((change) => {
+                let league = change.doc.data()
                 leagues.push(league)
+                callback(league)
             })
-            callback(leagues)
             resolve(leagues)
         })
     })
