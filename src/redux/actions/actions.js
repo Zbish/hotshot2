@@ -6,6 +6,7 @@ import {
     SET_CURRENT_LEAGUE,
     SET_LEAGUE_GAMES,
     UPDATE_bets,
+    GET_bets,
     UPDATE_League
 } from './constant';
 import {
@@ -19,7 +20,7 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import { getLeagueGames,getGames } from '../../utils'
+import { getLeagueGames, getGames } from '../../utils'
 
 const initialLeagueGames = (stateLeagues, schedule) => {
     let leagues = _.cloneDeep(stateLeagues)
@@ -44,30 +45,41 @@ const callBackScedule = (newSchedule, dispatch, getState) => {
         })
     }
 }
-const callBackBets = (bets, dispatch, leagueUid) => {
+const callBackBets = (bets, dispatch, leagueUid,gameid) => {
     console.log('bets', bets)
+    console.log('gameid', gameid)
     dispatch({
         type: UPDATE_bets,
-        bets: { [leagueUid]: bets }
+        bets:{bets,leagueuid:leagueUid,gameid:gameid}
+        // bets: { [leagueUid]:{[gameid]:bets}}
     })
+
 }
 
 const callBackLeague = (league, dispatch, getState) => {
     const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
-    let myLeagues = _.cloneDeep(getState().leagues.myLeagues)
-    league = getGames(league,schedule)
-    const bool = _.findIndex(myLeagues, { id: league.id })
+    let leagues = _.cloneDeep(getState().leagues)
+    league = getGames(league, schedule)
+    const bool = _.findIndex(leagues.myLeagues, { id: league.id })
     if (bool == -1) {
-        getbets(league.id, (item) => callBackBets(item, dispatch, league.id))
-        dispatch({
-            type: ADD_LEAGUE,
-            league
+        getbets(league.id, (bets,gameid) => callBackBets(bets, dispatch,league.id,gameid)).then((bets) => {
+            dispatch({
+                type: ADD_LEAGUE,
+                league
+            })
+            dispatch({
+                type: GET_bets,
+                bets: { [league.id]: bets }
+            })
         })
-    }else{
-        myLeagues[bool] = league
+    } else {
+        leagues.myLeagues[bool] = league
+        if (leagues.currentLeague && leagues.currentLeague.id == league.id) {
+            leagues.currentLeague = league
+        }
         dispatch({
-            type:  UPDATE_League,
-            myLeagues
+            type: UPDATE_League,
+            leagues
         })
     }
 

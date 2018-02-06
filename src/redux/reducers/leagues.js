@@ -15,9 +15,8 @@ export default (state, action) => {
       break;
       case  UPDATE_League:
       return {
-        ...state,
-        myLeagues:action.myLeagues
-      };
+       ...action.leagues
+             };
       break;
     case SET_CURRENT_LEAGUE:
       return {

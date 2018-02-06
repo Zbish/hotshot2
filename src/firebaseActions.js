@@ -116,11 +116,14 @@ export const getbets = (leagueUid, callback) => {
         const refMyLeague = ref.collection('league').doc(leagueUid).collection('bets')
         refMyLeague.onSnapshot((snap) => {
             let bets = {}
-            snap.docChanges.forEach((doc) => {
-                const game = doc.doc.data()
+            let callbackBets = {}
+             snap.docChanges.forEach((change) => {
+                const game = change.doc.data()
                 bets[[game.gameid]] = game
+                if (change.type === "modified" || change.type === "removed") {
+                    callback(bets,game.gameid)
+                }
             })
-            callback(bets)
             resolve(bets)
         })
     })
