@@ -12,7 +12,7 @@ export default class MyLeagueItem extends Component {
         console.log('delete')
     }
     render() {
-        const { players, games, name } = this.props.league
+        const { players, allGames, name } = this.props.league
         return (
             <ListItem style={styles.container} onPress={() => this.onPress(name)}>
                 <Thumbnail style={styles.image} source={require('../images/app/football.png')} />
@@ -24,7 +24,7 @@ export default class MyLeagueItem extends Component {
                         players: {Object.keys(players).length}
                     </Text>
                     <Text style={styles.games} note>
-                        games: {games.length}
+                        games: {allGames.length}
                     </Text>
                 </Body>
                 <Button transparent danger style={styles.button}

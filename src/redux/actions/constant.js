@@ -6,7 +6,7 @@ const loading = 'loading'
 const SET_CURRENT_LEAGUE = 'SET_CURRENT_LEAGUE'
 const SET_LEAGUE_GAMES = "SET_LEAGUE_GAMES"
 const UPDATE_bets = 'UPDATE_bets'
-const CHANGE_League = 'CHANGE_League' 
+const  UPDATE_League = ' UPDATE_League' 
 
 export {
   UPDATE_Schedule,
@@ -16,5 +16,5 @@ export {
   loading,
   SET_LEAGUE_GAMES,
   UPDATE_bets,
-  CHANGE_League
+  UPDATE_League
 };

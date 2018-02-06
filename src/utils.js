@@ -106,6 +106,16 @@ export const getLeagueGames = (leagues, schedule) => {
   return leaguesFull
 }
 
+export const getGames = (league, schedule) =>{
+  let leagueGames = []
+  _.forEach(league.games, (value, key) => {
+    const index = _.findIndex(schedule, function (l) { return l.id == key; })
+    leagueGames.push(schedule[index])
+  })
+  league.allGames = leagueGames
+  return league
+}
+
 const getRankList = (leagues) => {
  
   _.forEach(leagues, (league) => {

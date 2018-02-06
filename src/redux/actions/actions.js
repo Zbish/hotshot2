@@ -6,7 +6,7 @@ import {
     SET_CURRENT_LEAGUE,
     SET_LEAGUE_GAMES,
     UPDATE_bets,
-    CHANGE_League
+    UPDATE_League
 } from './constant';
 import {
     getSchedule,
@@ -19,7 +19,7 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import { getLeagueGames } from '../../utils'
+import { getLeagueGames,getGames } from '../../utils'
 
 const initialLeagueGames = (stateLeagues, schedule) => {
     let leagues = _.cloneDeep(stateLeagues)
@@ -53,11 +53,10 @@ const callBackBets = (bets, dispatch, leagueUid) => {
 }
 
 const callBackLeague = (league, dispatch, getState) => {
-    console.log('league', league)
-    console.log('getState', getState().leagues.myLeagues)
+    const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
     let myLeagues = _.cloneDeep(getState().leagues.myLeagues)
+    league = getGames(league,schedule)
     const bool = _.findIndex(myLeagues, { id: league.id })
-    console.log('bool', bool)
     if (bool == -1) {
         getbets(league.id, (item) => callBackBets(item, dispatch, league.id))
         dispatch({
@@ -67,7 +66,7 @@ const callBackLeague = (league, dispatch, getState) => {
     }else{
         myLeagues[bool] = league
         dispatch({
-            type: CHANGE_League,
+            type:  UPDATE_League,
             myLeagues
         })
     }
