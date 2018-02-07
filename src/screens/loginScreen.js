@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createUser, signInUser, facebookLogin, user, initialApp } from '../redux/actions/actions'
+import {  initialApp,sign } from '../redux/actions/actions'
+import {user,createUser, signInUser, facebookLogin} from '../loginAction'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
 import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
@@ -17,22 +18,20 @@ class loginScreen extends Component {
         };
     }
 
-    handler(func) {
-        this.setState({ loading: true })
-        func.then((user) => {
-            if (user) {
-                this.props.initialApp(user.uid).then(() => {
-                    if (user.providerData[0].providerId === "facebook.com") {
-                        this.props.navigation.navigate("HomeScreen", { provider: undefined })
-                        this.setState({ loading: false })
-                    }
-                    else {
-                        this.props.navigation.navigate("HomeScreen", { provider: 1 })
-                        this.setState({ loading: false })
-                    }
-                })
-            } else { this.setState({ loading: false }) }
-        })
+    login(user) {
+        if (user) {
+            this.props.initialApp(user.uid).then(() => {
+                this.props.sign()
+                if (user.providerData[0].providerId === "facebook.com") {
+                    this.props.navigation.navigate("HomeScreen", { provider: undefined })
+                    this.setState({ loading: false })
+                }
+                else {
+                    this.props.navigation.navigate("HomeScreen", { provider: 1 })
+                    this.setState({ loading: false })
+                }
+            })
+        } else { this.setState({ loading: false }) }
     }
     componentWillMount() {
         this.isLogged()
@@ -40,16 +39,20 @@ class loginScreen extends Component {
 
 
     isLogged() {
-        this.handler(this.props.user())
+        this.setState({ loading: true })
+        user().then(user => this.login(user))
     }
     register(email, password, name) {
-        this.handler(this.props.createUser(email, password, name))
+        this.setState({ loading: true })
+        createUser(email, password, name).then(user=>this.login(user))
     }
     sign(email, password) {
-        this.handler(this.props.signIn(email, password))
+        this.setState({ loading: true })
+        signInUser(email, password).then(user => this.login(user))
     }
     facebook(token) {
-        this.handler(this.props.facebookLogin(token))
+        this.setState({ loading: true })
+        facebookLogin(token).then(user=> this.login(user))
     }
 
 
@@ -114,11 +117,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createUser: (email, password, name) => dispatch(createUser(email, password, name)),
-        signIn: (email, password) => dispatch(signInUser(email, password)),
-        facebookLogin: (uid) => dispatch(facebookLogin(uid)),
-        user: () => dispatch(user()),
-        initialApp: (uid) => dispatch(initialApp(uid))
+        initialApp: (uid) => dispatch(initialApp(uid)),
+        sign:()=> dispatch(sign())
     }
 }
 

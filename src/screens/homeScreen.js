@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { setCurrentLeague, signOutFromFirebase } from '../redux/actions/actions'
+import { setCurrentLeague,resetAction,sign } from '../redux/actions/actions'
+import { signOutFromFirebase} from'../loginAction'
 import { renderIf } from '../utils'
 import Games from '../components/Games'
 import MyLeague from '../components/MyLeague'
 import { Container, Content, Button } from 'native-base'
 import FacebookLoginButton from '../components/FacebookLoginButton'
-import { NavigationActions } from 'react-navigation'
-
-const resetAction = NavigationActions.reset({
-    index: 0,
-    actions: [
-        NavigationActions.navigate({ routeName: 'LoginScreen' })
-    ]
-})
 
 class homeScreen extends Component {
 
@@ -25,8 +18,9 @@ class homeScreen extends Component {
     }
     // log out from facebook / app
     onPress() {
-        this.props.signOutFromFirebase().then(() => {
-            this.props.navigation.dispatch(resetAction)
+        signOutFromFirebase().then(() => {
+            this.props.signOut()
+            this.props.resetNavigation()
         })
     }
 
@@ -62,7 +56,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         setCurrentLeague: (name, leagues) => dispatch(setCurrentLeague(name, leagues)),
-        signOutFromFirebase: () => dispatch(signOutFromFirebase())
+        signOutFromFirebase: () => dispatch(signOutFromFirebase()),
+        resetNavigation:() => dispatch(resetAction()),
+        signOut:()=> dispatch(sign())
+
     }
 }
 

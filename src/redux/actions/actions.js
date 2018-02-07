@@ -12,15 +12,12 @@ import {
 import {
     getSchedule,
     getLeagues,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    createFirebaseCredential,
-    isLogged,
     signOut,
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
 import { getLeagueGames, getGames } from '../../utils'
+import { NavigationActions } from 'react-navigation'
 
 const initialLeagueGames = (stateLeagues, schedule) => {
     let leagues = _.cloneDeep(stateLeagues)
@@ -45,12 +42,12 @@ const callBackScedule = (newSchedule, dispatch, getState) => {
         })
     }
 }
-const callBackBets = (bets, dispatch, leagueUid,gameid) => {
+const callBackBets = (bets, dispatch, leagueUid, gameid) => {
     console.log('bets', bets)
     console.log('gameid', gameid)
     dispatch({
         type: UPDATE_bets,
-        bets:{bets,leagueuid:leagueUid,gameid:gameid}
+        bets: { bets, leagueuid: leagueUid, gameid: gameid }
         // bets: { [leagueUid]:{[gameid]:bets}}
     })
 
@@ -62,7 +59,7 @@ const callBackLeague = (league, dispatch, getState) => {
     league = getGames(league, schedule)
     const bool = _.findIndex(leagues.myLeagues, { id: league.id })
     if (bool == -1) {
-        getbets(league.id, (bets,gameid) => callBackBets(bets, dispatch,league.id,gameid)).then((bets) => {
+        getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid)).then((bets) => {
             dispatch({
                 type: ADD_LEAGUE,
                 league
@@ -85,69 +82,18 @@ const callBackLeague = (league, dispatch, getState) => {
 
 
 }
+export const resetAction = () => NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'LoginScreen' })
+    ]
+})
+
 export const initialApp = (uid) => (dispatch, getState) => {
     const schedule = getSchedule((item) => callBackScedule(item, dispatch, getState))
     const leagues = getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
     return Promise.all([schedule, leagues]).then((data) => {
-        dispatch({
-            type: signIn,
-            val: true
-        })
         return
-    })
-}
-export const user = () => () => {
-    return new Promise((resolve, reject) => {
-        isLogged().then((user) => {
-            if (user) {
-                resolve(user)
-            } else { resolve() }
-        })
-    })
-}
-
-
-export const createUser = (email, password, name) => () => {
-    return new Promise((resolve, reject) => {
-        createUserWithEmailAndPassword(email, password, name).then((user) => {
-            if (user) {
-                resolve(user)
-            } else { resolve() }
-        })
-    })
-}
-
-export const signInUser = (email, password) => () => {
-    return new Promise((resolve, reject) => {
-        signInWithEmailAndPassword(email, password).then((user) => {
-            if (user) {
-                resolve(user)
-            } else { resolve() }
-        })
-    })
-}
-
-export const facebookLogin = (token) => () => {
-    return new Promise((resolve, reject) => {
-        createFirebaseCredential(token).then(user => {
-            if (user) {
-                resolve(user)
-            } else { resolve() }
-        })
-    })
-}
-
-
-
-export const signOutFromFirebase = () => (dispatch) => {
-    return new Promise((resolve, reject) => {
-        dispatch({
-            type: signIn,
-            val: false
-        })
-        signOut().then(() => {
-            resolve('ok')
-        })
     })
 }
 
@@ -156,6 +102,13 @@ export const setCurrentLeague = (name, leagues) => {
     return {
         type: SET_CURRENT_LEAGUE,
         league: current
+    };
+}
+
+export const sign = () => {
+    return {
+        type: signIn,
+        val: false
     };
 }
 // export const getLeagueGames = () => {
