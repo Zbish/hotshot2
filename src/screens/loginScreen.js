@@ -19,6 +19,7 @@ class loginScreen extends Component {
     }
 
     login(user) {
+       
         if (user) {
             this.props.initialApp(user.uid).then(() => {
                 this.props.sign()

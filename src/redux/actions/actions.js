@@ -7,7 +7,9 @@ import {
     SET_LEAGUE_GAMES,
     UPDATE_bets,
     GET_bets,
-    UPDATE_League
+    UPDATE_League,
+    UPDATE_game,
+    UPDATE_LEAGUE_GAMES
 } from './constant';
 import {
     getSchedule,
@@ -19,32 +21,38 @@ import _ from 'lodash'
 import { getLeagueGames, getGames } from '../../utils'
 import { NavigationActions } from 'react-navigation'
 
-const initialLeagueGames = (stateLeagues, schedule) => {
-    let leagues = _.cloneDeep(stateLeagues)
-    leagues.myLeagues = getLeagueGames(leagues.myLeagues, schedule)
+const updateLeagueGames = (leagues, changeGame) => {
+    _.forEach(leagues.myLeagues, (league) => {
+        const index = _.findIndex(league.allGames, (g)=> { return g.id === changeGame.id; })
+        if(index != -1){
+            league.allGames[index] = changeGame
+        }
+    })
     if (leagues.currentLeague) {
         const id = leagues.currentLeague.id
         leagues.currentLeague = _.find(leagues.myLeagues, { id: id })
     }
     return leagues
 }
-const callBackScedule = (newSchedule, dispatch, getState) => {
+
+const callBackScedule = (changeGame, dispatch, getState) => {
+    const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
+    const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
     dispatch({
-        type: UPDATE_Schedule,
-        newSchedule
+        type: UPDATE_game,
+        game: { index: index, value: changeGame }
     })
     const leagues = getState().leagues
     if (leagues.myLeagues && leagues.myLeagues.length) {
-        const leaguesWithGames = initialLeagueGames(leagues, newSchedule)
+        const leaguesWithGames = updateLeagueGames(leagues, changeGame)
+        console.log('leagues' , leaguesWithGames)
         dispatch({
-            type: SET_LEAGUE_GAMES,
+            type: UPDATE_LEAGUE_GAMES,
             leaguesWithGames
         })
     }
 }
 const callBackBets = (bets, dispatch, leagueUid, gameid) => {
-    console.log('bets', bets)
-    console.log('gameid', gameid)
     dispatch({
         type: UPDATE_bets,
         bets: { bets, leagueuid: leagueUid, gameid: gameid }
@@ -82,18 +90,35 @@ const callBackLeague = (league, dispatch, getState) => {
 
 
 }
-export const resetAction = () => NavigationActions.reset({
-    index: 0,
-    actions: [
-        NavigationActions.navigate({ routeName: 'LoginScreen' })
-    ]
-})
 
 export const initialApp = (uid) => (dispatch, getState) => {
-    const schedule = getSchedule((item) => callBackScedule(item, dispatch, getState))
-    const leagues = getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
-    return Promise.all([schedule, leagues]).then((data) => {
-        return
+    return new Promise((resolve, reject) => {
+        getSchedule((changeGame) => callBackScedule(changeGame, dispatch, getState))
+            .then((newSchedule) => {
+                dispatch({
+                    type: UPDATE_Schedule,
+                    newSchedule
+                })
+                getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
+                    .then((leagues) => {
+                        const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
+                        const leaguesWithGames = getLeagueGames(leagues, schedule)
+                        dispatch({
+                            type: SET_LEAGUE_GAMES,
+                            leaguesWithGames
+                        })
+                        _.forEach(leagues, (league) => {
+                            getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid))
+                                .then((bets) => {
+                                    dispatch({
+                                        type: GET_bets,
+                                        bets: { [league.id]: bets }
+                                    })
+                                })
+                        })
+                        resolve('inilized')
+                    })
+            })
     })
 }
 
@@ -111,10 +136,9 @@ export const sign = () => {
         val: false
     };
 }
-// export const getLeagueGames = () => {
-
-//     return {
-//         type: SET_LEAGUE_GAMES,
-//         league: games
-//     };
-// }
+export const resetAction = () => NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'LoginScreen' })
+    ]
+})

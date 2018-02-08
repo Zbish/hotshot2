@@ -86,11 +86,14 @@ export const getSchedule = (callBack) => {
         const refSchedule = ref.collection('gamesSchedule')
         refSchedule.onSnapshot((snap) => {
             let games = []
-            snap.forEach((doc) => {
-                let game = doc.data()
+            snap.docChanges.forEach((change) => {
+                let game = change.doc.data()
                 games.push(game)
+              
+                if (change.type === "modified" || change.type === "removed") {
+                    callBack(game)
+                }
             })
-            callBack(games)
             resolve(games)
         })
     })
@@ -104,7 +107,9 @@ export const getLeagues = (uid, callback) => {
             snap.docChanges.forEach((change) => {
                 let league = change.doc.data()
                 leagues.push(league)
-                callback(league)
+                if (change.type === "modified" || change.type === "removed") {
+                    callback(league)
+                }
             })
             resolve(leagues)
         })
@@ -117,11 +122,11 @@ export const getbets = (leagueUid, callback) => {
         refMyLeague.onSnapshot((snap) => {
             let bets = {}
             let callbackBets = {}
-             snap.docChanges.forEach((change) => {
+            snap.docChanges.forEach((change) => {
                 const game = change.doc.data()
                 bets[[game.gameid]] = game
                 if (change.type === "modified" || change.type === "removed") {
-                    callback(bets,game.gameid)
+                    callback(bets, game.gameid)
                 }
             })
             resolve(bets)

@@ -8,6 +8,8 @@ const SET_LEAGUE_GAMES = "SET_LEAGUE_GAMES"
 const UPDATE_bets = 'UPDATE_bets'
 const  UPDATE_League = ' UPDATE_League'
 const GET_bets = 'GET_bets' 
+const UPDATE_game = 'UPDATE_game'
+const UPDATE_LEAGUE_GAMES = 'UPDATE_LEAGUE_GAMES'
 
 export {
   UPDATE_Schedule,
@@ -18,5 +20,7 @@ export {
   SET_LEAGUE_GAMES,
   UPDATE_bets,
   UPDATE_League,
-  GET_bets
+  GET_bets,
+  UPDATE_game,
+  UPDATE_LEAGUE_GAMES
 };

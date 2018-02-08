@@ -91,17 +91,15 @@ export const getRanking = (bets, games, players) => {
 }
 
 export const getLeagueGames = (leagues, schedule) => {
-  const cloneLeagues = _.cloneDeep(leagues)
-  const cloneSchedule = _.cloneDeep(schedule)
-  _.forEach(cloneLeagues, (league) => {
+  _.forEach(leagues, (league) => {
     let leagueGames = []
     _.forEach(league.games, (value, key) => {
-      const game = _.findIndex(cloneSchedule, function (l) { return l.id == key; })
-      leagueGames.push(cloneSchedule[game])
+      const game = _.findIndex(schedule, function (l) { return l.id == key; })
+      leagueGames.push(schedule[game])
     })
     league.allGames = leagueGames
   })
-  const leaguesFull = getRankList(cloneLeagues)
+  const leaguesFull = getRankList(leagues)
   
   return leaguesFull
 }
