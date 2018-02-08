@@ -1,5 +1,5 @@
 import {
-    UPDATE_Schedule,
+    initial_Schedule,
     signIn,
     ADD_LEAGUE,
     loading,
@@ -8,7 +8,7 @@ import {
     UPDATE_bets,
     GET_bets,
     UPDATE_League,
-    UPDATE_game,
+    UPDATE_Schedule,
     UPDATE_LEAGUE_GAMES
 } from './constant';
 import {
@@ -21,16 +21,16 @@ import _ from 'lodash'
 import { getLeagueGames, getGames } from '../../utils'
 import { NavigationActions } from 'react-navigation'
 
-const updateLeagueGames = (leagues, changeGame) => {
+const updateLeaguesGames = (leagues, changeGame) => {
     _.forEach(leagues.myLeagues, (league) => {
-        const index = _.findIndex(league.allGames, (g)=> { return g.id === changeGame.id; })
-        if(index != -1){
+        const index = _.findIndex(league.allGames, (g) => { return g.id === changeGame.id; })
+        if (index != -1) {
             league.allGames[index] = changeGame
         }
     })
     if (leagues.currentLeague) {
         const id = leagues.currentLeague.id
-        leagues.currentLeague = _.find(leagues.myLeagues, { id: id })
+        currentLeague = _.find(leagues.myLeagues, { id: id })
     }
     return leagues
 }
@@ -39,16 +39,15 @@ const callBackScedule = (changeGame, dispatch, getState) => {
     const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
     const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
     dispatch({
-        type: UPDATE_game,
+        type: UPDATE_Schedule,
         game: { index: index, value: changeGame }
     })
-    const leagues = getState().leagues
+    const leagues = _.cloneDeep(getState().leagues)
     if (leagues.myLeagues && leagues.myLeagues.length) {
-        const leaguesWithGames = updateLeagueGames(leagues, changeGame)
-        console.log('leagues' , leaguesWithGames)
+        const newLeagues = updateLeaguesGames(leagues, changeGame)
         dispatch({
             type: UPDATE_LEAGUE_GAMES,
-            leaguesWithGames
+            newLeagues
         })
     }
 }
@@ -96,7 +95,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
         getSchedule((changeGame) => callBackScedule(changeGame, dispatch, getState))
             .then((newSchedule) => {
                 dispatch({
-                    type: UPDATE_Schedule,
+                    type: initial_Schedule,
                     newSchedule
                 })
                 getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
@@ -122,8 +121,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
     })
 }
 
-export const setCurrentLeague = (name, leagues) => {
-    const current = _.find(leagues, { name: name })
+export const setCurrentLeague = (current) => {
     return {
         type: SET_CURRENT_LEAGUE,
         league: current

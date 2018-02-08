@@ -5,16 +5,16 @@ import { ListItem, Thumbnail, Text, Body, Button, Icon } from 'native-base';
 
 export default class MyLeagueItem extends Component {
 
-    onPress(name) {
-        this.props.navigate(name)
+    onPress(id) {
+        this.props.navigate(id)
     }
     delete() {
         console.log('delete')
     }
     render() {
-        const { players, allGames, name } = this.props.league
+        const { players, allGames, name,id } = this.props.league
         return (
-            <ListItem style={styles.container} onPress={() => this.onPress(name)}>
+            <ListItem style={styles.container} onPress={() => this.onPress(id)}>
                 <Thumbnail style={styles.image} source={require('../images/app/football.png')} />
                 <Body>
                     <Text style={styles.name}>

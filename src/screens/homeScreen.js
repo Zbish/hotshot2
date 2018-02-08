@@ -11,8 +11,9 @@ import FacebookLoginButton from '../components/FacebookLoginButton'
 
 class homeScreen extends Component {
 
-    navigate(name) {
-        this.props.setCurrentLeague(name, this.props.leagues)
+    navigate(id) {
+        const current = _.find(this.props.leagues, { id: id })
+        this.props.setCurrentLeague(current)
         this.props.navigation.navigate('league')
 
     }
@@ -32,7 +33,7 @@ class homeScreen extends Component {
         return (
             <Container>
                 <Content>
-                    <MyLeague leagues={leagues} navigate={(name) => this.navigate(name)} ></MyLeague>
+                    <MyLeague leagues={leagues} navigate={(id) => this.navigate(id)} ></MyLeague>
                     <Text>Games Of The Week </Text>
                     <Games games={games} />
                     {!provider && <FacebookLoginButton onPress={() => this.onPress()}></FacebookLoginButton>}
@@ -55,7 +56,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setCurrentLeague: (name, leagues) => dispatch(setCurrentLeague(name, leagues)),
+        setCurrentLeague: (league) => dispatch(setCurrentLeague(league)),
         signOutFromFirebase: () => dispatch(signOutFromFirebase()),
         resetNavigation:() => dispatch(resetAction()),
         signOut:()=> dispatch(sign())

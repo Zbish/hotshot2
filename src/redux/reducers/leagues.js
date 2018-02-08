@@ -8,10 +8,12 @@ export default (state, action) => {
       }
       break;
     case UPDATE_LEAGUE_GAMES:
-      console.log('leagues', action)
+    const leaguesWithGames = action.newLeagues.myLeagues
+    const current = action.newLeagues.currentLeague
+    console.log('action' , action)
+    console.log('current' , current)
       return {
-        myLeagues: [...action.leaguesWithGames.myLeagues],
-        currentLeague: action.leaguesWithGames.currentLeague
+        ...action.newLeagues
       }
       break;
     case ADD_LEAGUE:
@@ -32,8 +34,10 @@ export default (state, action) => {
       }
       break;
     default:
+    console.log('state', state)
       return state || {
         myLeagues: [],
+        currentLeague:{}
       }
   }
 }

@@ -1,14 +1,14 @@
 
-import { UPDATE_Schedule, UPDATE_game } from '../actions/constant';
+import { initial_Schedule, UPDATE_Schedule } from '../actions/constant';
 
 export default (state, action) => {
   switch (action.type) {
-    case UPDATE_Schedule:
+    case initial_Schedule:
       return {
         gameSchedule: action.newSchedule
       };
       break;
-    case UPDATE_game:
+    case UPDATE_Schedule:
       const game = action.game.value
       const index = action.game.index
       state.gameSchedule.splice(index, 1, game)
