@@ -89,7 +89,7 @@ export const getSchedule = (callBack) => {
             snap.docChanges.forEach((change) => {
                 let game = change.doc.data()
                 games.push(game)
-              
+
                 if (change.type === "modified" || change.type === "removed") {
                     callBack(game)
                 }
@@ -122,9 +122,9 @@ export const getbets = (leagueUid, callback) => {
         refMyLeague.onSnapshot((snap) => {
             let bets = {}
             let callbackBets = {}
-            snap.docChanges.forEach((change) => {
+            snap.docChanges.forEach((change, key) => {
                 const game = change.doc.data()
-                bets[[game.gameid]] = game
+                bets[[change.doc.id]] = game
                 if (change.type === "modified" || change.type === "removed") {
                     callback(bets, game.gameid)
                 }

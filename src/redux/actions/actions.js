@@ -9,7 +9,8 @@ import {
     GET_bets,
     UPDATE_League,
     UPDATE_Schedule,
-    UPDATE_LEAGUE_GAMES
+    UPDATE_LEAGUE_GAMES,
+    initial_Ranks
 } from './constant';
 import {
     getSchedule,
@@ -18,7 +19,7 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import { getLeagueGames, getGames } from '../../utils'
+import { getLeagueGames, getGames,getLeagueRankList } from '../../utils'
 import { NavigationActions } from 'react-navigation'
 
 const updateLeaguesGames = (leagues, changeGame) => {
@@ -51,6 +52,7 @@ const callBackScedule = (changeGame, dispatch, getState) => {
         })
     }
 }
+
 const callBackBets = (bets, dispatch, leagueUid, gameid) => {
     dispatch({
         type: UPDATE_bets,
@@ -86,8 +88,6 @@ const callBackLeague = (league, dispatch, getState) => {
             leagues
         })
     }
-
-
 }
 
 export const initialApp = (uid) => (dispatch, getState) => {
@@ -113,6 +113,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         type: GET_bets,
                                         bets: { [league.id]: bets }
                                     })
+                                    getLeagueRankList(bets,schedule)
                                 })
                         })
                         resolve('inilized')

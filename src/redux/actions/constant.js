@@ -10,6 +10,7 @@ const  UPDATE_League = ' UPDATE_League'
 const GET_bets = 'GET_bets' 
 const UPDATE_Schedule = 'UPDATE_Schedule'
 const UPDATE_LEAGUE_GAMES = 'UPDATE_LEAGUE_GAMES'
+const initial_Ranks = 'initial_Ranks'
 
 export {
   initial_Schedule,
@@ -22,5 +23,6 @@ export {
   UPDATE_League,
   GET_bets,
   UPDATE_Schedule,
-  UPDATE_LEAGUE_GAMES
+  UPDATE_LEAGUE_GAMES,
+  initial_Ranks
 };

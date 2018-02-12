@@ -50,7 +50,8 @@ function mapStateToProps(state) {
         gameSchedule: state.gamesSchedule.gameSchedule,
         logged: state.login.user,
         leagues: state.leagues.myLeagues,
-        scores: state.scores
+        scores: state.scores,
+        ranks:state.ranks
     }
 }
 

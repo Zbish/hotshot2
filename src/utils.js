@@ -66,6 +66,41 @@ export const compareScore = function (score, guess) {
         hit4 ? 1 : 0
   return points
 }
+export const getLeagueRankList = (bets, schedule) => {
+    const rankEnded = []
+    const rankactive =[]
+  _.forEach(bets, (playerBets, gameid) => {
+    var leaguegame = schedule.find(function (game) { return game.id === gameid; });
+    if (leaguegame.status === "ended") {
+      _.forIn(playerBets, (bet, playerUid) => {
+        const playerScore = compareScore(leaguegame.score,bet)
+        const player = {uid:playerUid,points:playerScore}
+        const index = _.findIndex(rankEnded, function (pl) { return pl.uid == playerUid; })
+        console.log('fff' , index, playerScore)
+        if(index == -1){
+          rankEnded.push(player)
+        }else{
+          rankEnded[index].points += playerScore
+        }
+      })  
+    }
+   else if (leaguegame.status === "active") {
+      _.forIn(playerBets, (bet, playerUid) => {
+        const playerScore = compareScore(leaguegame.score,bet)
+        const player = {uid:playerUid,points:playerScore}
+        const index = _.findIndex(rankactive, function (pl) { return pl.uid == playerUid; })
+        if(index == -1){
+          rankactive.push(player)
+        }else{
+          rankactive[index].points += playerScore
+        }
+      })  
+    }
+  })
+  console.log('ended' , rankEnded)
+  console.log('ended' , rankactive)
+}
+
 
 export const getRanking = (bets, games, players) => {
   const leagueGames = _.cloneDeep(games)
@@ -99,12 +134,10 @@ export const getLeagueGames = (leagues, schedule) => {
     })
     league.allGames = leagueGames
   })
-  const leaguesFull = getRankList(leagues)
-  
-  return leaguesFull
+  return leagues
 }
 
-export const getGames = (league, schedule) =>{
+export const getGames = (league, schedule) => {
   let leagueGames = []
   _.forEach(league.games, (value, key) => {
     const index = _.findIndex(schedule, function (l) { return l.id == key; })
@@ -115,7 +148,7 @@ export const getGames = (league, schedule) =>{
 }
 
 const getRankList = (leagues) => {
- 
+
   _.forEach(leagues, (league) => {
     const rankList = []
     _.forEach(league.allGames, (game) => {
@@ -130,10 +163,10 @@ const getRankList = (leagues) => {
           index == -1 ? rankList.push(player) :
             rankList[index].points += player.points;
         })
-      
+
       }
     })
     league.rankList = rankList
   })
-return leagues
+  return leagues
 }
