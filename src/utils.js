@@ -100,23 +100,37 @@ export const getLeagueRankList = (bets, schedule) => {
   return rank
 }
 
-export const margeArrayRank = (ranks) =>{
+export const margeArrayRank = (ranks) => {
   const cloneRank = _.cloneDeep(ranks)
-console.log('ranksrank' , ranks)
-const combineRanks = cloneRank.rankEnded
-_.forEach(ranks.rankActive, (player) => {
-  const index = _.findIndex(combineRanks, (p) => { return p.uid === player.uid; })
-  console.log('index' , index)
-  if(index == -1){
+  const combineRanks = cloneRank.rankEnded
+  _.forEach(ranks.rankActive, (player) => {
+    const index = _.findIndex(combineRanks, (p) => { return p.uid === player.uid; })
+    if (index == -1) {
       combineRanks.push(player)
-  }
-  else{
-    combineRanks[index].points += player.points
-  }
-})
-return combineRanks
+    }
+    else {
+      combineRanks[index].points += player.points
+    }
+  })
+  return combineRanks
 }
 
+export const ranksAndNames = (ranks, names) => {
+  _.forEach(ranks, (player) => {
+      player.name =  names[player.uid].name
+  })
+  return ranks
+}
+
+export const countGamesLeft = (games) => {
+  let counter = 0
+  _.forEach(games, (game) => {
+    if (game.status === 'active' || game.status === 'panding') {
+      counter++
+    }
+  })
+  return counter
+}
 export const getRanking = (bets, games, players) => {
   const leagueGames = _.cloneDeep(games)
   const leaguebets = _.cloneDeep(bets)

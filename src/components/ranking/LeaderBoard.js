@@ -13,6 +13,8 @@ export default class LeaderBoard extends Component {
     const players = playersScore.sort((a, b) => a.points < b.points)
     const losers = players.slice(3)
     const leaders = players.slice(0, 3)
+
+    const gamesLeft = this.props.gamesLeft
     return (
       <Content>
         <Card>
@@ -48,7 +50,7 @@ export default class LeaderBoard extends Component {
           </CardItem>
           <CardItem style={{backgroundColor:'grey'}}>
             <Left>
-              <Text style={{fontWeight:'bold'}}>Games Left 12</Text>
+              <Text style={{fontWeight:'bold'}}>Games Left {gamesLeft}</Text>
             </Left>
             <Body>
               {/* <Button transparent>
