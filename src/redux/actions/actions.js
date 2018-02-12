@@ -41,7 +41,21 @@ const callBackScedule = (changeGame, dispatch, getState) => {
     const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
     const scores = _.cloneDeep(getState().scores)
     const ranks = _.cloneDeep(getState().ranks)
-    const oldGame = schedule[index]
+    const indexOldGame = _.findIndex(schedule, function (pl) { return pl.id == changeGame.id; })
+    const oldGame = schedule[indexOldGame]
+    const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
+    dispatch({
+        type: UPDATE_Schedule,
+        game: { index: index, value: changeGame }
+    })
+    const leagues = _.cloneDeep(getState().leagues)
+    if (leagues.myLeagues && leagues.myLeagues.length) {
+        const newLeagues = updateLeaguesGames(leagues, changeGame)
+        dispatch({
+            type: UPDATE_LEAGUE_GAMES,
+            newLeagues
+        })
+    }
     if (changeGame.status === 'ended') {
         _.forIn(scores, (games, leagueid) => {
             _.forIn(games, (playerBets, gameid) => {
@@ -67,7 +81,7 @@ const callBackScedule = (changeGame, dispatch, getState) => {
 
     }
     else if (changeGame.status === "active") {
-        const index = _.findIndex(schedule, function (pl) { return pl.id == changeGame.id; })
+       
         _.forIn(scores, (games, leagueid) => {
             _.forIn(games, (playerBets, gameid) => {
                 if (changeGame.id === gameid) {
@@ -88,20 +102,6 @@ const callBackScedule = (changeGame, dispatch, getState) => {
                     })
                 }
             })
-        })
-    }
-
-    const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
-    dispatch({
-        type: UPDATE_Schedule,
-        game: { index: index, value: changeGame }
-    })
-    const leagues = _.cloneDeep(getState().leagues)
-    if (leagues.myLeagues && leagues.myLeagues.length) {
-        const newLeagues = updateLeaguesGames(leagues, changeGame)
-        dispatch({
-            type: UPDATE_LEAGUE_GAMES,
-            newLeagues
         })
     }
 }
