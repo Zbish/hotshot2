@@ -67,38 +67,37 @@ export const compareScore = function (score, guess) {
   return points
 }
 export const getLeagueRankList = (bets, schedule) => {
-    const rankEnded = []
-    const rankactive =[]
+  const rankEnded = []
+  const rankactive = []
   _.forEach(bets, (playerBets, gameid) => {
     var leaguegame = schedule.find(function (game) { return game.id === gameid; });
     if (leaguegame.status === "ended") {
       _.forIn(playerBets, (bet, playerUid) => {
-        const playerScore = compareScore(leaguegame.score,bet)
-        const player = {uid:playerUid,points:playerScore}
+        const playerScore = compareScore(leaguegame.score, bet)
+        const player = { uid: playerUid, points: playerScore }
         const index = _.findIndex(rankEnded, function (pl) { return pl.uid == playerUid; })
-        console.log('fff' , index, playerScore)
-        if(index == -1){
+        if (index == -1) {
           rankEnded.push(player)
-        }else{
+        } else {
           rankEnded[index].points += playerScore
         }
-      })  
+      })
     }
-   else if (leaguegame.status === "active") {
+    else if (leaguegame.status === "active") {
       _.forIn(playerBets, (bet, playerUid) => {
-        const playerScore = compareScore(leaguegame.score,bet)
-        const player = {uid:playerUid,points:playerScore}
+        const playerScore = compareScore(leaguegame.score, bet)
+        const player = { uid: playerUid, points: playerScore }
         const index = _.findIndex(rankactive, function (pl) { return pl.uid == playerUid; })
-        if(index == -1){
+        if (index == -1) {
           rankactive.push(player)
-        }else{
+        } else {
           rankactive[index].points += playerScore
         }
-      })  
+      })
     }
   })
-  console.log('ended' , rankEnded)
-  console.log('ended' , rankactive)
+  const rank = { rankactive: rankactive, rankEnded: rankEnded }
+  return rank
 }
 
 

@@ -10,7 +10,8 @@ import {
     UPDATE_League,
     UPDATE_Schedule,
     UPDATE_LEAGUE_GAMES,
-    initial_Ranks
+    initial_Ranks,
+    update_rank
 } from './constant';
 import {
     getSchedule,
@@ -19,7 +20,7 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import { getLeagueGames, getGames,getLeagueRankList } from '../../utils'
+import { getLeagueGames, getGames, getLeagueRankList, compareScore } from '../../utils'
 import { NavigationActions } from 'react-navigation'
 
 const updateLeaguesGames = (leagues, changeGame) => {
@@ -37,6 +38,28 @@ const updateLeaguesGames = (leagues, changeGame) => {
 }
 
 const callBackScedule = (changeGame, dispatch, getState) => {
+    if (changeGame.status === 'ended') {
+        const scores = _.cloneDeep(getState().scores)
+        const ranks = _.cloneDeep(getState().ranks)
+        _.forIn(scores, (games, leagueid) => {
+            _.forIn(games, (playerBets, gameid) => {
+                if (changeGame.id === gameid) {
+                    _.forIn(playerBets, (bet, playerUid) => {
+                        const points = compareScore(changeGame.score, bet)
+                        const index = _.findIndex(ranks[leagueid], function (pl) { return pl.uid == playerUid; })
+                        if (index != -1) {
+                            ranks[leagueid][index].points += points
+                        }
+                    })
+                    dispatch({
+                        type: update_rank,
+                        ranks:ranks
+                    })
+                }
+            })
+        })
+
+    }
     const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
     const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
     dispatch({
@@ -113,7 +136,11 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         type: GET_bets,
                                         bets: { [league.id]: bets }
                                     })
-                                    getLeagueRankList(bets,schedule)
+                                    const ranks = getLeagueRankList(bets, schedule)
+                                    dispatch({
+                                        type: initial_Ranks,
+                                        ranks: { [league.id]: ranks }
+                                    })
                                 })
                         })
                         resolve('inilized')
