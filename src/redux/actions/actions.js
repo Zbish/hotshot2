@@ -46,9 +46,9 @@ const callBackScedule = (changeGame, dispatch, getState) => {
                 if (changeGame.id === gameid) {
                     _.forIn(playerBets, (bet, playerUid) => {
                         const points = compareScore(changeGame.score, bet)
-                        const index = _.findIndex(ranks[leagueid], function (pl) { return pl.uid == playerUid; })
+                        const index = _.findIndex(ranks[leagueid].rankEnded, function (pl) { return pl.uid == playerUid; })
                         if (index != -1) {
-                            ranks[leagueid][index].points += points
+                            ranks[leagueid].rankEnded[index].points += points
                         }
                     })
                     dispatch({
