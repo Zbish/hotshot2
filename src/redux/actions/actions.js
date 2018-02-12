@@ -38,29 +38,59 @@ const updateLeaguesGames = (leagues, changeGame) => {
 }
 
 const callBackScedule = (changeGame, dispatch, getState) => {
+    const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
+    const scores = _.cloneDeep(getState().scores)
+    const ranks = _.cloneDeep(getState().ranks)
+    const oldGame = schedule[index]
     if (changeGame.status === 'ended') {
-        const scores = _.cloneDeep(getState().scores)
-        const ranks = _.cloneDeep(getState().ranks)
         _.forIn(scores, (games, leagueid) => {
             _.forIn(games, (playerBets, gameid) => {
                 if (changeGame.id === gameid) {
                     _.forIn(playerBets, (bet, playerUid) => {
                         const points = compareScore(changeGame.score, bet)
+                        const pointsDawn = compareScore(oldGame.score, bet)
                         const index = _.findIndex(ranks[leagueid].rankEnded, function (pl) { return pl.uid == playerUid; })
                         if (index != -1) {
                             ranks[leagueid].rankEnded[index].points += points
+                            if(oldGame.status === 'active'){
+                                ranks[leagueid].rankActive[index].points -= pointsDawn
+                            }
                         }
                     })
                     dispatch({
                         type: update_rank,
-                        ranks:ranks
+                        ranks: ranks
                     })
                 }
             })
         })
 
     }
-    const schedule = _.cloneDeep(getState().gamesSchedule.gameSchedule)
+    else if (changeGame.status === "active") {
+        const index = _.findIndex(schedule, function (pl) { return pl.id == changeGame.id; })
+        _.forIn(scores, (games, leagueid) => {
+            _.forIn(games, (playerBets, gameid) => {
+                if (changeGame.id === gameid) {
+                    _.forIn(playerBets, (bet, playerUid) => {
+                        const pointsUp = compareScore(changeGame.score, bet)
+                        const pointsDawn = compareScore(oldGame.score, bet)
+                        const index = _.findIndex(ranks[leagueid].rankActive, function (pl) { return pl.uid == playerUid; })
+                        if (index != -1) {
+                            ranks[leagueid].rankActive[index].points += pointsUp
+                            if (oldGame.status === 'active') {
+                                ranks[leagueid].rankActive[index].points -= pointsDawn
+                            }
+                        }
+                    })
+                    dispatch({
+                        type: update_rank,
+                        ranks: ranks
+                    })
+                }
+            })
+        })
+    }
+
     const index = _.findIndex(schedule, (g) => { return g.id === changeGame.id; })
     dispatch({
         type: UPDATE_Schedule,
