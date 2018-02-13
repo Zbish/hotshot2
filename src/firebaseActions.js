@@ -1,6 +1,5 @@
 import firebase from 'react-native-firebase'
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { SET_LEAGUE_GAMES, UPDATE_bets } from '../src/redux/actions/constant'
 
 // firebase refrance to firestore
 this.ref = firebase.firestore()

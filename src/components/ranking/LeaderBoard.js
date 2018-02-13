@@ -48,7 +48,7 @@ export default class LeaderBoard extends Component {
                 ></Losers>}
               keyExtractor={(item, index) => index} />
           </CardItem>
-          <CardItem style={{backgroundColor:'grey'}}>
+          <CardItem style={{backgroundColor:'#D32F2F'}}>
             <Left>
               <Text style={{fontWeight:'bold'}}>Games Left {gamesLeft}</Text>
             </Left>

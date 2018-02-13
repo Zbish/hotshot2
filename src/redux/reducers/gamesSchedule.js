@@ -5,7 +5,7 @@ export default (state, action) => {
   switch (action.type) {
     case initial_Schedule:
       return {
-        gameSchedule: action.newSchedule
+        gameSchedule: action.Schedule
       };
       break;
     case UPDATE_Schedule:

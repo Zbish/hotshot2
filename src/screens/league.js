@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import Games from '../components/Games'
-import { getLeagueGames ,getRanking,margeArrayRank,countGamesLeft,ranksAndNames} from '../utils'
+import {margeArrayRank,countGamesLeft,ranksAndNames} from '../utils'
 import { Container, Content,Header } from 'native-base'
 import LeaderBoard from '../components/ranking/LeaderBoard'
 

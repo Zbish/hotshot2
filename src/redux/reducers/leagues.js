@@ -1,8 +1,8 @@
-import { ADD_LEAGUE, UPDATE_LEAGUE_GAMES, SET_CURRENT_LEAGUE, SET_LEAGUE_GAMES, UPDATE_League } from '../actions/constant'
+import { ADD_LEAGUE, UPDATE_LEAGUE_GAMES, SET_CURRENT_LEAGUE, initial_LEAGUE_GAMES, UPDATE_League } from '../actions/constant'
 
 export default (state, action) => {
   switch (action.type) {
-    case SET_LEAGUE_GAMES:
+    case initial_LEAGUE_GAMES:
       return {
         myLeagues: [...action.leaguesWithGames]
       }

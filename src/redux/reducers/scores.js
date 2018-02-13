@@ -1,4 +1,4 @@
-import {UPDATE_bets,GET_bets} from '../actions/constant';
+import {UPDATE_bets,initial_bets} from '../actions/constant';
 export default (state, action) => {
   switch (action.type) {
     case UPDATE_bets:
@@ -10,7 +10,7 @@ export default (state, action) => {
       [leagueuid]:Object.assign({}, state[leagueuid],bets)
     }
     break;
-    case GET_bets:
+    case initial_bets:
     return{
       ...state,
       ...action.bets
