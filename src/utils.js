@@ -66,41 +66,49 @@ export const compareScore = function (score, guess) {
         hit4 ? 1 : 0
   return points
 }
-export const getLeagueRankList = (bets, schedule) => {
-  const rankEnded = []
-  const rankActive = []
+
+const getRanks = (playerBets, leaguegame, list, players) => {
+  _.forIn(playerBets, (bet, playerUid) => {
+    const playerScore = compareScore(leaguegame.score, bet)
+    const name = players[playerUid].name
+    const player = { uid: playerUid, points: playerScore, name: name }
+    const index = _.findIndex(list, function (pl) { return pl.uid == playerUid; })
+    if (index == -1) {
+      list.push(player)
+    } else {
+      list[index].points += playerScore
+    }
+  })
+
+  return list
+}
+export const getLeagueRankList = (bets, schedule, players) => {
+  let rankEnded = initialList(players)
+  let rankActive = initialList(players)
   _.forEach(bets, (playerBets, gameid) => {
     var leaguegame = schedule.find(function (game) { return game.id === gameid; });
     if (leaguegame.status === "ended") {
-      _.forIn(playerBets, (bet, playerUid) => {
-        const playerScore = compareScore(leaguegame.score, bet)
-        const player = { uid: playerUid, points: playerScore }
-        const index = _.findIndex(rankEnded, function (pl) { return pl.uid == playerUid; })
-        if (index == -1) {
-          rankEnded.push(player)
-        } else {
-          rankEnded[index].points += playerScore
-        }
-      })
+      rankEnded = getRanks(playerBets, leaguegame, rankEnded, players)
     }
     else if (leaguegame.status === "active") {
-      _.forIn(playerBets, (bet, playerUid) => {
-        const playerScore = compareScore(leaguegame.score, bet)
-        const player = { uid: playerUid, points: playerScore }
-        const index = _.findIndex(rankActive, function (pl) { return pl.uid == playerUid; })
-        if (index == -1) {
-          rankActive.push(player)
-        } else {
-          rankActive[index].points += playerScore
-        }
-      })
+      rankActive = getRanks(playerBets, leaguegame, rankActive, players)
     }
+
   })
   const rank = { rankActive: rankActive, rankEnded: rankEnded }
   return rank
 }
 
-export const margeArrayRank = (ranks) => {
+const initialList = (players) => {
+  let list = []
+  _.forIn(players, (value, uid) => {
+    const player = { uid:uid, points: 0, name: value.name }
+    list.push(player)
+  })
+  return list
+}
+
+export const margeArrayRank = (ranks, players) => {
   const cloneRank = _.cloneDeep(ranks)
   const combineRanks = cloneRank.rankEnded
   _.forEach(ranks.rankActive, (player) => {
@@ -156,19 +164,19 @@ export const getGames = (league, schedule) => {
 
 export const updateLeaguesGames = (leagues, changeGame) => {
   _.forEach(leagues.myLeagues, (league) => {
-      const index = _.findIndex(league.allGames, (g) => { return g.id === changeGame.id; })
-      if (index != -1) {
-          league.allGames[index] = changeGame
-      }
+    const index = _.findIndex(league.allGames, (g) => { return g.id === changeGame.id; })
+    if (index != -1) {
+      league.allGames[index] = changeGame
+    }
   })
   if (leagues.currentLeague) {
-      const id = leagues.currentLeague.id
-      currentLeague = _.find(leagues.myLeagues, { id: id })
+    const id = leagues.currentLeague.id
+    currentLeague = _.find(leagues.myLeagues, { id: id })
   }
   return leagues
 }
 
-export const changeLeaderBoard = (scores,changeGame,oldGame,ranks) => {
+export const changeLeaderBoard = (scores, changeGame, oldGame, ranks) => {
   _.forIn(scores, (games, leagueid) => {
     const rankEnded = ranks[leagueid].rankEnded
     const rankActive = ranks[leagueid].rankActive

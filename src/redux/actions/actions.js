@@ -116,7 +116,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         type: initial_bets,
                                         bets: { [league.id]: bets }
                                     })
-                                    const ranks = getLeagueRankList(bets, Schedule)
+                                    const ranks = getLeagueRankList(bets, Schedule,league.players)
                                     dispatch({
                                         type: initial_Ranks,
                                         ranks: { [league.id]: ranks }

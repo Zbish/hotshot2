@@ -22,18 +22,18 @@ export default class LeaderBoard extends Component {
           </CardItem>
           <CardItem>
             <Left>
-              <Leaders item={leaders[1]}
-                place={2} />
+              {leaders[1].name && <Leaders item={leaders[1]}
+                place={2} />}
             </Left>
             <Body>
-              <Leaders item={leaders[0]}
+             {leaders[0].name && <Leaders item={leaders[0]}
                 place={1}
-              />
+              />}
             </Body>
             <Right>
-              <Leaders item={leaders[2]}
+              {leaders[2].name &&<Leaders item={leaders[2]}
                 place={3}
-              />
+              />}
             </Right>
           </CardItem>
           <CardItem cardBody>

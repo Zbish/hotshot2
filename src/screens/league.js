@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import Games from '../components/Games'
-import {margeArrayRank,countGamesLeft,ranksAndNames} from '../utils'
+import {margeArrayRank,countGamesLeft} from '../utils'
 import { Container, Content,Header } from 'native-base'
 import LeaderBoard from '../components/ranking/LeaderBoard'
 
@@ -13,13 +13,12 @@ class league extends Component {
         const players = league.players
         const games = league.allGames
         const rankListLeague = this.props.rankList[league.id]
-        const combineRanks = margeArrayRank(rankListLeague)
-        const ranksNames = ranksAndNames(combineRanks,players)
+        const combineRanks = margeArrayRank(rankListLeague,players)
         const gamesLeft = countGamesLeft(games)
         return (
             <Container>
                 <Content>
-                   {ranksNames.length > 0 && <LeaderBoard playersScore={ranksNames} gamesLeft={gamesLeft} />}
+                   {combineRanks.length > 0 && <LeaderBoard playersScore={combineRanks} gamesLeft={gamesLeft} />}
                     <Games games={games} ></Games>
                 </Content>
             </Container>
