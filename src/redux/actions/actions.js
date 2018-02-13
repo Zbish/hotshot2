@@ -1,17 +1,16 @@
 import {
     initial_Schedule,
-    signIn,
-    ADD_LEAGUE,
-    loading,
-    SET_CURRENT_LEAGUE,
-    initial_LEAGUE_GAMES,
-    UPDATE_bets,
     initial_bets,
+    initial_LEAGUE_GAMES,
+    initial_Ranks,
+    UPDATE_bets,
     UPDATE_League,
     UPDATE_Schedule,
     UPDATE_LEAGUE_GAMES,
-    initial_Ranks,
-    update_rank
+    UPDATE_rank,
+    signIn,
+    ADD_LEAGUE,
+    SET_CURRENT_LEAGUE
 } from './constant';
 import {
     getSchedule,
@@ -20,7 +19,13 @@ import {
     getbets
 } from '../../firebaseActions'
 import _ from 'lodash'
-import { getLeagueGames, getGames, getLeagueRankList,updateLeaguesGames, compareScore, changeLeaderBoard } from '../../utils'
+import {
+    getLeagueGames,
+    getGames,
+    getLeagueRankList,
+    updateLeaguesGames,
+    changeLeaderBoard
+} from '../../utils'
 import { NavigationActions } from 'react-navigation'
 
 
@@ -44,102 +49,102 @@ const callBackScedule = (changeGame, dispatch, getState) => {
         })
     }
     if (changeGame.status != "panding") {
-        const newRanks = changeLeaderBoard(scores,changeGame,oldGame,ranks)
+        const newRanks = changeLeaderBoard(scores, changeGame, oldGame, ranks)
         dispatch({
-            type: update_rank,
+            type: UPDATE_rank,
             ranks: newRanks
         })
     }
 }
-    const callBackBets = (bets, dispatch, leagueUid, gameid) => {
-        dispatch({
-            type: UPDATE_bets,
-            bets: { bets, leagueuid: leagueUid, gameid: gameid }
-            // bets: { [leagueUid]:{[gameid]:bets}}
-        })
-
-    }
-
-    const callBackLeague = (league, dispatch, getState) => {
-        const myState = _.cloneDeep(getState())
-        const schedule = myState.gamesSchedule.gameSchedule
-        let leagues = myState.leagues
-        league = getGames(league, schedule)
-        const bool = _.findIndex(leagues.myLeagues, { id: league.id })
-        if (bool == -1) {
-            getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid)).then((bets) => {
-                dispatch({
-                    type: ADD_LEAGUE,
-                    league
-                })
-                dispatch({
-                    type: initial_bets,
-                    bets: { [league.id]: bets }
-                })
-            })
-        } else {
-            leagues.myLeagues[bool] = league
-            if (leagues.currentLeague && leagues.currentLeague.id == league.id) {
-                leagues.currentLeague = league
-            }
-            dispatch({
-                type: UPDATE_League,
-                leagues
-            })
-        }
-    }
-
-    export const initialApp = (uid) => (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            getSchedule((changeGame) => callBackScedule(changeGame, dispatch, getState))
-                .then((Schedule) => {
-                    dispatch({
-                        type: initial_Schedule,
-                        Schedule
-                    })
-                    getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
-                        .then((leagues) => {
-                            const leaguesWithGames = getLeagueGames(leagues, Schedule)
-                            dispatch({
-                                type: initial_LEAGUE_GAMES,
-                                leaguesWithGames
-                            })
-                            _.forEach(leagues, (league) => {
-                                getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid))
-                                    .then((bets) => {
-                                        dispatch({
-                                            type: initial_bets,
-                                            bets: { [league.id]: bets }
-                                        })
-                                        const ranks = getLeagueRankList(bets, Schedule)
-                                        dispatch({
-                                            type: initial_Ranks,
-                                            ranks: { [league.id]: ranks }
-                                        })
-                                    })
-                            })
-                            resolve('inilized')
-                        })
-                })
-        })
-    }
-
-    export const setCurrentLeague = (current) => {
-        return {
-            type: SET_CURRENT_LEAGUE,
-            league: current
-        };
-    }
-
-    export const sign = () => {
-        return {
-            type: signIn,
-            val: false
-        };
-    }
-    export const resetAction = () => NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({ routeName: 'LoginScreen' })
-        ]
+const callBackBets = (bets, dispatch, leagueUid, gameid) => {
+    dispatch({
+        type: UPDATE_bets,
+        bets: { bets, leagueuid: leagueUid, gameid: gameid }
+        // bets: { [leagueUid]:{[gameid]:bets}}
     })
+
+}
+
+const callBackLeague = (league, dispatch, getState) => {
+    const myState = _.cloneDeep(getState())
+    const schedule = myState.gamesSchedule.gameSchedule
+    let leagues = myState.leagues
+    league = getGames(league, schedule)
+    const bool = _.findIndex(leagues.myLeagues, { id: league.id })
+    if (bool == -1) {
+        getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid)).then((bets) => {
+            dispatch({
+                type: ADD_LEAGUE,
+                league
+            })
+            dispatch({
+                type: initial_bets,
+                bets: { [league.id]: bets }
+            })
+        })
+    } else {
+        leagues.myLeagues[bool] = league
+        if (leagues.currentLeague && leagues.currentLeague.id == league.id) {
+            leagues.currentLeague = league
+        }
+        dispatch({
+            type: UPDATE_League,
+            leagues
+        })
+    }
+}
+
+export const initialApp = (uid) => (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        getSchedule((changeGame) => callBackScedule(changeGame, dispatch, getState))
+            .then((Schedule) => {
+                dispatch({
+                    type: initial_Schedule,
+                    Schedule
+                })
+                getLeagues(uid, (item) => callBackLeague(item, dispatch, getState))
+                    .then((leagues) => {
+                        const leaguesWithGames = getLeagueGames(leagues, Schedule)
+                        dispatch({
+                            type: initial_LEAGUE_GAMES,
+                            leaguesWithGames
+                        })
+                        _.forEach(leagues, (league) => {
+                            getbets(league.id, (bets, gameid) => callBackBets(bets, dispatch, league.id, gameid))
+                                .then((bets) => {
+                                    dispatch({
+                                        type: initial_bets,
+                                        bets: { [league.id]: bets }
+                                    })
+                                    const ranks = getLeagueRankList(bets, Schedule)
+                                    dispatch({
+                                        type: initial_Ranks,
+                                        ranks: { [league.id]: ranks }
+                                    })
+                                })
+                        })
+                        resolve('inilized')
+                    })
+            })
+    })
+}
+
+export const setCurrentLeague = (current) => {
+    return {
+        type: SET_CURRENT_LEAGUE,
+        league: current
+    };
+}
+
+export const sign = () => {
+    return {
+        type: signIn,
+        val: false
+    };
+}
+export const resetAction = () => NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'LoginScreen' })
+    ]
+})

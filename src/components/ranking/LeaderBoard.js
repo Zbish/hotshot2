@@ -13,7 +13,6 @@ export default class LeaderBoard extends Component {
     const players = playersScore.sort((a, b) => a.points < b.points)
     const losers = players.slice(3)
     const leaders = players.slice(0, 3)
-
     const gamesLeft = this.props.gamesLeft
     return (
       <Content>
