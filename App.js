@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native'
 import _ from 'lodash';
 import RootNavigator from './src/screens/navigator'
 import { addNavigationHelpers } from "react-navigation";
@@ -20,7 +21,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-          <AppWithNavigationState />
+        <AppWithNavigationState />
       </Provider>
     );
   }

@@ -21,7 +21,7 @@ export default class Games extends Component {
             _.map(gamesByDate, (games, date) => {
               return (
                 <List key={date} >
-                  <ListItem itemDivider>
+                  <ListItem style={{backgroundColor:'#C5CAE9'}}itemDivider>
                     <Text>{moment(new Date(date)).format('dddd ,LL')}</Text>
                   </ListItem>
                   <FlatList

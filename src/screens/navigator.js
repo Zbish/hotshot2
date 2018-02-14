@@ -3,17 +3,18 @@ import { StackNavigator } from 'react-navigation';
 import homeScreen from './homeScreen'
 import loginScreen from './loginScreen'
 import league from './league'
+import addLeague from './addLeague'
 export default RootStackNavigator = StackNavigator(
   {
     HomeScreen: {
       screen: homeScreen,
       navigationOptions: {
         title: 'homeScreen',
-        headerStyle: { backgroundColor: '#F44336' },
+        headerStyle: { backgroundColor: '#C81514' },
         headerTitleStyle: { color: '#FFFFFF' },
         headerTintColor: '#FFFFFF',
-        headerLeft: null
-      }
+        headerLeft: null,
+      },
     },
     LoginScreen: {
       screen: loginScreen,
@@ -25,7 +26,16 @@ export default RootStackNavigator = StackNavigator(
       screen: league,
       navigationOptions: {
         title: 'league',
-        headerStyle: { backgroundColor: '#F44336' },
+        headerStyle: { backgroundColor: '#C81514' },
+        headerTitleStyle: { color: '#FFFFFF' },
+        headerTintColor: '#FFFFFF'
+      }
+    },
+    addLeague: {
+      screen: addLeague,
+      navigationOptions: {
+        title: 'addLeague',
+        headerStyle: { backgroundColor: '#C81514' },
         headerTitleStyle: { color: '#FFFFFF' },
         headerTintColor: '#FFFFFF'
       }
