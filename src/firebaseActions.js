@@ -16,6 +16,7 @@ export const isLogged = () => {
     })
 }
 
+
 export const signOut = () => {
     return new Promise((resolve, reject) => {
         firebase.auth().signOut().then(() => {
@@ -153,5 +154,19 @@ export const chengeUserBet = () => {
         console.log('error', error)
     }
 
+}
+
+export const searchPlayers = (what,proprty) => {
+    return new Promise((resolve, reject) => {
+        const refUsers = ref.collection('users').where(proprty, "==", what)
+        refUsers.get().then(
+            (snap) => {
+                snap.forEach((doc) => {
+                    console.log('doc', doc.data())
+                    
+                })
+            }
+        )
+    })
 }
 

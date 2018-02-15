@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Container, Content, Text } from 'native-base'
+import Games from '../Games'
 
-export default class pureComponent extends Component {
+export default class AddGames extends Component {
 
     render() {
         return (
             <Container>
                 <Content>
-                    <Text>
-                        i am pure
-                    </Text>
+                   <Games games={this.props.games} />
                 </Content>
             </Container>
         );
