@@ -156,15 +156,12 @@ export const chengeUserBet = () => {
 
 }
 
-export const searchPlayers = (what,proprty) => {
+export const searchPlayers = (value,proprty) => {
     return new Promise((resolve, reject) => {
-        const refUsers = ref.collection('users').where(proprty, "==", what)
+        const refUsers = ref.collection('users').where(proprty, "==", value)
         refUsers.get().then(
             (snap) => {
-                snap.forEach((doc) => {
-                    console.log('doc', doc.data())
-                    
-                })
+                resolve(snap)
             }
         )
     })
