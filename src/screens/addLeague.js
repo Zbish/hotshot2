@@ -13,8 +13,8 @@ class addLeague extends Component {
         return (
             <Container>
                     {/* <Properties /> */}
-                    {/* <AddGames games={games} /> */}
-                    <AddPlayers />
+                    <AddGames games={games} />
+                    {/* <AddPlayers /> */}
             </Container>
         );
     }

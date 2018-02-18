@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { Container, Content, Text, List, Button, Form, Item, Body, Label, Input, Radio } from 'native-base'
 import { searchPlayers } from '../../firebaseActions'
 import ListItemPlayer from './ListItemPlayer'
+import _ from 'lodash';
 
 export default class AddPlayers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listOfPlayers:[],
+            listOfPlayers: {},
             listOfUsers: [],
             name: false,
             last: false,
@@ -34,20 +35,43 @@ export default class AddPlayers extends Component {
             this.setState({ listOfUsers: users })
         })
     }
-    addPlayer(player){
+    addPlayer(player) {
         const players = this.state.listOfPlayers
-        players.push(player)
-        this.setState({listOfPlayers:players})
-        console.log('list of players' , this.props.listOfPlayers)
+        var uid = player.uid;
+        if (players.hasOwnProperty(uid)) {
+            alert("This Player Is Already In The League");
+        }
+        else {
+            player.uid = true
+            player.status = 'panding'
+            players[uid] = player
+            this.setState({ listOfPlayers: players })
+            alert("U Add  " + player.name + " " + player.last);
+        }
+
     }
 
     render() {
         const radio = this.state
         const result = this.state.listOfUsers
+        const players = this.state.listOfPlayers
+        console.log('list of players', this.state.listOfPlayers)
         return (
             <Container>
                 <Content>
                     <Form>
+                        <Item>
+                            <Text>
+                                players In League :
+                            </Text>
+                            {
+                                _.map(players, (player, uid) => {
+                                    return (
+                                        <Text key={uid}>{player.name} , {'  '}</Text>
+                                    )
+                                })
+                            }
+                        </Item>
                         <Item floatingLabel>
                             <Label>Search A Player</Label>
                             <Input value={this.state.value}
@@ -85,9 +109,10 @@ export default class AddPlayers extends Component {
                             <FlatList
                                 data={result}
                                 extraData={result}
-                                renderItem={({ item }) => <ListItemPlayer item={item} addPlayer={(player)=>this.addPlayer(player)} />}
+                                renderItem={({ item }) => <ListItemPlayer item={item} addPlayer={(player) => this.addPlayer(player)} />}
                                 keyExtractor={item => item.uid} />
                         </List>}
+                    {result.length == 0 && <Text>No Freind Found</Text>}
                 </Content>
             </Container>
         );
