@@ -10,13 +10,17 @@ import {
     UPDATE_rank,
     signIn,
     ADD_LEAGUE,
-    SET_CURRENT_LEAGUE
+    SET_CURRENT_LEAGUE,
+    NEW_LEAGUE_NAME,
+    NEW_LEAGUE_STATUS,
+    NEW_LEAGUE_PLAYERS
 } from './constant';
 import {
     getSchedule,
     getLeagues,
     signOut,
-    getbets
+    getbets,
+    addNewLeagueToFirebase
 } from '../../firebaseActions'
 import _ from 'lodash'
 import {
@@ -116,7 +120,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         type: initial_bets,
                                         bets: { [league.id]: bets }
                                     })
-                                    const ranks = getLeagueRankList(bets, Schedule,league.players)
+                                    const ranks = getLeagueRankList(bets, Schedule, league.players)
                                     dispatch({
                                         type: initial_Ranks,
                                         ranks: { [league.id]: ranks }
@@ -148,3 +152,37 @@ export const resetAction = () => NavigationActions.reset({
         NavigationActions.navigate({ routeName: 'LoginScreen' })
     ]
 })
+
+export const newLeagueName = (name) => {
+    return {
+        type: NEW_LEAGUE_NAME,
+        val: name
+    };
+}
+export const newLeagueStatus = (status) => {
+    return {
+        type: NEW_LEAGUE_STATUS,
+        val: status
+    };
+}
+export const newPlayersList = (player, uid) => {
+    return {
+        type: NEW_LEAGUE_PLAYERS,
+        newPlayer: { uid: uid, player: player }
+    };
+}
+
+export const addNewLeague = (league) => (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        const myState = _.cloneDeep(getState())
+        const schedule = myState.gamesSchedule.gameSchedule
+        const games = {}
+        _.forEach(schedule, (game) => {
+            games[game.id]={uid:true}
+        })
+        league.games = games
+        addNewLeagueToFirebase(league).then(()=>{
+            resolve('ok')
+        })
+    })
+  }

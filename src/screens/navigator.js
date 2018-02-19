@@ -34,7 +34,7 @@ export default RootStackNavigator = StackNavigator(
     addLeague: {
       screen: addLeague,
       navigationOptions: {
-        title: 'addLeague',
+        title: 'Add New League',
         headerStyle: { backgroundColor: '#C81514' },
         headerTitleStyle: { color: '#FFFFFF' },
         headerTintColor: '#FFFFFF'

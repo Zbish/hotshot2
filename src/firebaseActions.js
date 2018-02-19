@@ -167,3 +167,29 @@ export const searchPlayers = (value,proprty) => {
     })
 }
 
+export const addNewLeagueToFirebase = (league) =>{
+    return new Promise((resolve, reject) => {
+        const refLeague = ref.collection('league')
+        refLeague.add({
+           ...league
+        })
+        .then(function(docRef) {
+            const id = docRef.id
+            refLeague.doc(id).update({
+               id:id
+            })
+            .then(function() {
+                console.log("Document successfully updated!");
+                resolve('ok')
+            })
+            .catch(function(error) {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    })
+}

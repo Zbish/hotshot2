@@ -45,7 +45,7 @@ class homeScreen extends Component {
                     <Text> Add League</Text>
                     </Button>
                     <Text>Games Of The Week </Text>
-                    <Games games={games} />
+                    {/* <Games games={games} /> */}
                     {!provider && <FacebookLoginButton onPress={() => this.onPress()}></FacebookLoginButton>}
                     {provider && <Button block danger onPress={() => this.onPress()}>
                         <Text> sign out</Text>

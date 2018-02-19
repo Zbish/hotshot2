@@ -209,3 +209,17 @@ export const changeLeaderBoard = (scores, changeGame, oldGame, ranks) => {
   })
   return ranks
 }
+export const validateLeague = (league) => {
+  if(!league.name){
+    alert("Not a Valid League Name")
+  }
+  else if(!league.status){
+    alert("Not a Valid League status")
+  }
+  else if(_.isEmpty(league.players)){
+    alert("League Have No players")
+  }
+  else{
+    return league
+  }
+}

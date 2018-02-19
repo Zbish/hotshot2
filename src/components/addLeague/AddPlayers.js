@@ -9,7 +9,6 @@ export default class AddPlayers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listOfPlayers: {},
             listOfUsers: [],
             name: false,
             last: false,
@@ -36,17 +35,18 @@ export default class AddPlayers extends Component {
         })
     }
     addPlayer(player) {
-        const players = this.state.listOfPlayers
-        var uid = player.uid;
+        const newPlayer = _.cloneDeep(player) 
+        const players = this.props.players
+        var uid = newPlayer.uid;
         if (players.hasOwnProperty(uid)) {
             alert("This Player Is Already In The League");
         }
         else {
-            player.uid = true
-            player.status = 'panding'
-            players[uid] = player
-            this.setState({ listOfPlayers: players })
-            alert("U Add  " + player.name + " " + player.last);
+            newPlayer.uid = true
+            newPlayer.status = 'panding'
+            delete newPlayer['email'];
+            this.props.addNewPlayer(newPlayer,uid)
+            alert("U Add  " + newPlayer.name + " " + newPlayer.last);
         }
 
     }
@@ -54,67 +54,65 @@ export default class AddPlayers extends Component {
     render() {
         const radio = this.state
         const result = this.state.listOfUsers
-        const players = this.state.listOfPlayers
-        console.log('list of players', this.state.listOfPlayers)
+        const players = this.props.players
         return (
-            <Container>
-                <Content>
-                    <Form>
-                        <Item>
-                            <Text>
-                                players In League :
-                            </Text>
-                            {
-                                _.map(players, (player, uid) => {
-                                    return (
-                                        <Text key={uid}>{player.name} , {'  '}</Text>
-                                    )
-                                })
-                            }
-                        </Item>
-                        <Item floatingLabel>
-                            <Label>Search A Player</Label>
-                            <Input value={this.state.value}
-                                onChangeText={(text) => this.setState({ value: text })} />
-                        </Item>
-                        <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                            Search By:
-                        </Text>
-                        <Item>
-                            <Body>
-                                <Text>First Name</Text>
-                                <Radio selected={radio.name} onPress={() => this.onPress('name')} />
-                            </Body>
-                            <Body >
-                                <Text>Last Name</Text>
-                                <Radio selected={radio.last} onPress={() => this.onPress('last')} />
-                            </Body>
-                            <Body>
-                                <Text>Email</Text>
-                                <Radio selected={radio.email} onPress={() => this.onPress('email')} />
-                            </Body>
-                            <Body>
-                                <Text>full Name</Text>
-                                <Radio selected={radio.fullName} onPress={() => this.onPress('fullName')} />
-                            </Body>
-                        </Item>
-                    </Form>
-                    <Button block warning onPress={() => this.getUsers()}>
+            <Content>
+                <Form>
+                    <Item>
                         <Text>
-                            Search Freinds
+                            players In League :
+                            </Text>
+                        {
+                            _.map(players, (player, uid) => {
+                                return (
+                                    <Text key={uid}>{player.name} , {'  '}</Text>
+                                )
+                            })
+                        }
+                    </Item>
+                    <Item floatingLabel>
+                        <Label>Search A Player</Label>
+                        <Input value={this.state.value}
+                            onChangeText={(text) => this.setState({ value: text })} />
+                    </Item>
+                    <Text style={{ color: 'red', fontWeight: 'bold' }}>
+                        Search By:
                         </Text>
-                    </Button>
-                    {(result.length > 0) &&
-                        <List>
-                            <FlatList
-                                data={result}
-                                extraData={result}
-                                renderItem={({ item }) => <ListItemPlayer item={item} addPlayer={(player) => this.addPlayer(player)} />}
-                                keyExtractor={item => item.uid} />
-                        </List>}
-                    {result.length == 0 && <Text>No Freind Found</Text>}
-                </Content>
-            </Container>
+                    <Item>
+                        <Body>
+                            <Text>First Name</Text>
+                            <Radio selected={radio.name} onPress={() => this.onPress('name')} />
+                        </Body>
+                        <Body >
+                            <Text>Last Name</Text>
+                            <Radio selected={radio.last} onPress={() => this.onPress('last')} />
+                        </Body>
+                        <Body>
+                            <Text>Email</Text>
+                            <Radio selected={radio.email} onPress={() => this.onPress('email')} />
+                        </Body>
+                        <Body>
+                            <Text>full Name</Text>
+                            <Radio selected={radio.fullName} onPress={() => this.onPress('fullName')} />
+                        </Body>
+                    </Item>
+                </Form>
+                <Button block warning onPress={() => this.getUsers()}>
+                    <Text>
+                        Search Freinds
+                        </Text>
+                </Button>
+                {(result.length > 0) &&
+                    <List>
+                        <FlatList
+                            data={result}
+                            extraData={result}
+                            renderItem={({ item }) => <ListItemPlayer item={item} addPlayer={(player) => this.addPlayer(player)} />}
+                            keyExtractor={item => item.uid} />
+                    </List>}
+                {result.length == 0 && <Text>No Freind Found</Text>}
+            </Content>
+
         );
     }
 }

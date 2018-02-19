@@ -9,10 +9,11 @@ export default class Leaders extends Component {
     render() {
         const item = this.props.item
         const place = this.props.place
+        console.log('leaders' , item)
         return (
             <View style={styles.rankContainer}>
                 <Text>{place}</Text>
-                <Thumbnail  style={[imageBorder(place), styles.image]} source={require('../../images/users/caspi.jpg')}></Thumbnail >
+                <Thumbnail  style={[imageBorder(place), styles.image]} source={{uri:item.photoUrl}}></Thumbnail >
                 <Text>{item.name}</Text>
                 <Text>{item.points}</Text>
             </View>
