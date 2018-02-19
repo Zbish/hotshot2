@@ -19,7 +19,6 @@ class addLeague extends Component {
     render() {
         const newLeague = this.props.newLeague
         const games = this.props.gameSchedule
-        console.log('new', newLeague)
         return (
             <Container>
                 <Properties

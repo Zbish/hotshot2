@@ -27,10 +27,6 @@ export default class MyLeagueItem extends Component {
                         games: {allGames.length}
                     </Text>
                 </Body>
-                <Button transparent danger style={styles.button}
-                    onPress={() => this.delete()}>
-                    <Icon name='trash' />
-                </Button>
             </ListItem>
         );
     }
@@ -45,11 +41,6 @@ const styles = StyleSheet.create({
         width: 75,
         height: 75,
         marginLeft: 10
-    },
-    button: {
-        position: 'absolute',
-        bottom: 1,
-        right: 1,
     },
     name: {
         alignSelf: 'flex-start'

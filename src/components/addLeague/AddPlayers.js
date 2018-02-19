@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, View } from 'react-native'
-import { Container, Content, Text, List, Button, Form, Item, Body, Label, Input, Radio } from 'native-base'
+import { Container, Content, Text, List, Button, Icon, Form, Item, Body, Label, Input, Radio } from 'native-base'
 import { searchPlayers } from '../../firebaseActions'
 import ListItemPlayer from './ListItemPlayer'
 import _ from 'lodash';
@@ -35,7 +35,7 @@ export default class AddPlayers extends Component {
         })
     }
     addPlayer(player) {
-        const newPlayer = _.cloneDeep(player) 
+        const newPlayer = _.cloneDeep(player)
         const players = this.props.players
         var uid = newPlayer.uid;
         if (players.hasOwnProperty(uid)) {
@@ -45,7 +45,7 @@ export default class AddPlayers extends Component {
             newPlayer.uid = true
             newPlayer.status = 'panding'
             delete newPlayer['email'];
-            this.props.addNewPlayer(newPlayer,uid)
+            this.props.addNewPlayer(newPlayer, uid)
             alert("U Add  " + newPlayer.name + " " + newPlayer.last);
         }
 
@@ -59,13 +59,19 @@ export default class AddPlayers extends Component {
             <Content>
                 <Form>
                     <Item>
-                        <Text>
-                            players In League :
+                        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                            Add Players :
                             </Text>
                         {
                             _.map(players, (player, uid) => {
                                 return (
-                                    <Text key={uid}>{player.name} , {'  '}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={{ alignSelf: 'center' }} key={uid}>{player.name}</Text>
+                                        <Button transparent danger>
+                                            <Icon name='trash' />
+                                        </Button>
+                                        <Text style={{ alignSelf: 'center' }}>{', '}</Text>
+                                    </View>
                                 )
                             })
                         }
