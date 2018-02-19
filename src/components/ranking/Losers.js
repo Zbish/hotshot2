@@ -10,7 +10,7 @@ export default class Losers extends Component {
         return (
             <ListItem>
                 <Text >{place}</Text>
-                <Thumbnail style={styles.image} source={require('../../images/users/caspi.jpg')}></Thumbnail>
+                <Thumbnail style={styles.image} source={{uri:item.photoUrl}}></Thumbnail>
                 <Text>{item.name}</Text>
                 <Text>{'    '}{item.points}</Text>
             </ListItem>

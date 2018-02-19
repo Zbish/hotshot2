@@ -102,7 +102,7 @@ export const getLeagueRankList = (bets, schedule, players) => {
 const initialList = (players) => {
   let list = []
   _.forIn(players, (value, uid) => {
-    const player = { uid:uid, points: 0, name: value.name }
+    const player = {...value,points: 0,}
     list.push(player)
   })
   return list
@@ -120,6 +120,7 @@ export const margeArrayRank = (ranks, players) => {
       combineRanks[index].points += player.points
     }
   })
+
   return combineRanks
 }
 

@@ -12,7 +12,7 @@ class addLeague extends Component {
       const validLeague =  validateLeague(league)
       if(validLeague){
           this.props.addNewLeague(validLeague).then(()=>{
-            this.props.navigation.navigate('homeScreen')
+            this.props.navigation.goBack()
           })
       }
     }
