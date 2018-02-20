@@ -3,8 +3,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     createFirebaseCredential,
-    signOut
-} from './firebaseActions'
+    signOut,
+    passWordReset
+} from '../firebaseActions'
 
 export const user = () => {
     return new Promise((resolve, reject) => {
@@ -23,6 +24,11 @@ export const createUser = (email, password, name)  => {
                 resolve(user)
             } else { resolve() }
         })
+    })
+}
+export const passwordResetMail = (email)  => {
+    return new Promise((resolve, reject) => {
+        passWordReset(email)
     })
 }
 

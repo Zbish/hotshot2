@@ -27,6 +27,15 @@ export const signOut = () => {
     })
 }
 
+export const passWordReset = (email) => {
+    console.log('reset' ,email)
+    return new Promise((resolve, reject) => {
+        firebase.auth().sendPasswordResetEmail(email).then((result)=>{
+            console.log('reset' ,result)
+        })
+    })
+}
+
 export const createUserWithEmailAndPassword = (email, password, name) => {
     return new Promise((resolve, reject) => {
         try {

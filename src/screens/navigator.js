@@ -1,10 +1,10 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import homeScreen from './homeScreen'
-import loginScreen from './loginScreen'
 import league from './league'
 import addLeague from './addLeague'
 import LeagueTabNavigator from './TabNavigator'
+import loginNavigator from '../login/loginNavigator'
 
 export default RootStackNavigator = StackNavigator(
   {
@@ -19,7 +19,7 @@ export default RootStackNavigator = StackNavigator(
       },
     },
     LoginScreen: {
-      screen: loginScreen,
+      screen: loginNavigator,
       navigationOptions: {
         header: null,
       }

@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Text, StatusBar, } from 'react-native'
 import { connect } from 'react-redux'
 import { setCurrentLeague, resetAction, sign } from '../redux/actions/actions'
-import { signOutFromFirebase } from '../loginAction'
+import { signOutFromFirebase } from '../login/loginAction'
 import { renderIf } from '../utils'
 import Games from '../components/Games'
 import MyLeague from '../components/MyLeague'
 import { Container, Content, Button } from 'native-base'
-import FacebookLoginButton from '../components/FacebookLoginButton'
+import FacebookLoginButton from '../login/FacebookLoginButton'
 
 class homeScreen extends Component {
 

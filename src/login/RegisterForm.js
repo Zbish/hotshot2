@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardItem, Form, Content, Item, Input, Label, Button, Text, Container } from 'native-base';
 import { validateEmail, checkPassword } from '../utils'
+import {createUser} from './loginAction'
 
 export default class RegisterForm extends React.Component {
     constructor(props) {
@@ -8,19 +9,20 @@ export default class RegisterForm extends React.Component {
         this.state = {
             email: '',
             password: '',
-            name:''
+            name:'',
         };
     }
     register() {
+        this.props.loading(true)
         const email = this.state.email
         const password = this.state.password
         const name = this.state.name
         if (validateEmail(email), checkPassword(password)) {
-            this.props.register(email, password,name)
+            createUser(email, password, name).then(user=>this.props.login(user))
         }
-    }
-    signIn() {
-        this.props.renderSign()
+        else{
+            this.props.loading(false)
+        }
     }
     render() {
         return (
@@ -50,9 +52,6 @@ export default class RegisterForm extends React.Component {
                 </Form>
                 <Button style={{ margin: 20 }} block rounded onPress={() => this.register()}>
                     <Text>Register</Text>
-                </Button>
-                <Button style={{ alignSelf: 'center' }} transparent warning onPress={() => this.signIn()}>
-                    <Text>Sign In</Text>
                 </Button>
             </Content>
         );

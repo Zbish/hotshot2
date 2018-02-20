@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Content, Item, Input, Label, Button, Text } from 'native-base';
-import FacebookLoginButton from '../components/FacebookLoginButton'
+import FacebookLoginButton from './FacebookLoginButton'
 import { View } from 'react-native'
 
 export default class LoginForm extends React.Component {
@@ -20,7 +20,7 @@ export default class LoginForm extends React.Component {
         this.props.renderRegister()
     }
     forgotPassword() {
-        console.log('forgot')
+        this.props.renderForgot()
     }
     facebook(token){
         this.props.facebook(token)
