@@ -9,7 +9,6 @@ export default class Leaders extends Component {
     render() {
         const item = this.props.item
         const place = this.props.place
-        console.log('leaders' , item)
         return (
             <View style={styles.rankContainer}>
                 <Text>{place}</Text>

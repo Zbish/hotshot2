@@ -14,7 +14,7 @@ class homeScreen extends Component {
     navigate(id) {
         const current = _.find(this.props.leagues, { id: id })
         this.props.setCurrentLeague(current)
-        this.props.navigation.navigate('league')
+        this.props.navigation.navigate('currentLeague')
 
     }
     // log out from facebook / app
@@ -24,7 +24,7 @@ class homeScreen extends Component {
             this.props.resetNavigation()
         })
     }
-    addLeague(){
+    addLeague() {
         this.props.navigation.navigate('addLeague')
     }
 
@@ -41,8 +41,8 @@ class homeScreen extends Component {
                 />
                 <Content>
                     <MyLeague leagues={leagues} navigate={(id) => this.navigate(id)} ></MyLeague>
-                    <Button  block warning onPress={()=>this.addLeague()}>
-                    <Text> Add League</Text>
+                    <Button block warning onPress={() => this.addLeague()}>
+                        <Text> Add League</Text>
                     </Button>
                     <Text>Games Of The Week </Text>
                     {/* <Games games={games} /> */}

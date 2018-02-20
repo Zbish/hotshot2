@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native'
+import { FlatList,View } from 'react-native'
 import Game from './Game'
 import _ from 'lodash'
 import { withoutTime } from '../utils'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { Content, Text, List, ListItem,Container } from 'native-base';
+import Bets from '../components/Bets'
 
 export default class Games extends Component {
   render() {
@@ -27,7 +28,11 @@ export default class Games extends Component {
                   <FlatList
                     data={games}
                     extraData={games}
-                    renderItem={({ item }) => <Game item={item} />}
+                    renderItem={({ item }) =>
+                    <View> 
+                      <Game item={item} />
+                      <Bets />
+                    </View>}
                     keyExtractor={item => item.id} />
                 </List>
               )

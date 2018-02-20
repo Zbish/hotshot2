@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { Col, Grid, Row } from "react-native-easy-grid"
 import Flags from '../images/Flags'
 import teams from '../images/teams'
+import Bets from '../components/Bets'
 
 export default class Game extends Component {
 
@@ -14,7 +15,7 @@ export default class Game extends Component {
     const team1 = _.find(teams, { code: item.team1 })
     const team2 = _.find(teams, { code: item.team2 })
     return (
-      <ListItem>
+      <ListItem style={{flexDirection:'column'}}>
         <Grid>
           <Col style={{ alignItems:'center' }}>
             <Row>
@@ -38,6 +39,7 @@ export default class Game extends Component {
             </Row>
           </Col>
         </Grid>
+       
       </ListItem>
     );
   }

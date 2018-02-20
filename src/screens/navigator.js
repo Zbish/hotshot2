@@ -4,6 +4,8 @@ import homeScreen from './homeScreen'
 import loginScreen from './loginScreen'
 import league from './league'
 import addLeague from './addLeague'
+import LeagueTabNavigator from './TabNavigator'
+
 export default RootStackNavigator = StackNavigator(
   {
     HomeScreen: {
@@ -24,6 +26,15 @@ export default RootStackNavigator = StackNavigator(
     },
     league: {
       screen: league,
+      navigationOptions: {
+        title: 'league',
+        headerStyle: { backgroundColor: '#C81514' },
+        headerTitleStyle: { color: '#FFFFFF' },
+        headerTintColor: '#FFFFFF'
+      }
+    },
+    currentLeague: {
+      screen: LeagueTabNavigator,
       navigationOptions: {
         title: 'league',
         headerStyle: { backgroundColor: '#C81514' },
