@@ -16,6 +16,7 @@ class leaders extends Component {
         const rankListLeague = this.props.rankList[league.id]
         const combineRanks = margeArrayRank(rankListLeague,players)
         const gamesLeft = countGamesLeft(games)
+        console.log('reankdddddddddddddddddddd' , combineRanks)
         return (
             <Container>
                 <Content>

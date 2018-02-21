@@ -79,19 +79,25 @@ const getRanks = (playerBets, leaguegame, list, players) => {
       list[index].points += playerScore
     }
   })
-
+  console.log('list' , list)
   return list
 }
 export const getLeagueRankList = (bets, schedule, players) => {
-  let rankEnded = initialList(players)
-  let rankActive = initialList(players)
-  _.forEach(bets, (playerBets, gameid) => {
-    var leaguegame = schedule.find(function (game) { return game.id === gameid; });
+  const cloneBets = _.cloneDeep(bets)
+  const cloneSchedule = _.cloneDeep(schedule)
+  const clonePlayers = _.cloneDeep(players)
+
+  let rankActive = initialList(clonePlayers)
+  console.log('rankj' , rankActive)
+  let rankEnded = initialList(clonePlayers)
+  
+  _.forEach(cloneBets, (playerBets, gameid) => {
+    var leaguegame = cloneSchedule.find(function (game) { return game.id === gameid; });
     if (leaguegame.status === "ended") {
-      rankEnded = getRanks(playerBets, leaguegame, rankEnded, players)
+      rankEnded = getRanks(playerBets, leaguegame, rankEnded, clonePlayers)
     }
     else if (leaguegame.status === "active") {
-      rankActive = getRanks(playerBets, leaguegame, rankActive, players)
+      rankActive = getRanks(playerBets, leaguegame, rankActive, clonePlayers)
     }
 
   })
@@ -102,13 +108,15 @@ export const getLeagueRankList = (bets, schedule, players) => {
 const initialList = (players) => {
   let list = []
   _.forIn(players, (value, uid) => {
-    const player = { ...value, points: 0, }
+    const player = { ...value, points: 0,uid:uid }
     list.push(player)
   })
   return list
 }
 
 export const margeArrayRank = (ranks, players) => {
+  console.log('combine ranks' , ranks)
+  console.log('combine ranks' , players)
   const cloneRank = _.cloneDeep(ranks)
   const combineRanks = cloneRank.rankEnded
   _.forEach(ranks.rankActive, (player) => {
@@ -120,8 +128,9 @@ export const margeArrayRank = (ranks, players) => {
       combineRanks[index].points += player.points
     }
   })
-
+  console.log('combine ranks' , combineRanks)
   return combineRanks
+  
 }
 
 export const ranksAndNames = (ranks, names) => {

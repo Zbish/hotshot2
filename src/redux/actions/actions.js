@@ -62,6 +62,7 @@ const callBackScedule = (changeGame, dispatch, getState) => {
     }
 }
 const callBackBets = (bets, dispatch, leagueUid, gameid) => {
+
     dispatch({
         type: UPDATE_bets,
         bets: { bets, leagueuid: leagueUid, gameid: gameid }
@@ -122,6 +123,7 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         bets: { [league.id]: bets }
                                     })
                                     const ranks = getLeagueRankList(bets, Schedule, league.players)
+                                
                                     dispatch({
                                         type: initial_Ranks,
                                         ranks: { [league.id]: ranks }

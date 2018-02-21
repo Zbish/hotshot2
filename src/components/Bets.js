@@ -47,7 +47,6 @@ export default class Bets extends Component {
   }
   render() {
     const status = this.props.status
-    console.log('fsfs' , status)
      { (status === 'panding') ?
      this.state.disabled = false :
      this.state.disabled = true}
