@@ -21,7 +21,6 @@ export default class FacebookLoginButton extends Component {
                             } else if (result.isCancelled) {
                                 alert("Login was cancelled");
                             } else {
-                                console.log('gggg', result)
                                 AccessToken.getCurrentAccessToken().then(token =>{
                                         this.logIn(token)
                                 })

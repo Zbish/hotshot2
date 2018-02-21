@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet,StatusBar } from 'react-native'
 import { connect } from 'react-redux'
-import { initialApp, sign } from '../redux/actions/actions'
+import { initialApp, sign,userUid } from '../redux/actions/actions'
 import { user, createUser, signInUser, facebookLogin } from './loginAction'
 import LoginForm from './LoginForm'
 import { Container, Spinner, Content, Card, CardItem, Text } from 'native-base';
@@ -19,6 +19,7 @@ class loginScreen extends Component {
         if (user) {
             this.props.initialApp(user.uid).then(() => {
                 this.props.sign()
+                this.props.setUserUid(user.uid)
                 if (user.providerData[0].providerId === "facebook.com") {
                     this.props.navigation.navigate("HomeScreen", { provider: undefined })
                 }
@@ -31,8 +32,6 @@ class loginScreen extends Component {
     componentWillMount() {
         this.isLogged()
     }
-
-
     isLogged() {
         this.setState({ loading: true })
         user().then(user => this.login(user))
@@ -96,14 +95,14 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         logged: state.login.user,
-        loading: state.login.loading
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         initialApp: (uid) => dispatch(initialApp(uid)),
-        sign: () => dispatch(sign())
+        sign: () => dispatch(sign()),
+        setUserUid : (uid) => dispatch(userUid(uid))
     }
 }
 

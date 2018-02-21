@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, StatusBar, } from 'react-native'
 import { connect } from 'react-redux'
-import { setCurrentLeague, resetAction, sign } from '../redux/actions/actions'
+import { setCurrentLeague, resetAction, sign,userUid } from '../redux/actions/actions'
 import { signOutFromFirebase } from '../login/loginAction'
 import { renderIf } from '../utils'
 import Games from '../components/Games'
@@ -22,6 +22,7 @@ class homeScreen extends Component {
         signOutFromFirebase().then(() => {
             this.props.signOut()
             this.props.resetNavigation()
+            this.props.setUserUid('')
         })
     }
     addLeague() {
@@ -58,10 +59,11 @@ class homeScreen extends Component {
 function mapStateToProps(state) {
     return {
         gameSchedule: state.gamesSchedule.gameSchedule,
-        logged: state.login.user,
+        userUid: state.login.userUid,
         leagues: state.leagues.myLeagues,
         scores: state.scores,
-        ranks: state.ranks
+        ranks: state.ranks,
+
     }
 }
 
@@ -70,7 +72,8 @@ function mapDispatchToProps(dispatch) {
         setCurrentLeague: (league) => dispatch(setCurrentLeague(league)),
         signOutFromFirebase: () => dispatch(signOutFromFirebase()),
         resetNavigation: () => dispatch(resetAction()),
-        signOut: () => dispatch(sign())
+        signOut: () => dispatch(sign()),
+        setUserUid : (uid) => dispatch(userUid(uid))
 
     }
 }

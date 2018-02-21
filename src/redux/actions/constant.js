@@ -15,6 +15,7 @@ const loading = 'loading'
 const NEW_LEAGUE_STATUS = 'NEW_LEAGUE_STATUS'
 const NEW_LEAGUE_NAME = 'NEW_LEAGUE_NAME'
 const NEW_LEAGUE_PLAYERS = 'NEW_LEAGUE_PLAYERS'
+const SET_USER_UID = 'SET_USER_UID'
 
 export {
   initial_Schedule,
@@ -33,4 +34,5 @@ export {
   NEW_LEAGUE_STATUS,
   NEW_LEAGUE_NAME,
   NEW_LEAGUE_PLAYERS,
+  SET_USER_UID
 };

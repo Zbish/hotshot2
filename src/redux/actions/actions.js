@@ -13,7 +13,8 @@ import {
     SET_CURRENT_LEAGUE,
     NEW_LEAGUE_NAME,
     NEW_LEAGUE_STATUS,
-    NEW_LEAGUE_PLAYERS
+    NEW_LEAGUE_PLAYERS,
+    SET_USER_UID
 } from './constant';
 import {
     getSchedule,
@@ -144,6 +145,12 @@ export const sign = () => {
     return {
         type: signIn,
         val: false
+    };
+}
+export const userUid = (uid) => {
+    return {
+        type: SET_USER_UID,
+        val: uid
     };
 }
 export const resetAction = () => NavigationActions.reset({

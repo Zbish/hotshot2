@@ -1,4 +1,4 @@
-import {signIn,loading} from '../actions/constant'
+import {signIn,loading,SET_USER_UID} from '../actions/constant'
 
 export default (state, action) => {
   switch (action.type) {
@@ -8,16 +8,16 @@ export default (state, action) => {
       user:action.val
     };
     break;
-    case loading:
+    case SET_USER_UID:
     return{
       ...state,
-      loading:action.val
+      userUid:action.val
     };
     break;
     default:
     return state || {
         user:false,
-        loading:false
+        userUid:''
       }
   }
 }
