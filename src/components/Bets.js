@@ -10,6 +10,13 @@ export default class Bets extends Component {
           team2:0
       }
   }
+  componentWillReceiveProps(nextProps){
+    const item = nextProps.item
+    const team1 = item.team1
+    const team2 = item.team2
+    this.setState({team1:team1})
+    this.setState({team2:team2})
+  }
   onSlideTeam1(value){
     this.setState({team1:value})
   }
@@ -17,6 +24,8 @@ export default class Bets extends Component {
     this.setState({team2:value})
    }
   render() {
+    console.log('state' , this.props)
+    
     return (
         <View style={styles.betComponent}>
      

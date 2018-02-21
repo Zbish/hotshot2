@@ -102,7 +102,7 @@ export const getLeagueRankList = (bets, schedule, players) => {
 const initialList = (players) => {
   let list = []
   _.forIn(players, (value, uid) => {
-    const player = {...value,points: 0,}
+    const player = { ...value, points: 0, }
     list.push(player)
   })
   return list
@@ -211,16 +211,24 @@ export const changeLeaderBoard = (scores, changeGame, oldGame, ranks) => {
   return ranks
 }
 export const validateLeague = (league) => {
-  if(!league.name){
+  if (!league.name) {
     alert("Not a Valid League Name")
   }
-  else if(!league.status){
+  else if (!league.status) {
     alert("Not a Valid League status")
   }
-  else if(_.isEmpty(league.players)){
+  else if (_.isEmpty(league.players)) {
     alert("League Have No players")
   }
-  else{
+  else {
     return league
   }
+}
+
+export const getMyBets = (games, bets, uid) => {
+  const cloneGames = _.cloneDeep(games)
+  _.forEach(cloneGames, (game) => {
+    game.myBets = bets[game.id][uid]
+  })
+  return cloneGames
 }

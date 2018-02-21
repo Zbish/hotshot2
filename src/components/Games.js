@@ -15,7 +15,6 @@ export default class Games extends Component {
       .groupBy(game => {
         return withoutTime(game.date);
       }).value()
-
     return (
         <Content>
           {
@@ -31,7 +30,7 @@ export default class Games extends Component {
                     renderItem={({ item }) =>
                     <View> 
                       <Game item={item} />
-                      <Bets />
+                      <Bets item={item.myBets} />
                     </View>}
                     keyExtractor={item => item.id} />
                 </List>
