@@ -28,7 +28,9 @@ export const createUser = (email, password, name)  => {
 }
 export const passwordResetMail = (email)  => {
     return new Promise((resolve, reject) => {
-        passWordReset(email)
+        passWordReset(email).then((action)=>{
+            resolve(action)
+        })
     })
 }
 

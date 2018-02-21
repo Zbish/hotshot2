@@ -16,7 +16,6 @@ export const isLogged = () => {
     })
 }
 
-
 export const signOut = () => {
     return new Promise((resolve, reject) => {
         firebase.auth().signOut().then(() => {
@@ -31,8 +30,10 @@ export const passWordReset = (email) => {
     console.log('reset' ,email)
     return new Promise((resolve, reject) => {
         firebase.auth().sendPasswordResetEmail(email).then((result)=>{
-            console.log('reset' ,result)
-        })
+            resolve({status:'approved'})
+        }).catch(function (error) {
+            resolve({status:'aborted'})
+        });
     })
 }
 
