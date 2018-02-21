@@ -8,7 +8,9 @@ export default class Bets extends Component {
     super(props)
     this.state = {
       team1: 0,
-      team2: 0
+      team2: 0,
+      disabled: false
+
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -21,6 +23,13 @@ export default class Bets extends Component {
       this.setState({ team2: team2 })
     }
 
+  }
+  componentWillMount() {
+    const item = this.props.item
+    const team1 = item.team1
+    const team2 = item.team2
+    this.setState({ team1: team1 })
+    this.setState({ team2: team2 })
   }
   onSlideTeam1(value) {
     this.setState({ team1: value })
@@ -37,8 +46,11 @@ export default class Bets extends Component {
     this.props.changeBet(bet)
   }
   render() {
-    console.log('state', this.props)
-
+    const status = this.props.status
+    console.log('fsfs' , status)
+     { (status === 'panding') ?
+     this.state.disabled = false :
+     this.state.disabled = true}
     return (
       <View style={styles.betComponent}>
 
@@ -53,7 +65,7 @@ export default class Bets extends Component {
           thumbTintColor={'#FF5722'}
           minimumTrackTintColor={'#4CAF50'}
           maximumTrackTintColor={'#FF5722'}
-          disabled={false}
+          disabled={this.state.disabled}
         />
         <Text style={styles.score}>{this.state.team1} : {this.state.team2}</Text>
         <Slider
@@ -67,7 +79,7 @@ export default class Bets extends Component {
           thumbTintColor={'#FF5722'}
           minimumTrackTintColor={'#4CAF50'}
           maximumTrackTintColor={'#FF5722'}
-          disabled={false}
+          disabled={this.state.disabled}
         />
       </View>
     );

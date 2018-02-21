@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase'
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import _ from 'lodash';
 
 // firebase refrance to firestore
 this.ref = firebase.firestore()
@@ -190,6 +191,15 @@ export const addNewLeagueToFirebase = (league) => {
                         console.error("Error updating document: ", error);
                     });
                 console.log("Document written with ID: ", docRef.id);
+                var batch = ref.batch();
+                        console.log('fdefdfs' , league)
+                    _.forIn(league.games, (game, key) => {
+                    var nycRef = ref.collection("league").doc(docRef.id).collection('bets').doc(key);
+                    batch.set(nycRef);
+                })
+                batch.commit().then(function () {
+                    // ...
+                });
             })
             .catch(function (error) {
                 console.error("Error adding document: ", error);

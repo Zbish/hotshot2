@@ -34,7 +34,7 @@ export default class Games extends Component {
                     renderItem={({ item }) =>
                     <View> 
                       <Game item={item} />
-                      <Bets item={item.myBets} changeBet={(bet)=>this.changeBet(bet,item.id)}/>
+                      <Bets item={item.myBets} changeBet={(bet)=>this.changeBet(bet,item.id)} status={item.status}/>
                     </View>}
                     keyExtractor={item => item.id} />
                 </List>

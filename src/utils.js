@@ -228,7 +228,11 @@ export const validateLeague = (league) => {
 export const getMyBets = (games, bets, uid) => {
   const cloneGames = _.cloneDeep(games)
   _.forEach(cloneGames, (game) => {
-    game.myBets = bets[game.id][uid]
+    if(bets[game.id][uid]){
+      game.myBets = bets[game.id][uid]
+    }else{
+      game.myBets = {}
+    }
   })
   return cloneGames
 }
