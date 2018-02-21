@@ -27,12 +27,12 @@ export const signOut = () => {
 }
 
 export const passWordReset = (email) => {
-    console.log('reset' ,email)
+    console.log('reset', email)
     return new Promise((resolve, reject) => {
-        firebase.auth().sendPasswordResetEmail(email).then((result)=>{
-            resolve({status:'approved'})
+        firebase.auth().sendPasswordResetEmail(email).then((result) => {
+            resolve({ status: 'approved' })
         }).catch(function (error) {
-            resolve({status:'aborted'})
+            resolve({ status: 'aborted' })
         });
     })
 }
@@ -144,19 +144,12 @@ export const getbets = (leagueUid, callback) => {
     })
 }
 
-export const chengeUserBet = () => {
+export const chengeUserBet = (userUid,gameUid,leagueUid,newScore,team) => {
     try {
-        const userUid = 'ms6eNHUwK2Vq1gVCaPebEll4dT82'
-        const gameUid = 'Uku2IaP0yxb8YdDh9dov'
-        const leagueUid = "8uBTS2dlemmLE085K1aR"
-        const newScore = 11
-        const path = 'games.' + gameUid + '.bets.' + userUid + '.team2'
-        const path2 = 'games.' + gameUid + '.bets.' + userUid + '.team1'
-        const newBet = {
-            [path]: 0,
-            [path2]: 0
-        }
-        ref.collection('league').doc(leagueUid).update(newBet)
+        var updateBets = {};
+        updateBets[`${userUid}.${team}`] = newScore;
+
+        ref.collection('league').doc(leagueUid).collection('bets').doc(gameUid).update(updateBets)
             .then(function (note) {
                 console.log("Document successfully updated!", note);
             });
@@ -166,7 +159,7 @@ export const chengeUserBet = () => {
 
 }
 
-export const searchPlayers = (value,proprty) => {
+export const searchPlayers = (value, proprty) => {
     return new Promise((resolve, reject) => {
         const refUsers = ref.collection('users').where(proprty, "==", value)
         refUsers.get().then(
@@ -177,29 +170,29 @@ export const searchPlayers = (value,proprty) => {
     })
 }
 
-export const addNewLeagueToFirebase = (league) =>{
+export const addNewLeagueToFirebase = (league) => {
     return new Promise((resolve, reject) => {
         const refLeague = ref.collection('league')
         refLeague.add({
-           ...league
+            ...league
         })
-        .then(function(docRef) {
-            const id = docRef.id
-            refLeague.doc(id).update({
-               id:id
+            .then(function (docRef) {
+                const id = docRef.id
+                refLeague.doc(id).update({
+                    id: id
+                })
+                    .then(function () {
+                        console.log("Document successfully updated!");
+                        resolve('ok')
+                    })
+                    .catch(function (error) {
+                        // The document probably doesn't exist.
+                        console.error("Error updating document: ", error);
+                    });
+                console.log("Document written with ID: ", docRef.id);
             })
-            .then(function() {
-                console.log("Document successfully updated!");
-                resolve('ok')
-            })
-            .catch(function(error) {
-                // The document probably doesn't exist.
-                console.error("Error updating document: ", error);
+            .catch(function (error) {
+                console.error("Error adding document: ", error);
             });
-            console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
     })
 }

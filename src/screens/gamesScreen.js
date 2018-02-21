@@ -5,10 +5,18 @@ import Games from '../components/Games'
 import { Container, Content, Header, Text } from 'native-base'
 import LeaderBoard from '../components/ranking/LeaderBoard'
 import { getMyBets } from '../utils'
+import {chengeUserBet} from '../firebaseActions'
 
 
 class gamesScreen extends Component {
-
+changebet(bet,uid,leagueId){
+    const userUid = uid
+    const gameUid = bet.gameId
+    const leagueUid = leagueId
+    const newScore = bet.val
+    const team = bet.team
+    chengeUserBet(userUid,gameUid,leagueUid,newScore,team)
+}
     render() {
         const league = this.props.league
         const games = league.allGames
@@ -18,7 +26,7 @@ class gamesScreen extends Component {
         return (
             <Container>
                 <Content>
-                    <Games games={gamesAndBets} ></Games>
+                    <Games games={gamesAndBets} changeBet={(bet)=>this.changebet(bet,uid,league.id)} ></Games>
                 </Content>
             </Container>
         );

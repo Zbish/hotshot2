@@ -9,6 +9,10 @@ import { Content, Text, List, ListItem,Container } from 'native-base';
 import Bets from '../components/Bets'
 
 export default class Games extends Component {
+  changeBet(bet,gameId){
+    bet.gameId = gameId
+    this.props.changeBet(bet)
+  }
   render() {
     const gamesByDate = _.chain(this.props.games)
       .sortBy(["date"])
@@ -30,7 +34,7 @@ export default class Games extends Component {
                     renderItem={({ item }) =>
                     <View> 
                       <Game item={item} />
-                      <Bets item={item.myBets} />
+                      <Bets item={item.myBets} changeBet={(bet)=>this.changeBet(bet,item.id)}/>
                     </View>}
                     keyExtractor={item => item.id} />
                 </List>
