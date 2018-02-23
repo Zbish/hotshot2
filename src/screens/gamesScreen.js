@@ -24,7 +24,7 @@ changebet(bet,uid,leagueId){
         const uid = this.props.userUid
         const gamesAndBets = getMyBets(games, bets, uid)
         return (
-            <Container>
+            <Container >
                 <Content>
                     <Games games={gamesAndBets} changeBet={(bet)=>this.changebet(bet,uid,league.id)} ></Games>
                 </Content>

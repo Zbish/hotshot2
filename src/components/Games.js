@@ -19,6 +19,7 @@ export default class Games extends Component {
       .groupBy(game => {
         return withoutTime(game.date);
       }).value()
+      console.log('dfdf' , gamesByDate)
     return (
         <Content>
           {

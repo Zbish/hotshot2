@@ -39,7 +39,7 @@ export default RootStackNavigator = StackNavigator(
         title: 'league',
         headerStyle: { backgroundColor: '#C81514' },
         headerTitleStyle: { color: '#FFFFFF' },
-        headerTintColor: '#FFFFFF'
+        headerTintColor: '#FFFFFF',
       }
     },
     addLeague: {

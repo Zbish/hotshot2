@@ -5,8 +5,6 @@ import Losers from '../ranking/Losers'
 import { Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { chengeUserBet } from '../../firebaseActions'
 
-
-
 export default class LeaderBoard extends Component {
   render() {
     const playersScore = this.props.playersScore
@@ -17,24 +15,18 @@ export default class LeaderBoard extends Component {
     return (
       <Content>
         <Card>
-          <CardItem header>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>LeaderBoard</Text>
+          <CardItem style={{ backgroundColor: '#196EA5' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold',color:'gold' }}>LeaderBoard</Text>
           </CardItem>
-          <CardItem>
-            <Left>
-              {leaders[1].name && <Leaders item={leaders[1]}
-                place={2} />}
-            </Left>
-            <Body>
-             {leaders[0].name && <Leaders item={leaders[0]}
-                place={1}
-              />}
-            </Body>
-            <Right>
-              {leaders[2].name &&<Leaders item={leaders[2]}
-                place={3}
-              />}
-            </Right>
+          <CardItem style={{ justifyContent: 'space-between' }}>
+            {leaders[1] && <Leaders item={leaders[1]}
+              place={2} />}
+            {leaders[0] && <Leaders item={leaders[0]}
+              place={1}
+            />}
+            {leaders[2] && <Leaders item={leaders[2]}
+              place={3}
+            />}
           </CardItem>
           <CardItem cardBody>
             <FlatList
@@ -47,9 +39,9 @@ export default class LeaderBoard extends Component {
                 ></Losers>}
               keyExtractor={(item, index) => index} />
           </CardItem>
-          <CardItem style={{backgroundColor:'#196EA5'}}>
+          <CardItem style={{ backgroundColor: '#C5CAE9' }}>
             <Left>
-              <Text style={{fontWeight:'bold'}}>Games Left {gamesLeft}</Text>
+              <Text style={{ fontWeight: 'bold' }}>Games Left {gamesLeft}</Text>
             </Left>
             <Body>
               {/* <Button transparent>
@@ -58,7 +50,7 @@ export default class LeaderBoard extends Component {
                 </Button> */}
             </Body>
             <Right>
-              <Text style={{fontWeight:'bold'}}>players {players.length}</Text>
+              <Text style={{ fontWeight: 'bold' }}>players {players.length}</Text>
             </Right>
           </CardItem>
         </Card>

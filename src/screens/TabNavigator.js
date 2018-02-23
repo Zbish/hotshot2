@@ -7,8 +7,8 @@ import gamesScreen from './gamesScreen'
 
 export default LeagueTabNavigator =  TabNavigator(
   {
-    Board: { screen:leaders },
     Bets: { screen:gamesScreen },
+    Board: { screen:leaders }
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -29,10 +29,14 @@ export default LeagueTabNavigator =  TabNavigator(
     tabBarOptions: {
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
+      
     },
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
-    animationEnabled: false,
-    swipeEnabled: false,
+    // swipeEnabled: false,
+    // lazyLoad: true,
+    // animationEnabled: false,
+    // lazy: true
   }
+ 
 );

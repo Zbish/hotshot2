@@ -68,7 +68,6 @@ const callBackBets = (bets, dispatch, leagueUid, gameid) => {
         bets: { bets, leagueuid: leagueUid, gameid: gameid }
         // bets: { [leagueUid]:{[gameid]:bets}}
     })
-
 }
 
 const callBackLeague = (league, dispatch, getState) => {
@@ -86,6 +85,12 @@ const callBackLeague = (league, dispatch, getState) => {
             dispatch({
                 type: initial_bets,
                 bets: { [league.id]: bets }
+            })
+            const ranks = getLeagueRankList(bets, schedule, league.players)
+            console.log('gggggggggggggggggggggg' , ranks)
+            dispatch({
+                type: initial_Ranks,
+                ranks: { [league.id]: ranks }
             })
         })
     } else {
@@ -123,7 +128,6 @@ export const initialApp = (uid) => (dispatch, getState) => {
                                         bets: { [league.id]: bets }
                                     })
                                     const ranks = getLeagueRankList(bets, Schedule, league.players)
-                                
                                     dispatch({
                                         type: initial_Ranks,
                                         ranks: { [league.id]: ranks }

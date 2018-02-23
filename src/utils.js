@@ -39,11 +39,14 @@ export const checkPassword = (pass) => {
 
 }
 
-export const imageBorder = function (value) {
+export const imageBorder = function (value, width) {
+  const big = (width * 35) / 100
+  const medium = (width * 25) / 100
+  const small = (width * 25) / 100
   let color = value == 1 ? 'gold' :
     value == 2 ? 'silver' : '#CD7F32'
-  let size = value == 1 ? 120 :
-    value == 2 ? 110 : 105
+  let size = value == 1 ? big :
+    value == 2 ? medium : small
   return {
     borderColor: color,
     width: size,
@@ -79,7 +82,7 @@ const getRanks = (playerBets, leaguegame, list, players) => {
       list[index].points += playerScore
     }
   })
-  console.log('list' , list)
+  console.log('list', list)
   return list
 }
 export const getLeagueRankList = (bets, schedule, players) => {
@@ -88,9 +91,9 @@ export const getLeagueRankList = (bets, schedule, players) => {
   const clonePlayers = _.cloneDeep(players)
 
   let rankActive = initialList(clonePlayers)
-  console.log('rankj' , rankActive)
+  console.log('rankj', rankActive)
   let rankEnded = initialList(clonePlayers)
-  
+
   _.forEach(cloneBets, (playerBets, gameid) => {
     var leaguegame = cloneSchedule.find(function (game) { return game.id === gameid; });
     if (leaguegame.status === "ended") {
@@ -108,15 +111,15 @@ export const getLeagueRankList = (bets, schedule, players) => {
 const initialList = (players) => {
   let list = []
   _.forIn(players, (value, uid) => {
-    const player = { ...value, points: 0,uid:uid }
+    const player = { ...value, points: 0, uid: uid }
     list.push(player)
   })
   return list
 }
 
 export const margeArrayRank = (ranks, players) => {
-  console.log('combine ranks' , ranks)
-  console.log('combine ranks' , players)
+  console.log('combine ranks', ranks)
+  console.log('combine ranks', players)
   const cloneRank = _.cloneDeep(ranks)
   const combineRanks = cloneRank.rankEnded
   _.forEach(ranks.rankActive, (player) => {
@@ -128,9 +131,9 @@ export const margeArrayRank = (ranks, players) => {
       combineRanks[index].points += player.points
     }
   })
-  console.log('combine ranks' , combineRanks)
+  console.log('combine ranks', combineRanks)
   return combineRanks
-  
+
 }
 
 export const ranksAndNames = (ranks, names) => {
@@ -237,9 +240,9 @@ export const validateLeague = (league) => {
 export const getMyBets = (games, bets, uid) => {
   const cloneGames = _.cloneDeep(games)
   _.forEach(cloneGames, (game) => {
-    if(bets[game.id][uid]){
+    if (bets[game.id][uid]) {
       game.myBets = bets[game.id][uid]
-    }else{
+    } else {
       game.myBets = {}
     }
   })
