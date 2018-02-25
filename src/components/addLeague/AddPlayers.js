@@ -25,7 +25,7 @@ export default class AddPlayers extends Component {
     }
     getUsers() {
         const proprty = this.state.proprty
-        const value = this.state.value
+        const value = this.state.value.toLowerCase()
         searchPlayers(value, proprty).then((listOfUsers) => {
             const users = []
             listOfUsers.forEach((doc) => {
@@ -97,10 +97,10 @@ export default class AddPlayers extends Component {
                             <Text>Email</Text>
                             <Radio selected={radio.email} onPress={() => this.onPress('email')} />
                         </Body>
-                        <Body>
+                        {/* <Body>
                             <Text>full Name</Text>
                             <Radio selected={radio.fullName} onPress={() => this.onPress('fullName')} />
-                        </Body>
+                        </Body> */}
                     </Item>
                 </Form>
                 <Button block warning onPress={() => this.getUsers()}>
